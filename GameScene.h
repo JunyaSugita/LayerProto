@@ -1,7 +1,9 @@
 #pragma once
 #include "DxLib.h"
-#include "Player.h"
 #include <memory>
+
+#include "Player.h"
+#include "Field.h"
 #include "StageCSVManager.h"
 
 class GameScene
@@ -15,10 +17,12 @@ public:
 	void Draw();
 
 public:
-	//1�u���b�N�̃T�C�Y(���a)
+	//1ブロックの直径
 	const float BLOCK_SIZE = 50.0f;
 
-	//�v���C���[
+	//プレイヤー
 	std::unique_ptr<Player> player_;
+	//フィールド
+	std::unique_ptr<Field> field_;
 };
 

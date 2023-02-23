@@ -133,6 +133,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Field.cpp" />
     <ClCompile Include="Frame.cpp" />
     <ClCompile Include="GameScene.cpp" />
     <ClCompile Include="Layer.cpp" />
@@ -142,6 +143,7 @@
     <ClCompile Include="StageCSVManager.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Field.h" />
     <ClInclude Include="Frame.h" />
     <ClInclude Include="GameScene.h" />
     <ClInclude Include="Player.h" />
