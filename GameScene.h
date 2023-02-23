@@ -2,6 +2,7 @@
 #include "DxLib.h"
 #include "Player.h"
 #include <memory>
+#include "StageCSVManager.h"
 
 class GameScene
 {
@@ -14,10 +15,10 @@ public:
 	void Draw();
 
 public:
-	//1ƒuƒƒbƒN‚ÌƒTƒCƒY(’¼Œa)
+	//1ï¿½uï¿½ï¿½ï¿½bï¿½Nï¿½ÌƒTï¿½Cï¿½Y(ï¿½ï¿½ï¿½a)
 	const float BLOCK_SIZE = 50.0f;
 
-	//ƒvƒŒƒCƒ„[
+	//ï¿½vï¿½ï¿½ï¿½Cï¿½ï¿½ï¿½[
 	std::unique_ptr<Player> player_;
 };
 
