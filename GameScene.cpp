@@ -12,6 +12,8 @@ GameScene::~GameScene()
 //‰Šú‰»
 void GameScene::Initialize()
 {
+	//‰¼‚Å“Ç‚İ‚İ
+	StageCSVManager::GetInstance().LoadStageCSV(1);
 }
 
 
