@@ -1,44 +1,50 @@
 #include "GameScene.h"
 
-//–³‹
+//ç„¡è¦–
 GameScene::GameScene(){}
 
-//deleteˆ—
+//deleteå‡¦ç†
 GameScene::~GameScene()
 {
 
 }
 
-//‰Šú‰»
+//åˆæœŸåŒ–
 void GameScene::Initialize()
 {
-	//‰¼‚Å“Ç‚İ‚İ
+	//ãƒ—ãƒ¬ã‚¤ãƒ¤ãƒ¼ã®ç”Ÿæˆã¨åˆæœŸåŒ–
+	player_ = std::make_unique<Player>();
+	player_->Initialize();
+  
+	//ä»®ã§èª­ã¿è¾¼ã¿
 	StageCSVManager::GetInstance().LoadStageCSV(1);
 }
 
 
 void GameScene::Update()
 {
-	//ƒL[“ü—Í‚Ì‚â‚è•û–Y‚ê‚Ä‚½‚©‚ç‚¨‚µ
-	if (CheckHitKey(KEY_INPUT_SPACE)) {
-	}
+	//ãƒ—ãƒ¬ã‚¤ãƒ¤ãƒ¼
+	player_->Updata(1350,450);
 }
 
 void GameScene::Draw()
 {
-	//ƒOƒŠƒbƒh‚Ì•\¦(‰¡)
+	//ã‚°ãƒªãƒƒãƒ‰ã®è¡¨ç¤º(æ¨ª)
 	for (int i = 1; i < 9; i++) {
 		DrawLine(0,i * BLOCK_SIZE, 1350,i * BLOCK_SIZE,GetColor(100,100,100));
 	}
-	//ƒOƒŠƒbƒh‚Ì•\¦(c)
+	//ã‚°ãƒªãƒƒãƒ‰ã®è¡¨ç¤º(ç¸¦)
 	for (int i = 1; i < 9 * 3; i++) {
-		//‹«ŠEü‚Ì•`‰æ(Ô)
+		//å¢ƒç•Œç·šã®æç”»(èµ¤)
 		if (i % 9 == 0) {
 			DrawLine(i * BLOCK_SIZE, 0, i * BLOCK_SIZE, 450, GetColor(150, 0, 0));
 		}
-		//‚»‚êˆÈŠO(”’)
+		//ãã‚Œä»¥å¤–(ç™½)
 		else{
 			DrawLine(i * BLOCK_SIZE, 0, i * BLOCK_SIZE, 450, GetColor(100, 100, 100));
 		}
 	}
+
+	//ãƒ—ãƒ¬ã‚¤ãƒ¤ãƒ¼ã®è¡¨ç¤º
+	player_->Draw();
 }
