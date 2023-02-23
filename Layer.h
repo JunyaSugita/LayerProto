@@ -3,8 +3,7 @@
 
 enum Block
 {
-	NONE,        //なにもない
-	LAYER_BLOCK, //レイヤーと一緒に動くブロック
+	LAYER_BLOCK = 1, //レイヤーと一緒に動くブロック
 	FIXED_BLOCK, //固定ブロック
 };
 
