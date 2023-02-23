@@ -53,7 +53,7 @@ int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance, _
 
 	// ゲームループ
 	while (true) {
-		// 最新のキーボード情報だったものは1フレーム前のキーボード情報として保存
+		// 最新のキーボード情報だったものは1フレーム前のキーボード情報として保存//
 		for (int i = 0; i < 256; ++i)
 		{
 			oldkeys[i] = keys[i];
