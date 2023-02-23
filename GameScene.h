@@ -12,6 +12,8 @@ public:
 	void Draw();
 
 public:
+	const float BLOCK_SIZE = 50.0f;
+
 
 };
 
