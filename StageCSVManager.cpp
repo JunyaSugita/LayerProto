@@ -5,6 +5,7 @@
 #include <sstream>
 #include <iostream>
 
+using BlockType = Block::BlockType;
 
 StageCSVManager& StageCSVManager::GetInstance()
 {
@@ -90,7 +91,7 @@ void StageCSVManager::LoadStageCSV(int stageNum)
 				//空白ごとにレイヤーのブロックを取得
 				getline(line_stream, word, ' ');
 				//ブロックをセット
-				itr->SetBlock(y, x, Block((int)std::atoi(word.c_str())));
+				itr->SetBlock(y, x, BlockType((int)std::atoi(word.c_str())));
 
 				//カウントを進める
 				x++;

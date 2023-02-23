@@ -12,8 +12,14 @@ GameScene::~GameScene()
 //初期化
 void GameScene::Initialize()
 {
+	//インスタンスの生成
+	layer = std::make_unique<Layer>();
+
 	//仮で読み込み
 	StageCSVManager::GetInstance().LoadStageCSV(1);
+	
+	//初期化
+	layer->Initialize();
 }
 
 
@@ -22,6 +28,8 @@ void GameScene::Update()
 	//キー入力のやり方忘れてたからお試し
 	if (CheckHitKey(KEY_INPUT_SPACE)) {
 	}
+
+	layer->Update();
 }
 
 void GameScene::Draw()
@@ -41,4 +49,6 @@ void GameScene::Draw()
 			DrawLine(i * BLOCK_SIZE, 0, i * BLOCK_SIZE, 450, GetColor(100, 100, 100));
 		}
 	}
+
+	layer->Draw();
 }

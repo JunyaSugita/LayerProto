@@ -15,6 +15,7 @@ public:
 public:
 	const float BLOCK_SIZE = 50.0f;
 
-
+private:
+	std::unique_ptr<Layer> layer = nullptr;
 };
 
