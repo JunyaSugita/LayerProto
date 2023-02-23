@@ -12,14 +12,16 @@ GameScene::~GameScene()
 //初期化
 void GameScene::Initialize()
 {
+	//プレイヤーの生成と初期化
+	player_ = std::make_unique<Player>();
+	player_->Initialize();
 }
 
 
 void GameScene::Update()
 {
-	//キー入力のやり方忘れてたからお試し
-	if (CheckHitKey(KEY_INPUT_SPACE)) {
-	}
+	//プレイヤー
+	player_->Updata(1350,450);
 }
 
 void GameScene::Draw()
@@ -39,4 +41,7 @@ void GameScene::Draw()
 			DrawLine(i * BLOCK_SIZE, 0, i * BLOCK_SIZE, 450, GetColor(100, 100, 100));
 		}
 	}
+
+	//プレイヤーの表示
+	player_->Draw();
 }
