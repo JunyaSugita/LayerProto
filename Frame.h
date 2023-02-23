@@ -17,5 +17,9 @@ public:
 
 	//フレームの中のレイヤーの配列
 	std::list<Layer> layersInTheFrame[3][3] = {};
+
+public:
+
+	void SetFreamLayerNum();
 };
 

@@ -13,27 +13,31 @@ GameScene::~GameScene()
 void GameScene::Initialize()
 {
 	//インスタンスの生成
-	layer = std::make_unique<Layer>();
+	layer_ = std::make_unique<Layer>();
+	fream_ = std::make_unique<Frame>();
 
 	//仮で読み込み
-	StageCSVManager::GetInstance().LoadStageCSV(1);
+	//StageCSVManager::GetInstance().LoadStageCSV(1);
 	
 	//初期化
-	layer->Initialize();
+	layer_->Initialize();
+	fream_->Initialize();
 }
 
 
-void GameScene::Update()
+void GameScene::Update(char* keys, char* oldkeys)
 {
 	//キー入力のやり方忘れてたからお試し
 	if (CheckHitKey(KEY_INPUT_SPACE)) {
 	}
 
-	layer->Update();
+	layer_->Update(keys, oldkeys);
 }
 
 void GameScene::Draw()
 {
+	layer_->Draw();
+
 	//グリッドの表示(横)
 	for (int i = 1; i < 9; i++) {
 		DrawLine(0,i * BLOCK_SIZE, 1350,i * BLOCK_SIZE,GetColor(100,100,100));
@@ -49,6 +53,4 @@ void GameScene::Draw()
 			DrawLine(i * BLOCK_SIZE, 0, i * BLOCK_SIZE, 450, GetColor(100, 100, 100));
 		}
 	}
-
-	layer->Draw();
 }

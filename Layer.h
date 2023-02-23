@@ -27,7 +27,7 @@ public: //メンバ関数
 	Layer();
 	~Layer();
 	void Initialize();
-	void Update();
+	void Update(char* keys, char* oldkeys);
 	void Draw();
 
 private: //メンバ変数
@@ -37,8 +37,15 @@ private: //メンバ変数
 	Vector2 blockPos[layerBlockHeight][layerBlockWidth] = {};
 
 	//ブロックの二次元配列
-	std::unique_ptr <Block> block_;
-	std::vector<std::vector<std::unique_ptr <Block>>> blocks_;
+	Block* blocks_[layerBlockHeight][layerBlockWidth];
+	/*std::unique_ptr <Block> block_;
+	std::vector<std::vector<std::unique_ptr <Block>>> blocks_;*/
+
+	//そのレイヤーがいるフレームの番号
+	int freamNum;
+
+	//キー入力の待ち時間
+	int waitTimer = 20;
 
 public: //アクセッサ
 	//ブロックの状態をセット

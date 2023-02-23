@@ -3,7 +3,6 @@
 
 void Block::Initialize()
 {
-
 }
 
 void Block::Update()
@@ -12,5 +11,5 @@ void Block::Update()
 
 void Block::Draw()
 {
-	DrawBox(pos_.x, pos_.y, pos_.x, pos_.y, GetColor(255, 255, 255), true);
+	DrawBox(pos_.x - BLOCK_SIZE, pos_.y - BLOCK_SIZE, pos_.x + BLOCK_SIZE, pos_.y + BLOCK_SIZE, GetColor(255, 255, 255), true);
 }
