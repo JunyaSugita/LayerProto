@@ -12,6 +12,7 @@ public: //クラス内グローバル定数
 		NONE,        //なにもない
 		LAYER_BLOCK, //レイヤーと一緒に動くブロック
 		FIXED_BLOCK, //固定ブロック
+		NOLAYER_BLOCK//枠はあるけどレイヤー無い用
 	};
 
 	const float BLOCK_SIZE = 50.0f;
