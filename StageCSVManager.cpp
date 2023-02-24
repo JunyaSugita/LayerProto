@@ -61,6 +61,18 @@ void StageCSVManager::LoadStageCSV(int stageNum)
 			layersIntheFrameY = (int)std::atoi(word.c_str());
 			getline(line_stream, word, ' ');
 			layersIntheFrameX = (int)std::atoi(word.c_str());
+
+			//枠はあるけどレイヤー何もない場所用
+			getline(line_stream, word, ' ');
+			//falseとあって、何もレイヤー積まれてなかったら
+			if (word == "false" && frameData.layersInTheFrame[layersIntheFrameY][layersIntheFrameX].size() == 0)
+			{
+				//要素を大枠の指定の場所に確保
+				Layer layer;
+				frameData.layersInTheFrame[layersIntheFrameY][layersIntheFrameX].push_back(layer);
+				//レイヤーの[0][0]に114514入れて、レイヤーなし枠とわかるように
+				frameData.layersInTheFrame[layersIntheFrameY][layersIntheFrameX].begin()->SetBlock(0, 0, Block(noLayerFrameNum114514));
+			}
 		}
 
 		//レイヤーのブロック配置
