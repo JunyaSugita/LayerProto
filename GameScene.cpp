@@ -21,7 +21,7 @@ void GameScene::Initialize()
 	field_->Initialize();
   
 	//仮で読み込み
-	StageCSVManager::GetInstance().LoadStageCSV(1);
+	StageCSVManager::GetInstance().LoadStageCSV(1);//
 }
 
 
