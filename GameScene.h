@@ -20,7 +20,7 @@ public:
 
 public:
 	//1�u���b�N�̒��a
-	const float BLOCK_SIZE = 50.0f;
+	const float BLOCK_SIZE = 30.0f;
 
 	//プレイヤー
 	std::unique_ptr<Player> player_;

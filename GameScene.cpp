@@ -36,10 +36,10 @@ void GameScene::Initialize()
 
 void GameScene::Update(char* keys, char* oldkeys)
 {
-	//
-	player_->Updata(1350,450);
+	//プレイヤー
+	player_->Updata(1350, 1350);
 
-	//
+	//リセット&ホットリロード
 	if (CheckHitKey(KEY_INPUT_R)) {
 		//
 		player_->Initialize();
@@ -51,30 +51,37 @@ void GameScene::Update(char* keys, char* oldkeys)
 
 void GameScene::Draw()
 {
-	layer_->Draw();
+	//layer_->Draw();
 
-	//
-	for (int i = 1; i < 9; i++) {
-		DrawLine(0,i * BLOCK_SIZE, 1350,i * BLOCK_SIZE,GetColor(100,100,100));
-	}
-	//
+	//グリッドの表示(横)
 	for (int i = 1; i < 9 * 3; i++) {
 		//
 		if (i % 9 == 0) {
-			DrawLine(i * BLOCK_SIZE, 0, i * BLOCK_SIZE, 450, GetColor(150, 0, 0));
+			DrawLine(0, i * BLOCK_SIZE, 810, i * BLOCK_SIZE, GetColor(150, 0, 0));
+		}
+		//
+		else {
+			DrawLine(0, i * BLOCK_SIZE, 810, i * BLOCK_SIZE, GetColor(100, 100, 100));
+		}
+	}
+	//グリッドの表示(縦)
+	for (int i = 1; i < 9 * 3; i++) {
+		//
+		if (i % 9 == 0) {
+			DrawLine(i * BLOCK_SIZE, 0, i * BLOCK_SIZE, 810, GetColor(150, 0, 0));
 		}
 		//
 		else{
-			DrawLine(i * BLOCK_SIZE, 0, i * BLOCK_SIZE, 450, GetColor(100, 100, 100));
+			DrawLine(i * BLOCK_SIZE, 0, i * BLOCK_SIZE, 810, GetColor(100, 100, 100));
 		}
 	}
 
-	//
+	//プレイヤーの表示
 	player_->Draw();
 
-	//
+	//フィールドの表示
 	field_->Draw();
 
-	//
+	//コメント表示
 	DrawFormatString(10, 0, GetColor(200, 200, 200), "R : reset & hotReload(coming soon)");
 }

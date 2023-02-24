@@ -42,7 +42,7 @@ int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance, _
 
 	//ウインドウサイズ設定
 	WIN_WIDTH = gameScene->BLOCK_SIZE * 9 * 3;
-	WIN_HEIGHT = gameScene->BLOCK_SIZE * 9;
+	WIN_HEIGHT = gameScene->BLOCK_SIZE * 9 * 3;
 	SetGraphMode(WIN_WIDTH, WIN_HEIGHT, 32);
 	SetWindowSizeChangeEnableFlag(FALSE, TRUE);
 

@@ -34,8 +34,8 @@ public:
 private:
 	//固定値
 	static const int MAP_X = 27;	//マップの横ブロック数
-	static const int MAP_Y = 9;		//マップの縦ブロック数
-	const int BLOCK_SIZE = 50;		//ブロックサイズ
+	static const int MAP_Y = 27;		//マップの縦ブロック数
+	const int BLOCK_SIZE = 30;		//ブロックサイズ
 
 	//マップ[y][x](数値は仮)
 	int map_[MAP_Y][MAP_X];

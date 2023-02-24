@@ -12,7 +12,7 @@ Player::~Player()
 //初期化
 void Player::Initialize()
 {
-	pos_ = {25,425};
+	pos_ = {15,135};
 	isJump_ = false;
 	jumpPow_ = 0;
 }
@@ -69,9 +69,9 @@ void Player::Updata(float windowX, float windowY)
 		pos_.x = windowX - SIZE / 2;
 	}
 	//下(奈落判定にするならこの処理は消す)
-	if (pos_.y + SIZE / 2 > windowY) {
+	if (pos_.y + SIZE / 2 > 270) {
 		//押し戻し処理
-		pos_.y = windowY - SIZE / 2;
+		pos_.y = 255;
 		//床判定なのでジャンプフラグを解く
 		isJump_ = false;
 	}
