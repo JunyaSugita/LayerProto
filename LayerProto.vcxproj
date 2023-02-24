@@ -139,6 +139,7 @@
     <ClCompile Include="GameScene.cpp" />
     <ClCompile Include="Layer.cpp" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="Player.cpp" />
     <ClCompile Include="StageCSVManager.cpp" />
     <ClCompile Include="Vector2.cpp" />
   </ItemGroup>
@@ -148,6 +149,7 @@
     <ClInclude Include="Frame.h" />
     <ClInclude Include="GameScene.h" />
     <ClInclude Include="Layer.h" />
+    <ClInclude Include="Player.h" />
     <ClInclude Include="StageCSVManager.h" />
     <ClInclude Include="Vector2.h" />
   </ItemGroup>

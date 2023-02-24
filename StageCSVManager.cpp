@@ -72,7 +72,7 @@ void StageCSVManager::LoadStageCSV(int stageNum)
 				Layer layer;
 				frameData.layersInTheFrame[layersIntheFrameY][layersIntheFrameX].push_back(layer);
 				//レイヤーの[0][0]に114514入れて、レイヤーなし枠とわかるように
-				frameData.layersInTheFrame[layersIntheFrameY][layersIntheFrameX].begin()->SetBlock(0, 0, Block(noLayerFrameNum114514));
+				frameData.layersInTheFrame[layersIntheFrameY][layersIntheFrameX].begin()->SetBlock(0, 0, BlockType(noLayerFrameNum114514));
 			}
 		}
 

@@ -1,15 +1,15 @@
 #include "GameScene.h"
 
-//����
+//
 GameScene::GameScene(){}
 
-//delete����
+//delete
 GameScene::~GameScene()
 {
 
 }
 
-//������
+//
 void GameScene::Initialize()
 {
 	//プレイヤーの生成と初期化
@@ -24,24 +24,24 @@ void GameScene::Initialize()
 	layer_ = std::make_unique<Layer>();
 	fream_ = std::make_unique<Frame>();
 
-	//���œǂݍ���
+	//
 	//StageCSVManager::GetInstance().LoadStageCSV(1);
 	
 	//初期化
 	layer_->Initialize();
 	fream_->Initialize();
-	StageCSVManager::GetInstance().LoadStageCSV(1);//
+	//StageCSVManager::GetInstance().LoadStageCSV(1);//
 }
 
 
 void GameScene::Update(char* keys, char* oldkeys)
 {
-	//�v���C���[
+	//
 	player_->Updata(1350,450);
 
-	//���Z�b�g&�z�b�g�����[�h(������)
+	//
 	if (CheckHitKey(KEY_INPUT_R)) {
-		//�v���C���[�̏�����
+		//
 		player_->Initialize();
 
 	}
@@ -53,28 +53,28 @@ void GameScene::Draw()
 {
 	layer_->Draw();
 
-	//�O���b�h�̕\��(��)
+	//
 	for (int i = 1; i < 9; i++) {
 		DrawLine(0,i * BLOCK_SIZE, 1350,i * BLOCK_SIZE,GetColor(100,100,100));
 	}
-	//�O���b�h�̕\��(�c)
+	//
 	for (int i = 1; i < 9 * 3; i++) {
-		//���E���̕`��(��)
+		//
 		if (i % 9 == 0) {
 			DrawLine(i * BLOCK_SIZE, 0, i * BLOCK_SIZE, 450, GetColor(150, 0, 0));
 		}
-		//����ȊO(��)
+		//
 		else{
 			DrawLine(i * BLOCK_SIZE, 0, i * BLOCK_SIZE, 450, GetColor(100, 100, 100));
 		}
 	}
 
-	//�v���C���[�̕\��
+	//
 	player_->Draw();
 
-	//�t�B�[���h�̕\��
+	//
 	field_->Draw();
 
-	//�R�����g�\��
+	//
 	DrawFormatString(10, 0, GetColor(200, 200, 200), "R : reset & hotReload(coming soon)");
 }
