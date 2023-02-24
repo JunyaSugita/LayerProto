@@ -78,7 +78,6 @@ void Player::Updata(float windowX, float windowY)
 
 #pragma endregion
 
-	//
 }
 
 //draw
