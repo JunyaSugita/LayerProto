@@ -13,9 +13,6 @@ private:
 	
 
 public:
-	//˜g‚Í‚ ‚é‚¯‚ÇƒŒƒCƒ„[‚ª‚È‚¢êŠ—p‚Ì¯•Ê”Ô†
-	const int noLayerFrameNum114514 = 114514;
-
 
 
 private://ŠÖ”
