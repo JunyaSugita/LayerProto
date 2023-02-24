@@ -133,23 +133,23 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Block.cpp" />
     <ClCompile Include="Field.cpp" />
     <ClCompile Include="Frame.cpp" />
     <ClCompile Include="GameScene.cpp" />
     <ClCompile Include="Layer.cpp" />
     <ClCompile Include="main.cpp" />
-    <ClCompile Include="Player.cpp" />
-    <ClCompile Include="Vector2.cpp" />
     <ClCompile Include="StageCSVManager.cpp" />
+    <ClCompile Include="Vector2.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Field.h" />
+    <ClInclude Include="Block.h" />
     <ClInclude Include="Frame.h" />
     <ClInclude Include="GameScene.h" />
-    <ClInclude Include="Player.h" />
-    <ClInclude Include="Vector2.h" />
     <ClInclude Include="Layer.h" />
     <ClInclude Include="StageCSVManager.h" />
+    <ClInclude Include="Vector2.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
