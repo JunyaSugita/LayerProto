@@ -25,9 +25,12 @@ Layer::~Layer()
 
 	for(int i = 0; i < layerBlockWidth; i++)
 	{
-		for(int j = 0; j < layerBlockHeight; j++)
+		for (int j = 0; j < layerBlockHeight; j++)
 		{
-			delete blocks_[i][j];
+			if (blocks_[i][j])
+			{
+				//delete blocks_[i][j];
+			}
 		}
 	}
 }

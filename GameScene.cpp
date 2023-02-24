@@ -25,7 +25,7 @@ void GameScene::Initialize()
 	fream_ = std::make_unique<Frame>();
 
 	//
-	//StageCSVManager::GetInstance().LoadStageCSV(1);
+	StageCSVManager::GetInstance().LoadStageCSV(1);
 	
 	//初期化
 	layer_->Initialize();
@@ -43,7 +43,7 @@ void GameScene::Update(char* keys, char* oldkeys)
 	if (CheckHitKey(KEY_INPUT_R)) {
 		//
 		player_->Initialize();
-
+		StageCSVManager::GetInstance().LoadStageCSV(1);
 	}
 
 	layer_->Update(keys, oldkeys);
