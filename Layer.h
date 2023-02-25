@@ -76,9 +76,10 @@ public: //アクセッサ
 	BlockType GetBlock(int y, int x);
 
 	void SetPos(Vector2 pos) { layerPos = pos; };
-	Vector2 GetPos() { return  layerPos; }
+	Vector2 GetLayerPos() { return  layerPos; }
 
 	bool GetSelect() { return isSelect; }
+	void SetSelect(int isSelected) { isSelect = isSelected; }
 
 	int GetFrameNumX() { return freamNumX; }
 	int GetFrameNumY() { return freamNumY; }

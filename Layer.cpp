@@ -117,17 +117,17 @@ void Layer::Update(char* keys, char* oldkeys)
 	}
 
 	//選択状態に
-	isSelect = true;
+	//isSelect = true;
 
 	// 左ボタンが押されたり離されたりしていたら描画するかどうかのフラグを立てて、座標も保存する
 	if(GetMouseInputLog2(&button, &clickX, &clickY, &logType, TRUE) == 0)
 	{
-		if((button & MOUSE_INPUT_LEFT) != 0)
+		/*if((button & MOUSE_INPUT_LEFT) != 0)
 		{
 			
-		}
+		}*/
 		
-			
+		isSelect = true;
 		
 	}
 

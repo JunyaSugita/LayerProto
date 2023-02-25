@@ -3,9 +3,9 @@
 
 void Frame::Initialize()
 {
-	for (int i = 0; i < this->GetLayerFrameHeight(); i++)
+	for(int i = 0; i < this->GetLayerFrameHeight(); i++)
 	{
-		for (int j = 0; j < this->GetLayerFrameWidth(); j++)
+		for(int j = 0; j < this->GetLayerFrameWidth(); j++)
 		{
 			this->layersInTheFrame[i][j].clear();
 		}
@@ -20,7 +20,7 @@ void Frame::Initialize()
 		{
 			std::unique_ptr <Layer> layer_;
 			layer_ = std::make_unique<Layer>();
-			layer_->Initialize(i,j);
+			layer_->Initialize(i, j);
 			//レイヤーの要素を追加
 			layers_[i].push_back(std::move(layer_));
 		}
@@ -51,19 +51,31 @@ void Frame::Initialize()
 
 void Frame::Update(char* keys, char* oldkeys)
 {
+	oldMouseX = MouseX;
+	oldMouseY = MouseY;
+
 	// マウスの位置を取得
 	GetMousePoint(&MouseX, &MouseY);
+
+	if(GetMouseInputLog2(&button, &clickX, &clickY, &logType, TRUE) == 0)
+	{
+		for(int i = 0; i < layerFrameWidth; i++)
+		{
+			for(int j = 0; j < layerFrameHeight; j++)
+			{
+				if(MouseX < layers_[i][j]->GetLayerPos().y)
+				{
+					layers_[i][j]->SetSelect(true);
+				}
+			}
+		}
+	}
 
 	for(int i = 0; i < layerFrameWidth; i++)
 	{
 		for(int j = 0; j < layerFrameHeight; j++)
 		{
-			layers_[i][j]->Update(keys,oldkeys);
-
-			/*if(MouseX >= layers_[i][j]->GetPos().x && MouseX <= layers_[i][j]->GetPos().x + Layer::layerWidth)
-			{
-				isSelect = true;
-			}*/
+			layers_[i][j]->Update(keys, oldkeys);
 		}
 	}
 }

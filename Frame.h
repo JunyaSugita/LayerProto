@@ -12,6 +12,11 @@ private:
 	int MouseX;
 	int MouseY;
 
+	//選択した時のマウスの座標
+	int oldMouseX;
+	int oldMouseY;
+
+
 	//選択しているかどうか
 	bool isSelect = false;
 
@@ -33,5 +38,15 @@ public:
 public:
 
 	void SetFreamLayerNum();
+
+private:
+
+
+	int button;
+	int clickX;
+	int clickY;
+	int logType;
+
+
 };
 
