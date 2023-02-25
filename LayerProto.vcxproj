@@ -140,6 +140,7 @@
     <ClCompile Include="Layer.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Player.cpp" />
+    <ClCompile Include="Select.cpp" />
     <ClCompile Include="StageCSVManager.cpp" />
     <ClCompile Include="Vector2.cpp" />
   </ItemGroup>
@@ -150,6 +151,7 @@
     <ClInclude Include="GameScene.h" />
     <ClInclude Include="Layer.h" />
     <ClInclude Include="Player.h" />
+    <ClInclude Include="Select.h" />
     <ClInclude Include="StageCSVManager.h" />
     <ClInclude Include="Vector2.h" />
   </ItemGroup>

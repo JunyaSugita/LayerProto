@@ -9,7 +9,9 @@ void Block::Initialize()
 
 void Block::Update()
 {
+	pos_ += move_;
 }
+
 
 void Block::Draw()
 {

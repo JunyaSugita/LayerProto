@@ -5,6 +5,7 @@ using BlockType = Block::BlockType;
 
 const float Layer::layerWidth = Block::BLOCK_SIZE * layerBlockWidth;
 const float Layer::layerHeight = Block::BLOCK_SIZE * layerBlockHeight;
+bool Layer::isSelect = false;
 
 Layer::Layer()
 {
@@ -84,10 +85,19 @@ void Layer::Initialize(int heightNum, int widthNum)
 			
 		}
 	}
+
+	movePos.x = 0;
+	movePos.y = 0;
 }
 
 void Layer::Update(char* keys,char* oldkeys)
 {
+	oldMouseX = MouseX;
+	oldMouseY = MouseY;
+
+	// マウスの位置を取得
+	GetMousePoint(&MouseX, &MouseY);
+
 	if(keys[KEY_INPUT_0] == 1 && oldkeys[KEY_INPUT_0] == 0)
 	{
 		if(freamNumX < 2)
@@ -99,24 +109,71 @@ void Layer::Update(char* keys,char* oldkeys)
 			freamNumX = 0;
 		}
 	}
-	
+
+	if(MouseX >= layerPos.x && MouseX <= layerPos.x + layerWidth)
+	{
+		if(MouseY >= layerPos.y && MouseY <= layerPos.y + layerHeight)
+		{
+			// 左ボタンが押されたり離されたりしていたら描画するかどうかのフラグを立てて、座標も保存する
+			if(GetMouseInputLog2(&button, &clickX, &clickY, &logType, TRUE) == 0)
+			{
+				//押されたら
+				if((button & MOUSE_INPUT_LEFT) != 0)
+				{
+					if(isSelect == false)
+					{
+						//選択状態に
+						isSelect = true;
+					}
+				}
+			}
+		}
+	}
+
+	if(isSelect == true)
+	{
+		if((GetMouseInput() & MOUSE_INPUT_LEFT) != 0)
+		{
+			//マウスが押されている
+			movePos.x = MouseX - oldMouseX;
+			movePos.y = MouseY - oldMouseY;
+
+			//layerPos += movePos;
+			
+			//ブロックの座標を設定
+
+			for(int i = 0; i < layerBlockWidth; i++)
+			{
+				for(int j = 0; j < layerBlockHeight; j++)
+				{
+					blocks_[i][j]->SetMove(movePos);
+				}
+			}
+		}
+		if((GetMouseInput() & MOUSE_INPUT_LEFT) != 0)
+		{
+			
+		}
+		else // 押されていない
+		{
+			movePos.x = 0;
+			movePos.y = 0;
+
+			for(int i = 0; i < layerBlockWidth; i++)
+			{
+				for(int j = 0; j < layerBlockHeight; j++)
+				{
+					blocks_[i][j]->SetMove(movePos);
+				}
+			}
+		}
+	}
+
 	for(int i = 0; i < layerBlockWidth; i++)
 	{
 		for(int j = 0; j < layerBlockHeight; j++)
 		{
-			Vector2 pos;
-			//ブロックの座標を設定
-			if(i >= 0)
-			{
-				pos.x = (i * Block::BLOCK_SIZE) + (freamNumX * layerWidth);
-
-			}
-			if(j >= 0)
-			{
-				pos.y = (j * Block::BLOCK_SIZE) + (freamNumY * layerWidth);
-			}
-
-			blocks_[i][j]->SetPos(pos);
+			blocks_[i][j]->Update();
 		}
 	}
 }

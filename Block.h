@@ -30,6 +30,8 @@ private: //メンバ変数
 	//座標
 	Vector2 pos_;
 
+	Vector2 move_;
+
 public: //アクセッサ
 
 	Vector2 GetPos() { return pos_; }
@@ -38,4 +40,6 @@ public: //アクセッサ
 	void SetType(BlockType type) { type_ = type; };
 
 	void SetPos(Vector2 pos) { pos_ = pos; };
+
+	void SetMove(Vector2 move) { move_ = move; }
 };

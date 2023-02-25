@@ -8,7 +8,13 @@ private:
 	static const int layerFrameWidth = 3;
 	static const int layerFrameHeight = 3;
 
-	
+	//マウス座標
+	int MouseX;
+	int MouseY;
+
+	//選択しているかどうか
+	bool isSelect = false;
+
 public:
 	void Initialize();
 	void Update(char* keys, char* oldkeys);

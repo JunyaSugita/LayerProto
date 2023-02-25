@@ -40,6 +40,13 @@ private: //メンバ変数
 	////ブロックの座標
 	//Vector2 blockPos[layerBlockHeight][layerBlockWidth] = {};
 
+	//マウス座標
+	int MouseX;
+	int MouseY;
+	//選択した時のマウスの座標
+	int oldMouseX;
+	int oldMouseY;
+
 	//ブロックの二次元配列
 	//Block* blocks_[layerBlockHeight][layerBlockWidth];
 	std::vector<std::vector<std::unique_ptr <Block>>> blocks_;
@@ -51,9 +58,16 @@ private: //メンバ変数
 	//レイヤーの座標
 	Vector2 layerPos;
 
+	//選択されているかどうか
+	static bool isSelect;
+	//移動量
+	Vector2 movePos;
 
+	int button;
+	int clickX;
+	int clickY;
+	int logType;
 
-	
 
 public: //アクセッサ
 	//ブロックの状態をセット
@@ -62,6 +76,11 @@ public: //アクセッサ
 	BlockType GetBlock(int y, int x);
 
 	void SetPos(Vector2 pos) { layerPos = pos; };
+	Vector2 GetPos() { return  layerPos; }
+
+	int GetFrameNumX() { return freamNumX; }
+	int GetFrameNumY() { return freamNumY; }
+
 };
 
 

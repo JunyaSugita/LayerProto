@@ -1,4 +1,5 @@
 #include "Frame.h"
+#include "DxLib.h"
 
 void Frame::Initialize()
 {
@@ -50,11 +51,17 @@ void Frame::Initialize()
 
 void Frame::Update(char* keys, char* oldkeys)
 {
+	
 	for(int i = 0; i < layerFrameWidth; i++)
 	{
 		for(int j = 0; j < layerFrameHeight; j++)
 		{
 			layers_[i][j]->Update(keys,oldkeys);
+
+			/*if(MouseX >= layers_[i][j]->GetPos().x && MouseX <= layers_[i][j]->GetPos().x + Layer::layerWidth)
+			{
+				isSelect = true;
+			}*/
 		}
 	}
 }
@@ -68,6 +75,11 @@ void Frame::Draw()
 			layers_[i][j]->Draw();
 		}
 	}
+
+	DrawFormatString(0, 100, GetColor(255, 255, 255), "isSelect : %d", isSelect);
+	DrawFormatString(0, 200, GetColor(255, 255, 255), "MouseX : %d", MouseX);
+	DrawFormatString(0, 300, GetColor(255, 255, 255), "MouseY : %d", MouseY);
+
 }
 
 Frame::~Frame()
