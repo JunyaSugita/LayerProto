@@ -11,10 +11,15 @@ private:
 	
 public:
 	void Initialize();
+	void Update();
+
+	~Frame();
 
 	int GetLayerFrameWidth() { return layerFrameWidth; }
 	int GetLayerFrameHeight() { return layerFrameHeight; }
 
+
+	
 	//フレームの中のレイヤーの配列
 	std::list<Layer> layersInTheFrame[layerFrameHeight][layerFrameWidth] = {};
 

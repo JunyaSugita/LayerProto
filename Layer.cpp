@@ -5,31 +5,53 @@ using BlockType = Block::BlockType;
 
 Layer::Layer() 
 {
+	//初期化
+	for(int i = 0; i < layerBlockWidth; i++)
+	{
+		for(int j = 0; j < layerBlockHeight; j++)
+		{
+			blocks_[i][j] = new Block;
+		}
+	}
+
 	freamNum = 0;
 	waitTimer = 20;
 }
 
 Layer::~Layer()
 {
+	for(int i = 0; i < layerBlockWidth; i++)
+	{
+		for(int j = 0; j < layerBlockHeight; j++)
+		{
+			delete blocks_[i][j];
+		}
+	}
+}
+
+void Layer::Delete()
+{
 	
 }
 
+
 void Layer::Initialize()
 {
-	//初期化
-	for(int i = 0; i < layerBlockWidth; i++)
-	{
-		//ブロック型を持てる空のベクタを追加(行列でいうi列)
-		blocks_.push_back(std::vector<std::unique_ptr <Block>>());
+	
+	//for(int i = 0; i < layerBlockWidth; i++)
+	//{
+	//	//ブロック型を持てる空のベクタを追加(行列でいうi列)
+	//	blocks_.push_back(std::vector<std::unique_ptr <Block>>());
 
-		for(int j = 0; j < layerBlockWidth; j++)
-		{
-			block_ = std::make_unique<Block>();
-			block_->Initialize();
-			//ブロックの要素を追加
-			blocks_[i].push_back(std::move(block_));
-		}
-	}
+	//	for(int j = 0; j < layerBlockWidth; j++)
+	//	{
+	//		std::unique_ptr <Block> block_;
+	//		block_ = std::make_unique<Block>();
+	//		block_->Initialize();
+	//		//ブロックの要素を追加
+	//		blocks_[i].push_back(std::move(block_));
+	//	}
+	//}
 
 	//座標の初期化
 	for(int i = 0; i < layerBlockWidth; i++)
@@ -50,15 +72,26 @@ void Layer::Initialize()
 
 			blocks_[i][j]->SetPos(pos);
 
-			//形状の初期化
-			//blocks_[i][j]->SetType(blockTypes)
+			//形状の初期化(CSVファイルの読み込んだ形状をブロッククラスに渡す)
+			BlockType blockType;
+			if(i == j)
+			{
+				blockType = BlockType::NOLAYER_BLOCK;
+				blocks_[i][j]->SetType(blockType);
+			}
+			else
+			{
+				blockType = BlockType::NONE;
+				blocks_[i][j]->SetType(blockType);
+			}
+			
 		}
 	}
 }
 
 void Layer::Update(char* keys,char* oldkeys)
 {
-	if(keys[KEY_INPUT_SPACE] == 1 && oldkeys[KEY_INPUT_SPACE] == 0)
+	if(keys[KEY_INPUT_0] == 1 && oldkeys[KEY_INPUT_0] == 0)
 	{
 		if(freamNum < 2)
 		{
@@ -101,6 +134,7 @@ void Layer::Draw()
 		}
 	}
 }
+
 
 void Layer::SetBlock(int y, int x, BlockType block)
 {

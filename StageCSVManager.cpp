@@ -71,7 +71,7 @@ void StageCSVManager::LoadStageCSV(int stageNum)
 				//要素を大枠の指定の場所に確保
 				//Layer layer;
 				//frameData.layersInTheFrame[layersIntheFrameY][layersIntheFrameX].push_back(layer);
-				//レイヤーの[0][0]に114514入れて、レイヤーなし枠とわかるように
+				////レイヤーの[0][0]に114514入れて、レイヤーなし枠とわかるように
 				//frameData.layersInTheFrame[layersIntheFrameY][layersIntheFrameX].begin()->SetBlock(0, 0, BlockType::NOLAYER_BLOCK);
 			}
 		}

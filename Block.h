@@ -15,7 +15,7 @@ public: //クラス内グローバル定数
 		NOLAYER_BLOCK//枠はあるけどレイヤー無い用
 	};
 
-	const float BLOCK_SIZE = 50.0f;
+	const float BLOCK_SIZE = 30.0f;
 	//static const int BLOCK_SIZE = 50;
 	const float BLOCK_RADIUS = BLOCK_SIZE / 2;
 

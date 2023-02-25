@@ -29,6 +29,7 @@ public: //メンバ関数
 	void Initialize();
 	void Update(char* keys, char* oldkeys);
 	void Draw();
+	void Delete();
 
 private: //メンバ変数
 	//ブロックの状態9x9
@@ -37,9 +38,8 @@ private: //メンバ変数
 	Vector2 blockPos[layerBlockHeight][layerBlockWidth] = {};
 
 	//ブロックの二次元配列
-	//Block* blocks_[layerBlockHeight][layerBlockWidth];
-	std::unique_ptr <Block> block_;
-	std::vector<std::vector<std::unique_ptr <Block>>> blocks_;
+	Block* blocks_[layerBlockHeight][layerBlockWidth];
+	//std::vector<std::vector<std::unique_ptr <Block>>> blocks_;
 
 	//そのレイヤーがいるフレームの番号
 	int freamNum;

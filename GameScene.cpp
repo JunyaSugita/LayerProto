@@ -30,7 +30,7 @@ void GameScene::Initialize()
 	//初期化
 	layer_->Initialize();
 	fream_->Initialize();
-	//StageCSVManager::GetInstance().LoadStageCSV(1);//
+	
 }
 
 
@@ -51,8 +51,7 @@ void GameScene::Update(char* keys, char* oldkeys)
 
 void GameScene::Draw()
 {
-	//layer_->Draw();
-
+	
 	//グリッドの表示(横)
 	for (int i = 1; i < 9 * 3; i++) {
 		//
@@ -75,6 +74,8 @@ void GameScene::Draw()
 			DrawLine(i * BLOCK_SIZE, 0, i * BLOCK_SIZE, 810, GetColor(100, 100, 100));
 		}
 	}
+
+	layer_->Draw();
 
 	//プレイヤーの表示
 	player_->Draw();
