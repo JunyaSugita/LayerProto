@@ -59,7 +59,7 @@ private: //メンバ変数
 	Vector2 layerPos;
 
 	//選択されているかどうか
-	static bool isSelect;
+	bool isSelect = false;
 	//移動量
 	Vector2 movePos;
 
@@ -77,6 +77,8 @@ public: //アクセッサ
 
 	void SetPos(Vector2 pos) { layerPos = pos; };
 	Vector2 GetPos() { return  layerPos; }
+
+	bool GetSelect() { return isSelect; }
 
 	int GetFrameNumX() { return freamNumX; }
 	int GetFrameNumY() { return freamNumY; }

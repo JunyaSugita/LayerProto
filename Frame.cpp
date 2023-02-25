@@ -51,7 +51,9 @@ void Frame::Initialize()
 
 void Frame::Update(char* keys, char* oldkeys)
 {
-	
+	// マウスの位置を取得
+	GetMousePoint(&MouseX, &MouseY);
+
 	for(int i = 0; i < layerFrameWidth; i++)
 	{
 		for(int j = 0; j < layerFrameHeight; j++)
@@ -76,9 +78,12 @@ void Frame::Draw()
 		}
 	}
 
-	DrawFormatString(0, 100, GetColor(255, 255, 255), "isSelect : %d", isSelect);
+	/*DrawFormatString(0, 100, GetColor(255, 255, 255), "isSelect : %d", isSelect);
 	DrawFormatString(0, 200, GetColor(255, 255, 255), "MouseX : %d", MouseX);
-	DrawFormatString(0, 300, GetColor(255, 255, 255), "MouseY : %d", MouseY);
+	DrawFormatString(0, 300, GetColor(255, 255, 255), "MouseY : %d", MouseY);*/
+	DrawFormatString(0, 300, GetColor(255, 255, 255), "layers_[0][0] : %d", layers_[0][0]->GetSelect());
+	DrawFormatString(0, 400, GetColor(255, 255, 255), "layers_[0][1] : %d", layers_[0][1]->GetSelect());
+	DrawFormatString(0, 500, GetColor(255, 255, 255), "layers_[1][1] : %d", layers_[1][1]->GetSelect());
 
 }
 

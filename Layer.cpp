@@ -5,13 +5,12 @@ using BlockType = Block::BlockType;
 
 const float Layer::layerWidth = Block::BLOCK_SIZE * layerBlockWidth;
 const float Layer::layerHeight = Block::BLOCK_SIZE * layerBlockHeight;
-bool Layer::isSelect = false;
 
 Layer::Layer()
 {
 	freamNumX = 0;
 	freamNumY = 0;
-	layerPos = {0,0};
+	layerPos = { 0,0 };
 }
 
 Layer::~Layer()
@@ -27,7 +26,7 @@ Layer::~Layer()
 
 void Layer::Delete()
 {
-	
+
 }
 
 
@@ -61,7 +60,7 @@ void Layer::Initialize(int heightNum, int widthNum)
 			if(i >= 0)
 			{
 				pos.x = (i * Block::BLOCK_SIZE) + (widthNum * layerWidth);
-				
+
 			}
 			if(j >= 0)
 			{
@@ -82,7 +81,7 @@ void Layer::Initialize(int heightNum, int widthNum)
 				blockType = BlockType::NONE;
 				blocks_[i][j]->SetType(blockType);
 			}
-			
+
 		}
 	}
 
@@ -90,7 +89,7 @@ void Layer::Initialize(int heightNum, int widthNum)
 	movePos.y = 0;
 }
 
-void Layer::Update(char* keys,char* oldkeys)
+void Layer::Update(char* keys, char* oldkeys)
 {
 	oldMouseX = MouseX;
 	oldMouseY = MouseY;
@@ -110,24 +109,26 @@ void Layer::Update(char* keys,char* oldkeys)
 		}
 	}
 
-	if(MouseX >= layerPos.x && MouseX <= layerPos.x + layerWidth)
+	//押されたら
+	if((button & MOUSE_INPUT_LEFT) != 0)
 	{
-		if(MouseY >= layerPos.y && MouseY <= layerPos.y + layerHeight)
+
+		
+	}
+
+	//選択状態に
+	isSelect = true;
+
+	// 左ボタンが押されたり離されたりしていたら描画するかどうかのフラグを立てて、座標も保存する
+	if(GetMouseInputLog2(&button, &clickX, &clickY, &logType, TRUE) == 0)
+	{
+		if((button & MOUSE_INPUT_LEFT) != 0)
 		{
-			// 左ボタンが押されたり離されたりしていたら描画するかどうかのフラグを立てて、座標も保存する
-			if(GetMouseInputLog2(&button, &clickX, &clickY, &logType, TRUE) == 0)
-			{
-				//押されたら
-				if((button & MOUSE_INPUT_LEFT) != 0)
-				{
-					if(isSelect == false)
-					{
-						//選択状態に
-						isSelect = true;
-					}
-				}
-			}
+			
 		}
+		
+			
+		
 	}
 
 	if(isSelect == true)
@@ -139,7 +140,7 @@ void Layer::Update(char* keys,char* oldkeys)
 			movePos.y = MouseY - oldMouseY;
 
 			//layerPos += movePos;
-			
+
 			//ブロックの座標を設定
 
 			for(int i = 0; i < layerBlockWidth; i++)
@@ -152,7 +153,7 @@ void Layer::Update(char* keys,char* oldkeys)
 		}
 		if((GetMouseInput() & MOUSE_INPUT_LEFT) != 0)
 		{
-			
+
 		}
 		else // 押されていない
 		{
@@ -189,6 +190,8 @@ void Layer::Draw()
 			blocks_[i][j]->Draw();
 		}
 	}
+
+
 }
 
 //
