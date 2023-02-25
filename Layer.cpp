@@ -8,7 +8,8 @@ const float Layer::layerHeight = Block::BLOCK_SIZE * layerBlockHeight;
 
 Layer::Layer()
 {
-	freamNum = 0;
+	freamNumX = 0;
+	freamNumY = 0;
 	layerPos = {0,0};
 }
 
@@ -29,8 +30,11 @@ void Layer::Delete()
 }
 
 
-void Layer::Initialize()
+void Layer::Initialize(int heightNum, int widthNum)
 {
+	freamNumX = widthNum;
+	freamNumY = heightNum;
+
 	for(int i = 0; i < layerBlockWidth; i++)
 	{
 		//ブロック型を持てる空のベクタを追加(行列でいうi列)
@@ -55,12 +59,12 @@ void Layer::Initialize()
 			//ブロックの座標を設定
 			if(i >= 0)
 			{
-				pos.x = i * Block::BLOCK_SIZE;
+				pos.x = (i * Block::BLOCK_SIZE) + (widthNum * layerWidth);
 				
 			}
 			if(j >= 0)
 			{
-				pos.y = j * Block::BLOCK_SIZE;
+				pos.y = (j * Block::BLOCK_SIZE) + (heightNum * layerWidth);
 			}
 
 			blocks_[i][j]->SetPos(pos);
@@ -86,13 +90,13 @@ void Layer::Update(char* keys,char* oldkeys)
 {
 	if(keys[KEY_INPUT_0] == 1 && oldkeys[KEY_INPUT_0] == 0)
 	{
-		if(freamNum < 2)
+		if(freamNumX < 2)
 		{
-			freamNum++;
+			freamNumX++;
 		}
 		else
 		{
-			freamNum = 0;
+			freamNumX = 0;
 		}
 	}
 	
@@ -104,12 +108,12 @@ void Layer::Update(char* keys,char* oldkeys)
 			//ブロックの座標を設定
 			if(i >= 0)
 			{
-				pos.x = i * Block::BLOCK_SIZE + (layerBlockWidth * Block::BLOCK_SIZE * freamNum);
+				pos.x = (i * Block::BLOCK_SIZE) + (freamNumX * layerWidth);
 
 			}
 			if(j >= 0)
 			{
-				pos.y = j * Block::BLOCK_SIZE;
+				pos.y = (j * Block::BLOCK_SIZE) + (freamNumY * layerWidth);
 			}
 
 			blocks_[i][j]->SetPos(pos);
@@ -130,16 +134,17 @@ void Layer::Draw()
 	}
 }
 
+//
+//void Layer::SetBlock(int y, int x, BlockType block)
+//{
+//	this->blockTypes[y][x] = block;
+//}
+//
+//BlockType Layer::GetBlock(int y, int x)
+//{
+//	return this->blockTypes[y][x];
+//}
 
-void Layer::SetBlock(int y, int x, BlockType block)
-{
-	this->blockTypes[y][x] = block;
-}
-
-BlockType Layer::GetBlock(int y, int x)
-{
-	return this->blockTypes[y][x];
-}
 
 
 

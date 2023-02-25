@@ -27,7 +27,7 @@ public:
 	//フィールド
 	std::unique_ptr<Field> field_;
 private:
-	std::unique_ptr<Layer> layer_ = nullptr;
+	//std::unique_ptr<Layer> layer_ = nullptr;
 	std::unique_ptr<Frame> fream_ = nullptr;
 };
 

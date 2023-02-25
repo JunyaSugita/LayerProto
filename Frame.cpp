@@ -19,8 +19,8 @@ void Frame::Initialize()
 		{
 			std::unique_ptr <Layer> layer_;
 			layer_ = std::make_unique<Layer>();
-			layer_->Initialize();
-			//ブロックの要素を追加
+			layer_->Initialize(i,j);
+			//レイヤーの要素を追加
 			layers_[i].push_back(std::move(layer_));
 		}
 	}
@@ -48,10 +48,15 @@ void Frame::Initialize()
 	}
 }
 
-void Frame::Update()
+void Frame::Update(char* keys, char* oldkeys)
 {
-
-
+	for(int i = 0; i < layerFrameWidth; i++)
+	{
+		for(int j = 0; j < layerFrameHeight; j++)
+		{
+			layers_[i][j]->Update(keys,oldkeys);
+		}
+	}
 }
 
 void Frame::Draw()
@@ -63,7 +68,6 @@ void Frame::Draw()
 			layers_[i][j]->Draw();
 		}
 	}
-
 }
 
 Frame::~Frame()

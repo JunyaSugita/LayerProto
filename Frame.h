@@ -11,7 +11,7 @@ private:
 	
 public:
 	void Initialize();
-	void Update();
+	void Update(char* keys, char* oldkeys);
 	void Draw();
 
 	~Frame();

@@ -21,14 +21,14 @@ void GameScene::Initialize()
 	field_->Initialize();
   
 	//インスタンスの生成
-	layer_ = std::make_unique<Layer>();
+	//layer_ = std::make_unique<Layer>();
 	fream_ = std::make_unique<Frame>();
 
 	//
 	StageCSVManager::GetInstance().LoadStageCSV(1);
 	
 	//初期化
-	layer_->Initialize();
+	//layer_->Initialize();
 	fream_->Initialize();
 	
 }
@@ -46,7 +46,8 @@ void GameScene::Update(char* keys, char* oldkeys)
 		StageCSVManager::GetInstance().LoadStageCSV(1);
 	}
 
-	layer_->Update(keys, oldkeys);
+	fream_->Update(keys, oldkeys);
+	//layer_->Update(keys, oldkeys);
 }
 
 void GameScene::Draw()
@@ -75,7 +76,7 @@ void GameScene::Draw()
 		}
 	}
 
-	layer_->Draw();
+	//layer_->Draw();
 
 	//プレイヤーの表示
 	player_->Draw();

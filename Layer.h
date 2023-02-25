@@ -29,26 +29,29 @@ public: //メンバ関数
 
 	Layer();
 	~Layer();
-	void Initialize();
+	void Initialize(int widthNum ,int heightNum);
 	void Update(char* keys, char* oldkeys);
 	void Draw();
 	void Delete();
 
 private: //メンバ変数
-	//ブロックの状態9x9
-	BlockType blockTypes[layerBlockHeight][layerBlockWidth] = {};
-	//ブロックの座標
-	Vector2 blockPos[layerBlockHeight][layerBlockWidth] = {};
+	////ブロックの状態9x9
+	//BlockType blockTypes[layerBlockHeight][layerBlockWidth] = {};
+	////ブロックの座標
+	//Vector2 blockPos[layerBlockHeight][layerBlockWidth] = {};
 
 	//ブロックの二次元配列
 	//Block* blocks_[layerBlockHeight][layerBlockWidth];
 	std::vector<std::vector<std::unique_ptr <Block>>> blocks_;
 
 	//そのレイヤーがいるフレームの番号
-	int freamNum;
+	int freamNumX;
+	int freamNumY;
 
 	//レイヤーの座標
 	Vector2 layerPos;
+
+
 
 	
 
