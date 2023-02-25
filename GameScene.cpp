@@ -83,6 +83,8 @@ void GameScene::Draw()
 	//フィールドの表示
 	field_->Draw();
 
+	fream_->Draw();
+
 	//コメント表示
 	DrawFormatString(10, 0, GetColor(200, 200, 200), "R : reset & hotReload(coming soon)");
 }

@@ -1,6 +1,8 @@
 #include "Block.h"
 #include "DxLib.h"
 
+const float Block::BLOCK_SIZE = 30.0f;
+
 void Block::Initialize()
 {
 }

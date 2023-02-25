@@ -3,30 +3,24 @@
 
 using BlockType = Block::BlockType;
 
-Layer::Layer() 
-{
-	//初期化
-	for(int i = 0; i < layerBlockWidth; i++)
-	{
-		for(int j = 0; j < layerBlockHeight; j++)
-		{
-			blocks_[i][j] = new Block;
-		}
-	}
+const float Layer::layerWidth = Block::BLOCK_SIZE * layerBlockWidth;
+const float Layer::layerHeight = Block::BLOCK_SIZE * layerBlockHeight;
 
+Layer::Layer()
+{
 	freamNum = 0;
-	waitTimer = 20;
+	layerPos = {0,0};
 }
 
 Layer::~Layer()
 {
-	for(int i = 0; i < layerBlockWidth; i++)
+	/*for(int i = 0; i < layerBlockWidth; i++)
 	{
 		for(int j = 0; j < layerBlockHeight; j++)
 		{
 			delete blocks_[i][j];
 		}
-	}
+	}*/
 }
 
 void Layer::Delete()
@@ -37,21 +31,20 @@ void Layer::Delete()
 
 void Layer::Initialize()
 {
-	
-	//for(int i = 0; i < layerBlockWidth; i++)
-	//{
-	//	//ブロック型を持てる空のベクタを追加(行列でいうi列)
-	//	blocks_.push_back(std::vector<std::unique_ptr <Block>>());
+	for(int i = 0; i < layerBlockWidth; i++)
+	{
+		//ブロック型を持てる空のベクタを追加(行列でいうi列)
+		blocks_.push_back(std::vector<std::unique_ptr <Block>>());
 
-	//	for(int j = 0; j < layerBlockWidth; j++)
-	//	{
-	//		std::unique_ptr <Block> block_;
-	//		block_ = std::make_unique<Block>();
-	//		block_->Initialize();
-	//		//ブロックの要素を追加
-	//		blocks_[i].push_back(std::move(block_));
-	//	}
-	//}
+		for(int j = 0; j < layerBlockWidth; j++)
+		{
+			std::unique_ptr <Block> block_;
+			block_ = std::make_unique<Block>();
+			block_->Initialize();
+			//ブロックの要素を追加
+			blocks_[i].push_back(std::move(block_));
+		}
+	}
 
 	//座標の初期化
 	for(int i = 0; i < layerBlockWidth; i++)
@@ -62,12 +55,12 @@ void Layer::Initialize()
 			//ブロックの座標を設定
 			if(i >= 0)
 			{
-				pos.x = i * blocks_[i][j]->BLOCK_SIZE;
+				pos.x = i * Block::BLOCK_SIZE;
 				
 			}
 			if(j >= 0)
 			{
-				pos.y = j * blocks_[i][j]->BLOCK_SIZE;
+				pos.y = j * Block::BLOCK_SIZE;
 			}
 
 			blocks_[i][j]->SetPos(pos);
@@ -111,12 +104,12 @@ void Layer::Update(char* keys,char* oldkeys)
 			//ブロックの座標を設定
 			if(i >= 0)
 			{
-				pos.x = i * blocks_[i][j]->BLOCK_SIZE + (layerBlockWidth * blocks_[i][j]->BLOCK_SIZE * freamNum);
+				pos.x = i * Block::BLOCK_SIZE + (layerBlockWidth * Block::BLOCK_SIZE * freamNum);
 
 			}
 			if(j >= 0)
 			{
-				pos.y = j * blocks_[i][j]->BLOCK_SIZE;
+				pos.y = j * Block::BLOCK_SIZE;
 			}
 
 			blocks_[i][j]->SetPos(pos);
@@ -126,6 +119,8 @@ void Layer::Update(char* keys,char* oldkeys)
 
 void Layer::Draw()
 {
+	DrawBox(layerPos.x, layerPos.y, layerPos.x + layerWidth, layerPos.y + layerHeight, GetColor(255, 255, 255), false);
+
 	for(int i = 0; i < layerBlockWidth; i++)
 	{
 		for(int j = 0; j < layerBlockHeight; j++)

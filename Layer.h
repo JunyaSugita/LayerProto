@@ -22,6 +22,9 @@ public: //クラス内グローバル定数
 	static const int layerBlockWidth = 9;
 	static const int layerBlockHeight = 9;
 
+	static const float layerWidth;
+	static const float layerHeight;
+
 public: //メンバ関数
 
 	Layer();
@@ -38,20 +41,24 @@ private: //メンバ変数
 	Vector2 blockPos[layerBlockHeight][layerBlockWidth] = {};
 
 	//ブロックの二次元配列
-	Block* blocks_[layerBlockHeight][layerBlockWidth];
-	//std::vector<std::vector<std::unique_ptr <Block>>> blocks_;
+	//Block* blocks_[layerBlockHeight][layerBlockWidth];
+	std::vector<std::vector<std::unique_ptr <Block>>> blocks_;
 
 	//そのレイヤーがいるフレームの番号
 	int freamNum;
 
-	//キー入力の待ち時間
-	int waitTimer = 20;
+	//レイヤーの座標
+	Vector2 layerPos;
+
+	
 
 public: //アクセッサ
 	//ブロックの状態をセット
 	void SetBlock(int y, int x, BlockType block);
 	//ブロックの状態をゲット
 	BlockType GetBlock(int y, int x);
+
+	void SetPos(Vector2 pos) { layerPos = pos; };
 };
 
 
