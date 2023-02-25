@@ -66,14 +66,14 @@ void StageCSVManager::LoadStageCSV(int stageNum)
 			//枠はあるけどレイヤー何もない場所用
 			getline(line_stream, word, ' ');
 			//falseとあって、何もレイヤー積まれてなかったら
-			if (word == "false" && frameData.layersInTheFrame[layersIntheFrameY][layersIntheFrameX].size() == 0)
-			{
-				//要素を大枠の指定の場所に確保
-				Layer layer;
-				frameData.layersInTheFrame[layersIntheFrameY][layersIntheFrameX].push_back(layer);
-				//レイヤーの[0][0]に114514入れて、レイヤーなし枠とわかるように
-				frameData.layersInTheFrame[layersIntheFrameY][layersIntheFrameX].begin()->SetBlock(0, 0, BlockType::NOLAYER_BLOCK);
-			}
+			//if (word == "false" && frameData.layersInTheFrame[layersIntheFrameY][layersIntheFrameX].size() == 0)
+			//{
+			//	//要素を大枠の指定の場所に確保
+			//	Layer layer;
+			//	frameData.layersInTheFrame[layersIntheFrameY][layersIntheFrameX].push_back(layer);
+			//	//レイヤーの[0][0]に114514入れて、レイヤーなし枠とわかるように
+			//	frameData.layersInTheFrame[layersIntheFrameY][layersIntheFrameX].begin()->SetBlock(0, 0, BlockType::NOLAYER_BLOCK);
+			//}
 		}
 
 		//レイヤーのブロック配置
@@ -86,11 +86,11 @@ void StageCSVManager::LoadStageCSV(int stageNum)
 
 			//要素を大枠の指定の場所に確保
 			Layer layer;
-			frameData.layersInTheFrame[layersIntheFrameY][layersIntheFrameX].push_back(layer);
+			//frameData.layersInTheFrame[layersIntheFrameY][layersIntheFrameX].push_back(layer);
 
 			//イテレータ
 			std::list<Layer>::iterator itr =
-				frameData.layersInTheFrame[layersIntheFrameY][layersIntheFrameX].end();
+				//frameData.layersInTheFrame[layersIntheFrameY][layersIntheFrameX].end();
 			//endは最終要素の一個後ろなのでもどす
 			itr--;
 
