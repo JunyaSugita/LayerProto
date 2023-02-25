@@ -16,7 +16,7 @@ public:
 	int GetLayerFrameHeight() { return layerFrameHeight; }
 
 	//フレームの中のレイヤーの配列
-	//std::list<Layer> layersInTheFrame[layerFrameHeight][layerFrameWidth] = {};
+	std::list<Layer> layersInTheFrame[layerFrameHeight][layerFrameWidth] = {};
 
 public:
 

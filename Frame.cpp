@@ -6,7 +6,7 @@ void Frame::Initialize()
 	{
 		for (int j = 0; j < this->GetLayerFrameWidth(); j++)
 		{
-			//this->layersInTheFrame[i][j].clear();
+			this->layersInTheFrame[i][j].clear();
 		}
 	}
 }

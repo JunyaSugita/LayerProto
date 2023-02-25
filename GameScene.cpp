@@ -25,7 +25,7 @@ void GameScene::Initialize()
 	fream_ = std::make_unique<Frame>();
 
 	//
-	//StageCSVManager::GetInstance().LoadStageCSV(1);
+	StageCSVManager::GetInstance().LoadStageCSV(1);
 	
 	//初期化
 	layer_->Initialize();
