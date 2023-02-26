@@ -175,3 +175,15 @@ Frame::~Frame()
 	//	}
 	//}
 }
+
+bool Frame::GetisSelect()
+{
+	for (int i = 0; i < layerFrameWidth; i++){
+		for (int j = 0; j < layerFrameHeight; j++) {
+			if (layers_[i][j]->GetIsSelect()) {
+				return true;
+			}
+		}
+	}
+	return false;
+}

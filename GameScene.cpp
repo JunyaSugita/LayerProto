@@ -44,7 +44,7 @@ void GameScene::Update(char* keys, char* oldkeys)
 	GetMousePoint(&MouseX, &MouseY);
 
 	//プレイヤー
-	player_->Updata(810, 810,field_.get());
+	player_->Updata(810, 810,field_.get(), fream_.get());
 
 	//リセット&ホットリロード
 	if (CheckHitKey(KEY_INPUT_R)) {
