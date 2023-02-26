@@ -49,33 +49,35 @@ void Frame::Initialize()
 	}
 }
 
-void Frame::Update(char* keys, char* oldkeys)
+void Frame::Update(char* keys, char* oldkeys, int mouseX, int mouseY, int oldMouseX, int oldMouseY)
 {
-	oldMouseX = MouseX;
-	oldMouseY = MouseY;
-
-	// マウスの位置を取得
-	GetMousePoint(&MouseX, &MouseY);
-
+	//レイヤーを選択する処理
 	if(GetMouseInputLog2(&button, &clickX, &clickY, &logType, TRUE) == 0)
 	{
 		for(int i = 0; i < layerFrameWidth; i++)
 		{
 			for(int j = 0; j < layerFrameHeight; j++)
 			{
-				if(MouseX < layers_[i][j]->GetLayerPos().y)
+				if(clickX > layers_[i][j]->GetLayerPos().x && clickX < layers_[i][j]->GetLayerPos().x + Layer::layerWidth)
 				{
-					layers_[i][j]->SetSelect(true);
+					if(clickY > layers_[i][j]->GetLayerPos().y && clickY < layers_[i][j]->GetLayerPos().y + Layer::layerHeight)
+					{
+						if(layers_[i][j]->GetIsSelect() == false)
+						{
+							layers_[i][j]->SetIsSelect(true);
+						}
+					}
 				}
 			}
 		}
 	}
 
+	//レイヤーの更新
 	for(int i = 0; i < layerFrameWidth; i++)
 	{
 		for(int j = 0; j < layerFrameHeight; j++)
 		{
-			layers_[i][j]->Update(keys, oldkeys);
+			layers_[i][j]->Update(keys, oldkeys,mouseX,mouseY,oldMouseX,oldMouseY);
 		}
 	}
 }
@@ -93,9 +95,9 @@ void Frame::Draw()
 	/*DrawFormatString(0, 100, GetColor(255, 255, 255), "isSelect : %d", isSelect);
 	DrawFormatString(0, 200, GetColor(255, 255, 255), "MouseX : %d", MouseX);
 	DrawFormatString(0, 300, GetColor(255, 255, 255), "MouseY : %d", MouseY);*/
-	DrawFormatString(0, 300, GetColor(255, 255, 255), "layers_[0][0] : %d", layers_[0][0]->GetSelect());
-	DrawFormatString(0, 400, GetColor(255, 255, 255), "layers_[0][1] : %d", layers_[0][1]->GetSelect());
-	DrawFormatString(0, 500, GetColor(255, 255, 255), "layers_[1][1] : %d", layers_[1][1]->GetSelect());
+	/*DrawFormatString(0, 300, GetColor(255, 255, 255), "layers_[0][0] : %d", layers_[0][0]->GetIsSelect());
+	DrawFormatString(0, 400, GetColor(255, 255, 255), "layers_[0][1] : %d", layers_[0][1]->GetIsSelect());
+	DrawFormatString(0, 500, GetColor(255, 255, 255), "layers_[1][1] : %d", layers_[1][1]->GetIsSelect());*/
 
 }
 

@@ -22,6 +22,14 @@ public:
 	//ブロックの大きさ
 	const float BLOCK_SIZE = 30.0f;
 
+	//マウス座標
+	int MouseX;
+	int MouseY;
+	
+	//選択した時のマウスの座標
+	int oldMouseX;
+	int oldMouseY;
+
 	//プレイヤー
 	std::unique_ptr<Player> player_;
 	//フィールド

@@ -30,7 +30,7 @@ public: //メンバ関数
 	Layer();
 	~Layer();
 	void Initialize(int widthNum, int heightNum);
-	void Update(char* keys, char* oldkeys);
+	void Update(char* keys, char* oldkeys, int mouseX, int mouseY, int oldMouseX, int oldMouseY);
 	void Draw();
 	void Delete();
 
@@ -39,14 +39,6 @@ private: //メンバ変数
 	//BlockType blockTypes[layerBlockHeight][layerBlockWidth] = {};
 	////ブロックの座標
 	//Vector2 blockPos[layerBlockHeight][layerBlockWidth] = {};
-
-	//マウス座標
-	int MouseX;
-	int MouseY;
-	//選択した時のマウスの座標
-	int oldMouseX;
-	int oldMouseY;
-
 
 	//そのレイヤーがいるフレームの番号
 	int freamNumX;
@@ -77,8 +69,8 @@ public: //アクセッサ
 	void SetPos(Vector2 pos) { layerPos = pos; };
 	Vector2 GetLayerPos() { return  layerPos; }
 
-	bool GetSelect() { return isSelect; }
-	void SetSelect(int isSelected) { isSelect = isSelected; }
+	bool GetIsSelect() { return isSelect; }
+	void SetIsSelect(int isSelected) { isSelect = isSelected; }
 
 	int GetFrameNumX() { return freamNumX; }
 	int GetFrameNumY() { return freamNumY; }

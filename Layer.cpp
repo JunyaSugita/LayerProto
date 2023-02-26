@@ -60,21 +60,31 @@ void Layer::Initialize(int heightNum, int widthNum)
 			//ブロックの座標を設定
 			if (i >= 0)
 			{
-				pos.x = (i * Block::BLOCK_SIZE) + (widthNum * layerWidth);
+				pos.y = (i * Block::BLOCK_SIZE) + (widthNum * layerWidth);
 
 			}
 			if (j >= 0)
 			{
-				pos.y = (j * Block::BLOCK_SIZE) + (heightNum * layerWidth);
+				pos.x = (j * Block::BLOCK_SIZE) + (heightNum * layerWidth);
 			}
 
 			blocks_[i][j]->SetPos(pos);
 
 			//形状の初期化(CSVファイルの読み込んだ形状をブロッククラスに渡す)
 			BlockType blockType;
-			if (i == j)
+			if (i == 0 || j == 0)
 			{
 				blockType = BlockType::NOLAYER_BLOCK;
+				blocks_[i][j]->SetType(blockType);
+			}
+			/*else if(i == layerBlockWidth - 1 || j == layerBlockHeight - 1)
+			{
+				blockType = BlockType::NOLAYER_BLOCK;
+				blocks_[i][j]->SetType(blockType);
+			}*/
+			else if(i == j)
+			{
+				blockType = BlockType::FIXED_BLOCK;
 				blocks_[i][j]->SetType(blockType);
 			}
 			else
@@ -90,14 +100,8 @@ void Layer::Initialize(int heightNum, int widthNum)
 	movePos.y = 0;
 }
 
-void Layer::Update(char* keys, char* oldkeys)
+void Layer::Update(char* keys, char* oldkeys,int mouseX, int mouseY, int oldMouseX, int oldMouseY)
 {
-	oldMouseX = MouseX;
-	oldMouseY = MouseY;
-
-	// マウスの位置を取得
-	GetMousePoint(&MouseX, &MouseY);
-
 	if (keys[KEY_INPUT_0] == 1 && oldkeys[KEY_INPUT_0] == 0)
 	{
 		if (freamNumX < 2)
@@ -110,37 +114,14 @@ void Layer::Update(char* keys, char* oldkeys)
 		}
 	}
 
-	//押されたら
-	if ((button & MOUSE_INPUT_LEFT) != 0)
-	{
-
-
-	}
-
-	//選択状態に
-	//isSelect = true;
-
-	// 左ボタンが押されたり離されたりしていたら描画するかどうかのフラグを立てて、座標も保存する
-	if (GetMouseInputLog2(&button, &clickX, &clickY, &logType, TRUE) == 0)
-	{
-		/*if((button & MOUSE_INPUT_LEFT) != 0)
-		{
-
-		}*/
-
-		isSelect = true;
-
-	}
-
+	//もし選択されたら
 	if (isSelect == true)
 	{
 		if ((GetMouseInput() & MOUSE_INPUT_LEFT) != 0)
 		{
 			//マウスが押されている
-			movePos.x = MouseX - oldMouseX;
-			movePos.y = MouseY - oldMouseY;
-
-			//layerPos += movePos;
+			movePos.x = mouseX - oldMouseX;
+			movePos.y = mouseY - oldMouseY;
 
 			//ブロックの座標を設定
 
@@ -152,15 +133,11 @@ void Layer::Update(char* keys, char* oldkeys)
 				}
 			}
 		}
-		if ((GetMouseInput() & MOUSE_INPUT_LEFT) != 0)
-		{
-
-		}
 		else // 押されていない
 		{
 			movePos.x = 0;
 			movePos.y = 0;
-
+			
 			for (int i = 0; i < layerBlockWidth; i++)
 			{
 				for (int j = 0; j < layerBlockHeight; j++)
@@ -168,6 +145,7 @@ void Layer::Update(char* keys, char* oldkeys)
 					blocks_[i][j]->SetMove(movePos);
 				}
 			}
+			isSelect = false;
 		}
 	}
 
