@@ -1,4 +1,5 @@
 #include "Player.h"
+#include <assert.h>
 
 //無視
 Player::Player() {}
@@ -99,7 +100,19 @@ void Player::Updata(float windowX, float windowY, Field* field)
 		}
 		else {
 			//それ以外なら移動させ続ける
+			//ジャンプせずに空中に行った場合、プレイヤーの動きを自然にするため、jumpPowを少し追加
+			if (isJump_ == false) {
+				jumpPow_ = GRAVITY - 0.1f;
+
+				//再計算
+				tempMove = jumpPow_ - GRAVITY;
+				tempPos_.y -= tempMove / 10;
+				CalcMapPos();
+			}
+
 			pos_.y = tempPos_.y;
+			//空中でジャンプ出来ないようにする
+			isJump_ = true;
 		}
 	}
 
@@ -130,7 +143,6 @@ void Player::Updata(float windowX, float windowY, Field* field)
 		}
 	}
 
-
 #pragma endregion
 
 }
@@ -139,6 +151,24 @@ void Player::Updata(float windowX, float windowY, Field* field)
 void Player::Draw()
 {
 	DrawBox(pos_.x - SIZE / 2, pos_.y - SIZE / 2, pos_.x + SIZE / 2, pos_.y + SIZE / 2, GetColor(100, 100, 200), true);
+}
+
+Vector2 Player::GetMapPos(int Num)
+{
+	assert(("GetMapPos()の引数に0~3以外の値が入ってます", Num >= 0 && Num <= 3));
+
+	if (Num == LT) {
+		return LT_;
+	}
+	else if (Num == RT) {
+		return RT_;
+	}
+	else if (Num == LB) {
+		return LB_;
+	}
+	else if(Num == RB){
+		return RB_;
+	}
 }
 
 void Player::CalcMapPos()
