@@ -15,13 +15,14 @@ Layer::Layer()
 
 Layer::~Layer()
 {
-	/*for(int i = 0; i < layerBlockWidth; i++)
+
+	for(int i = 0; i < layerBlockWidth; i++)
 	{
 		for(int j = 0; j < layerBlockHeight; j++)
 		{
-			delete blocks_[i][j];
+			blocks_[i][j].reset();
 		}
-	}*/
+	}
 }
 
 void Layer::Delete()
@@ -35,12 +36,12 @@ void Layer::Initialize(int heightNum, int widthNum)
 	freamNumX = widthNum;
 	freamNumY = heightNum;
 
-	for(int i = 0; i < layerBlockWidth; i++)
+	for (int i = 0; i < layerBlockWidth; i++)
 	{
 		//ブロック型を持てる空のベクタを追加(行列でいうi列)
 		blocks_.push_back(std::vector<std::unique_ptr <Block>>());
 
-		for(int j = 0; j < layerBlockWidth; j++)
+		for (int j = 0; j < layerBlockWidth; j++)
 		{
 			std::unique_ptr <Block> block_;
 			block_ = std::make_unique<Block>();
@@ -51,18 +52,18 @@ void Layer::Initialize(int heightNum, int widthNum)
 	}
 
 	//座標の初期化
-	for(int i = 0; i < layerBlockWidth; i++)
+	for (int i = 0; i < layerBlockWidth; i++)
 	{
-		for(int j = 0; j < layerBlockHeight; j++)
+		for (int j = 0; j < layerBlockHeight; j++)
 		{
 			Vector2 pos;
 			//ブロックの座標を設定
-			if(i >= 0)
+			if (i >= 0)
 			{
 				pos.x = (i * Block::BLOCK_SIZE) + (widthNum * layerWidth);
 
 			}
-			if(j >= 0)
+			if (j >= 0)
 			{
 				pos.y = (j * Block::BLOCK_SIZE) + (heightNum * layerWidth);
 			}
@@ -71,7 +72,7 @@ void Layer::Initialize(int heightNum, int widthNum)
 
 			//形状の初期化(CSVファイルの読み込んだ形状をブロッククラスに渡す)
 			BlockType blockType;
-			if(i == j)
+			if (i == j)
 			{
 				blockType = BlockType::NOLAYER_BLOCK;
 				blocks_[i][j]->SetType(blockType);
@@ -97,9 +98,9 @@ void Layer::Update(char* keys, char* oldkeys)
 	// マウスの位置を取得
 	GetMousePoint(&MouseX, &MouseY);
 
-	if(keys[KEY_INPUT_0] == 1 && oldkeys[KEY_INPUT_0] == 0)
+	if (keys[KEY_INPUT_0] == 1 && oldkeys[KEY_INPUT_0] == 0)
 	{
-		if(freamNumX < 2)
+		if (freamNumX < 2)
 		{
 			freamNumX++;
 		}
@@ -110,30 +111,30 @@ void Layer::Update(char* keys, char* oldkeys)
 	}
 
 	//押されたら
-	if((button & MOUSE_INPUT_LEFT) != 0)
+	if ((button & MOUSE_INPUT_LEFT) != 0)
 	{
 
-		
+
 	}
 
 	//選択状態に
 	//isSelect = true;
 
 	// 左ボタンが押されたり離されたりしていたら描画するかどうかのフラグを立てて、座標も保存する
-	if(GetMouseInputLog2(&button, &clickX, &clickY, &logType, TRUE) == 0)
+	if (GetMouseInputLog2(&button, &clickX, &clickY, &logType, TRUE) == 0)
 	{
 		/*if((button & MOUSE_INPUT_LEFT) != 0)
 		{
-			
+
 		}*/
-		
+
 		isSelect = true;
-		
+
 	}
 
-	if(isSelect == true)
+	if (isSelect == true)
 	{
-		if((GetMouseInput() & MOUSE_INPUT_LEFT) != 0)
+		if ((GetMouseInput() & MOUSE_INPUT_LEFT) != 0)
 		{
 			//マウスが押されている
 			movePos.x = MouseX - oldMouseX;
@@ -143,15 +144,15 @@ void Layer::Update(char* keys, char* oldkeys)
 
 			//ブロックの座標を設定
 
-			for(int i = 0; i < layerBlockWidth; i++)
+			for (int i = 0; i < layerBlockWidth; i++)
 			{
-				for(int j = 0; j < layerBlockHeight; j++)
+				for (int j = 0; j < layerBlockHeight; j++)
 				{
 					blocks_[i][j]->SetMove(movePos);
 				}
 			}
 		}
-		if((GetMouseInput() & MOUSE_INPUT_LEFT) != 0)
+		if ((GetMouseInput() & MOUSE_INPUT_LEFT) != 0)
 		{
 
 		}
@@ -160,9 +161,9 @@ void Layer::Update(char* keys, char* oldkeys)
 			movePos.x = 0;
 			movePos.y = 0;
 
-			for(int i = 0; i < layerBlockWidth; i++)
+			for (int i = 0; i < layerBlockWidth; i++)
 			{
-				for(int j = 0; j < layerBlockHeight; j++)
+				for (int j = 0; j < layerBlockHeight; j++)
 				{
 					blocks_[i][j]->SetMove(movePos);
 				}
@@ -170,9 +171,9 @@ void Layer::Update(char* keys, char* oldkeys)
 		}
 	}
 
-	for(int i = 0; i < layerBlockWidth; i++)
+	for (int i = 0; i < layerBlockWidth; i++)
 	{
-		for(int j = 0; j < layerBlockHeight; j++)
+		for (int j = 0; j < layerBlockHeight; j++)
 		{
 			blocks_[i][j]->Update();
 		}
@@ -183,9 +184,9 @@ void Layer::Draw()
 {
 	DrawBox(layerPos.x, layerPos.y, layerPos.x + layerWidth, layerPos.y + layerHeight, GetColor(255, 255, 255), false);
 
-	for(int i = 0; i < layerBlockWidth; i++)
+	for (int i = 0; i < layerBlockWidth; i++)
 	{
-		for(int j = 0; j < layerBlockHeight; j++)
+		for (int j = 0; j < layerBlockHeight; j++)
 		{
 			blocks_[i][j]->Draw();
 		}

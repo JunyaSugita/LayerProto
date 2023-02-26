@@ -27,12 +27,11 @@ public:
 
 	~Frame();
 
-	int GetLayerFrameWidth() { return layerFrameWidth; }
-	int GetLayerFrameHeight() { return layerFrameHeight; }
+	static int GetLayerFrameWidth() { return layerFrameWidth; }
+	static int GetLayerFrameHeight() { return layerFrameHeight; }
 
 	//フレームの中のレイヤーの配列
-	std::list<Layer> layersInTheFrame[layerFrameHeight][layerFrameWidth] = {};
-	//std::vector<Layer> layersInTheFrame[layerFrameHeight][layerFrameWidth] = {};
+	std::list<std::unique_ptr <Layer>> layersInTheFrame[layerFrameHeight][layerFrameWidth] = {};
 	std::vector<std::vector<std::unique_ptr <Layer>>> layers_;
 
 public:

@@ -69,10 +69,12 @@ void StageCSVManager::LoadStageCSV(int stageNum)
 			if (word == "false" && frameData.layersInTheFrame[layersIntheFrameY][layersIntheFrameX].size() == 0)
 			{
 				//要素を大枠の指定の場所に確保
-				//Layer layer;
-				//frameData.layersInTheFrame[layersIntheFrameY][layersIntheFrameX].push_back(layer);
-				////レイヤーの[0][0]に114514入れて、レイヤーなし枠とわかるように
-				//frameData.layersInTheFrame[layersIntheFrameY][layersIntheFrameX].begin()->SetBlock(0, 0, BlockType::NOLAYER_BLOCK);
+				std::unique_ptr <Layer> layer = std::make_unique<Layer>();
+				layer->Initialize(Layer::layerBlockWidth, Layer::layerBlockHeight);
+
+				frameData.layersInTheFrame[layersIntheFrameY][layersIntheFrameX].push_back(std::move(layer));
+				//レイヤーの[0][0]に入れて、レイヤーなし枠とわかるように
+				frameData.layersInTheFrame[layersIntheFrameY][layersIntheFrameX].begin()->get()->blocks_[0][0]->SetType(BlockType::NOLAYER_BLOCK);
 			}
 		}
 
@@ -84,44 +86,40 @@ void StageCSVManager::LoadStageCSV(int stageNum)
 			// 1行分の文字列をストリームに変換して解析しやすくする
 			std::istringstream line_stream(line);
 
-			//要素を大枠の指定の場所に確保
-			//Layer layer;
-			//frameData.layersInTheFrame[layersIntheFrameY][layersIntheFrameX].push_back(layer);
-
-			////イテレータ
-			//std::list<Layer>::iterator itr =
-			//	frameData.layersInTheFrame[layersIntheFrameY][layersIntheFrameX].end();
-			////endは最終要素の一個後ろなのでもどす
-			//itr--;
+			//要素を大枠の指定の場所に確保するために変数用意
+			std::unique_ptr< Layer> layer = std::make_unique<Layer>();
+			layer->Initialize(Layer::layerBlockWidth, Layer::layerBlockHeight);
 
 			//配列指定用のカウント
 			int x = 0;
 			int y = 0;
 			//レイヤーのブロックすべて読み込み
-			//while (1)
-			//{
-			//	//空白ごとにレイヤーのブロックを取得
-			//	getline(line_stream, word, ' ');
-			//	//ブロックをセット
-			//	itr->SetBlock(y, x, BlockType((int)std::atoi(word.c_str())));
+			while (1)
+			{
+				//空白ごとにレイヤーのブロックを取得
+				getline(line_stream, word, ' ');
+				//ブロックをセット
+				layer->blocks_[y][x]->SetType(BlockType((int)std::atoi(word.c_str())));
 
-			//	//カウントを進める
-			//	x++;
-			//	//横幅を超えたら縦を進める
-			//	if (x >= Layer::layerBlockWidth)
-			//	{
-			//		y++;
-			//		x = 0;
-			//		//改行
-			//		getline(file, line);
-			//		line_stream.str(line.c_str());
-			//	}
-			//	//縦幅を超えたら終わり
-			//	if (y >= Layer::layerBlockHeight)
-			//	{
-			//		break;
-			//	}
-			//}
+				//カウントを進める
+				x++;
+				//横幅を超えたら縦を進める
+				if (x >= Layer::layerBlockWidth)
+				{
+					y++;
+					x = 0;
+					//改行
+					getline(file, line);
+					line_stream.str(line.c_str());
+				}
+				//縦幅を超えたら終わり
+				if (y >= Layer::layerBlockHeight)
+				{
+					//値を入れたものをリストに入れる
+					frameData.layersInTheFrame[layersIntheFrameY][layersIntheFrameX].push_back(std::move(layer));
+					break;
+				}
+			}
 		}
 	}
 }

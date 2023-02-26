@@ -29,7 +29,7 @@ public: //メンバ関数
 
 	Layer();
 	~Layer();
-	void Initialize(int widthNum ,int heightNum);
+	void Initialize(int widthNum, int heightNum);
 	void Update(char* keys, char* oldkeys);
 	void Draw();
 	void Delete();
@@ -47,9 +47,6 @@ private: //メンバ変数
 	int oldMouseX;
 	int oldMouseY;
 
-	//ブロックの二次元配列
-	//Block* blocks_[layerBlockHeight][layerBlockWidth];
-	std::vector<std::vector<std::unique_ptr <Block>>> blocks_;
 
 	//そのレイヤーがいるフレームの番号
 	int freamNumX;
@@ -70,10 +67,12 @@ private: //メンバ変数
 
 
 public: //アクセッサ
-	//ブロックの状態をセット
-	void SetBlock(int y, int x, BlockType block);
-	//ブロックの状態をゲット
-	BlockType GetBlock(int y, int x);
+	////ブロックの状態をセット
+	//void SetBlock(int y, int x, BlockType block);
+	////ブロックの状態をゲット
+	//BlockType GetBlock(int y, int x);
+
+	std::vector<std::vector<std::unique_ptr <Block>>> blocks_;
 
 	void SetPos(Vector2 pos) { layerPos = pos; };
 	Vector2 GetLayerPos() { return  layerPos; }
