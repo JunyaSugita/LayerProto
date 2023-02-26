@@ -19,8 +19,13 @@ void Player::Initialize()
 }
 
 //update
-void Player::Updata(float windowX, float windowY, Field* field)
+void Player::Updata(float windowX, float windowY, Field* field, Frame* frame)
 {
+	//フレームを動かしている間は処理を全て飛ばす
+	if (frame->GetisSelect()) {
+		return;
+	}
+
 #pragma region 操作
 	
 	//ジャンプ

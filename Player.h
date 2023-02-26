@@ -2,6 +2,7 @@
 #include "Vector2.h"
 #include "DxLib.h"
 #include "Field.h"
+#include "Frame.h"
 
 enum MapPos {
 	LT,	//左上
@@ -27,7 +28,7 @@ public:
 	/// </summary>
 	/// <param name="windowX"> ウィンドウサイズ(縦) </param>
 	/// <param name="windowY"> ウィンドウサイズ(横) </param>
-	void Updata(float windowX,float windowY,Field* field);
+	void Updata(float windowX,float windowY,Field* field,Frame* frame);
 
 	/// <summary>
 	/// draw

@@ -28,6 +28,8 @@ public:
 
 	void SetFreamLayerNum();
 
+	bool GetisSelect();
+
 private:
 
 	int button;
