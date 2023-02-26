@@ -65,6 +65,22 @@ void Frame::Initialize()
 			}
 		}
 	}
+
+	for(int i = 0; i < 9; i++)
+	{
+		for(int j = 0; j < 9; j++)
+		{
+			if(i == j)
+			{
+				layers_[0][1]->blocks_[i][j]->SetType(Block::FIXED_BLOCK);
+				layers_[0][2]->blocks_[i][j]->SetType(Block::NOLAYER_BLOCK);
+				layers_[2][2]->blocks_[i][j]->SetType(Block::LAYER_BLOCK);
+
+			}
+		}
+	}
+
+	
 }
 
 void Frame::Update(char* keys, char* oldkeys, int mouseX, int mouseY, int oldMouseX, int oldMouseY)
@@ -76,10 +92,17 @@ void Frame::Update(char* keys, char* oldkeys, int mouseX, int mouseY, int oldMou
 	//レイヤーを選択する処理
 	if (GetMouseInputLog2(&button, &clickX, &clickY, &logType, TRUE) == 0)
 	{
+		
 		for (int i = 0; i < layerFrameWidth; i++)
 		{
 			for (int j = 0; j < layerFrameHeight; j++)
 			{
+				if(layers_[i][j]->GetIsFront() == true)
+				{
+					frontVec.x = i;
+					frontVec.y = j;
+				}
+
 				if (clickX > layers_[i][j]->GetLayerPos().x && clickX < layers_[i][j]->GetLayerPos().x + Layer::layerWidth)
 				{
 					if (clickY > layers_[i][j]->GetLayerPos().y && clickY < layers_[i][j]->GetLayerPos().y + Layer::layerHeight)
@@ -87,6 +110,10 @@ void Frame::Update(char* keys, char* oldkeys, int mouseX, int mouseY, int oldMou
 						if (layers_[i][j]->GetIsSelect() == false)
 						{
 							layers_[i][j]->SetIsSelect(true);
+							layers_[i][j]->SetIsFront(true);
+
+
+							layers_[(int)frontVec.x][int(frontVec.y)]->SetIsFront(false);
 						}
 					}
 				}
@@ -124,22 +151,22 @@ void Frame::Update(char* keys, char* oldkeys, int mouseX, int mouseY, int oldMou
 
 void Frame::CountFrame()
 {
-	//現在のレイヤーの座標を取得
-	for(int i = 0; i < layerFrameWidth; i++)
-	{
-		for(int j = 0; j < layerFrameHeight; j++)
-		{
-			Vector2 arriveLayer = layers_[i][j]->CheckHasFream(layerFrameWidth, freamPos);
+	////現在のレイヤーの座標を取得
+	//for(int i = 0; i < layerFrameWidth; i++)
+	//{
+	//	for(int j = 0; j < layerFrameHeight; j++)
+	//	{
+	//		Vector2 arriveLayer = layers_[i][j]->CheckHasFream(layerFrameWidth, freamPos);
 
-			if(FrameHasLayer[(int)arriveLayer.x][(int)arriveLayer.y] == 0)
-			{
-				layers_[i][j]->SetIsFront();
-			}
+	//		if(FrameHasLayer[(int)arriveLayer.x][(int)arriveLayer.y] == 0)
+	//		{
+	//			layers_[i][j]->SetIsFront();
+	//		}
 
-			FrameHasLayer[(int)arriveLayer.x][(int)arriveLayer.y] += 1;
+	//		FrameHasLayer[(int)arriveLayer.x][(int)arriveLayer.y] += 1;
 
-		}
-	}
+	//	}
+	//}
 	
 }
 

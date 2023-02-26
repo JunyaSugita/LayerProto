@@ -110,24 +110,29 @@ void Layer::Update(char* keys, char* oldkeys,int mouseX, int mouseY, int oldMous
 	layerCenterPos.y = layerPos.y + (layerHeight / 2);
 
 	//もし選択されたら
+
 	if (isSelect == true)
 	{
+
 		//左クリックが押され続けているとき
 		if ((GetMouseInput() & MOUSE_INPUT_LEFT) != 0)
 		{
-			//移動量を計算
-			movePos.x = mouseX - oldMouseX;
-			movePos.y = mouseY - oldMouseY;
-
-			//レイヤーを移動
-			layerPos += movePos;
-
-			//ブロックの移動量を設定
-			for (int i = 0; i < layerBlockWidth; i++)
+			if(isFront_ == true)
 			{
-				for (int j = 0; j < layerBlockHeight; j++)
+				//移動量を計算
+				movePos.x = mouseX - oldMouseX;
+				movePos.y = mouseY - oldMouseY;
+
+				//レイヤーを移動
+				layerPos += movePos;
+
+				//ブロックの移動量を設定
+				for(int i = 0; i < layerBlockWidth; i++)
 				{
-					blocks_[i][j]->SetMove(movePos);
+					for(int j = 0; j < layerBlockHeight; j++)
+					{
+						blocks_[i][j]->SetMove(movePos);
+					}
 				}
 			}
 		}
@@ -174,44 +179,48 @@ void Layer::Draw()
 
 void Layer::SerchFrame(int frameWidthNum, Vector2 freamPos[][3])
 {
-	for(int i = 0; i < frameWidthNum; i++)
+	if(isFront_ == true)
 	{
-		for(int j = 0; j < 3; j++)
+		for(int i = 0; i < frameWidthNum; i++)
 		{
-			//各フレームの範囲内にいるかどうかを判定する
-			if(layerCenterPos.x > freamPos[i][j].x && layerCenterPos.x < freamPos[i][j].x + Layer::layerWidth)
+			for(int j = 0; j < 3; j++)
 			{
-				if(layerCenterPos.y > freamPos[i][j].y && layerCenterPos.y < freamPos[i][j].y + Layer::layerHeight)
+				//各フレームの範囲内にいるかどうかを判定する
+				if(layerCenterPos.x > freamPos[i][j].x && layerCenterPos.x < freamPos[i][j].x + Layer::layerWidth)
 				{
-					//持っているレイヤーを枠にはめる
-					layerPos = freamPos[i][j];
+					if(layerCenterPos.y > freamPos[i][j].y && layerCenterPos.y < freamPos[i][j].y + Layer::layerHeight)
+					{
+						//持っているレイヤーを枠にはめる
+						layerPos = freamPos[i][j];
 
-				
+					}
 				}
 			}
 		}
-	}
 
-	for(int i = 0; i < layerBlockWidth; i++)
-	{
-		for(int j = 0; j < layerBlockHeight; j++)
+		for(int i = 0; i < layerBlockWidth; i++)
 		{
-			Vector2 pos;
-
-			//ブロックの座標を設定
-			if(i >= 0)
+			for(int j = 0; j < layerBlockHeight; j++)
 			{
-				pos.y = (i * Block::BLOCK_SIZE) + layerPos.y;
+				Vector2 pos;
 
-			}
-			if(j >= 0)
-			{
-				pos.x = (j * Block::BLOCK_SIZE) + layerPos.x;
-			}
+				//ブロックの座標を設定
+				if(i >= 0)
+				{
+					pos.y = (i * Block::BLOCK_SIZE) + layerPos.y;
 
-			blocks_[i][j]->SetPos(pos);
+				}
+				if(j >= 0)
+				{
+					pos.x = (j * Block::BLOCK_SIZE) + layerPos.x;
+				}
+
+				blocks_[i][j]->SetPos(pos);
+			}
 		}
 	}
+
+	
 }
 
 Vector2 Layer::CheckHasFream(int frameWidthNum, Vector2 freamPos[][3])

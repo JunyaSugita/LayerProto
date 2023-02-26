@@ -38,11 +38,16 @@ public:
 private:
 
 	int FrameHasLayer[layerFrameWidth][layerFrameHeight];
+
+	bool isFrontSet = false;
 	
 	int button;
 	int clickX;
 	int clickY;
 	int logType;
+
+	Vector2 frontVec;
+
 
 
 };

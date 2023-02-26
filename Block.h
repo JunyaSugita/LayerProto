@@ -9,7 +9,7 @@ public: //クラス内グローバル定数
 
 	enum BlockType
 	{
-		NONE,        //なにもない
+		NONE = 0,        //なにもない
 		LAYER_BLOCK, //レイヤーと一緒に動くブロック
 		FIXED_BLOCK, //固定ブロック
 		NOLAYER_BLOCK//枠はあるけどレイヤー無い用

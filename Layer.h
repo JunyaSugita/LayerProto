@@ -65,7 +65,7 @@ private: //メンバ変数
 	int depthLayer[depthLayerNum];
 
 	//最前面フラグ
-	bool isfront;
+	bool isFront_;
 
 	int button;
 	int clickX;
@@ -92,7 +92,8 @@ public: //アクセッサ
 
 	Vector2 GetLayerCenterPos() { return layerCenterPos; }
 
-	void SetIsFront() { isfront = true; }
+	bool GetIsFront() { return isFront_; }
+	void SetIsFront(bool isFront) { isFront_ = isFront; }
 
 };
 
