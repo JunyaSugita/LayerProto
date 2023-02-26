@@ -13,6 +13,8 @@ public:
 	void Update(char* keys, char* oldkeys,int mouseX,int mouseY,int oldMouseX,int oldMouseY);
 	void Draw();
 
+	void FrameSerch();
+
 	~Frame();
 
 	static int GetLayerFrameWidth() { return layerFrameWidth; }

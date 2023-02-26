@@ -35,12 +35,12 @@ void Frame::Initialize()
 			//ブロックの座標を設定
 			if(i >= 0)
 			{
-				pos.x = i * Layer::layerWidth;
+				pos.y = i * Layer::layerWidth;
 
 			}
 			if(j >= 0)
 			{
-				pos.y = j * Layer::layerHeight;
+				pos.x = j * Layer::layerHeight;
 			}
 
 			layers_[i][j]->SetPos(pos);
@@ -101,43 +101,46 @@ void Frame::Update(char* keys, char* oldkeys, int mouseX, int mouseY, int oldMou
 				}
 				else
 				{
-					if(layers_[i][j]->GetLayerPos().x > freamPos[i][j].x && layers_[i][j]->GetLayerPos().x >  (freamPos[i][j].x + Layer::layerWidth))
-					{
-						if(layers_[i][j]->GetLayerPos().y > freamPos[i][j].y && layers_[i][j]->GetLayerPos().y > (freamPos[i][j].y + Layer::layerHeight))
-						{
-							Vector2 pos;
-							//ブロックの座標を設定
-							if(i >= 0)
-							{
-								pos.x = i * Layer::layerWidth;
+					////各フレームの範囲内にいるかどうかを判定する
+					//if(layers_[i][j]->GetLayerCenterPos().x > freamPos[i][j].x && layers_[i][j]->GetLayerCenterPos().x < freamPos[i][j].x + Layer::layerWidth)
+					//{
+					//	if(layers_[i][j]->GetLayerCenterPos().y > freamPos[i][j].y && layers_[i][j]->GetLayerCenterPos().y < freamPos[i][j].y + Layer::layerHeight)
+					//	{
+					//		Vector2 pos;
+					//		pos = freamPos[i][j];
 
-							}
-							if(j >= 0)
-							{
-								pos.y = j * Layer::layerHeight;
-							}
-
-							layers_[i][j]->SetPos(pos);
-						}
-					}
+					//		layers_[i][j]->SetPos(pos);
+					//	}
+					//}
+					
+					layers_[i][j]->SerchFrame(layerFrameWidth, freamPos);
+					
 				}
 			}
 		}
 	}
 
-	//もし選択されたら
-	
-		
-	
-	
+	/*for(int i = 0; i < layerFrameWidth; i++)
+	{
+		for(int j = 0; j < layerFrameHeight; j++)
+		{
+			
+		}
+	}*/
+
 	//レイヤーの更新
 	for(int i = 0; i < layerFrameWidth; i++)
 	{
 		for(int j = 0; j < layerFrameHeight; j++)
 		{
-			layers_[i][j]->Update(keys, oldkeys,mouseX,mouseY,oldMouseX,oldMouseY);
+			layers_[i][j]->Update(keys, oldkeys, mouseX, mouseY, oldMouseX, oldMouseY);
 		}
 	}
+}
+
+void Frame::FrameSerch()
+{
+
 }
 
 void Frame::Draw()

@@ -98,10 +98,17 @@ void Layer::Initialize(int heightNum, int widthNum)
 
 	movePos.x = 0;
 	movePos.y = 0;
+
+	layerCenterPos.x = layerPos.x + (layerWidth / 2);
+	layerCenterPos.y= layerPos.y + (layerHeight / 2);
+
 }
 
 void Layer::Update(char* keys, char* oldkeys,int mouseX, int mouseY, int oldMouseX, int oldMouseY)
 {
+	layerCenterPos.x = layerPos.x + (layerWidth / 2);
+	layerCenterPos.y = layerPos.y + (layerHeight / 2);
+
 	//もし選択されたら
 	if (isSelect == true)
 	{
@@ -156,15 +163,34 @@ void Layer::Draw()
 {
 	DrawBox(layerPos.x, layerPos.y, layerPos.x + layerWidth, layerPos.y + layerHeight, GetColor(255, 255, 255), false);
 
-	for (int i = 0; i < layerBlockWidth; i++)
+	/*for (int i = 0; i < layerBlockWidth; i++)
 	{
 		for (int j = 0; j < layerBlockHeight; j++)
 		{
 			blocks_[i][j]->Draw();
 		}
+	}*/
+
+
+}
+
+void Layer::SerchFrame(int frameWidthNum, Vector2 freamPos[][3])
+{
+	for(int i = 0; i < frameWidthNum; i++)
+	{
+		for(int j = 0; j < 3; j++)
+		{
+			//各フレームの範囲内にいるかどうかを判定する
+			if(layerCenterPos.x > freamPos[i][j].x && layerCenterPos.x < freamPos[i][j].x + Layer::layerWidth)
+			{
+				if(layerCenterPos.y > freamPos[i][j].y && layerCenterPos.y < freamPos[i][j].y + Layer::layerHeight)
+				{
+					layerPos = freamPos[i][j];
+				}
+			}
+		}
 	}
-
-
+	
 }
 
 //

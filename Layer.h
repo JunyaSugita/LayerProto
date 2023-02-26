@@ -34,6 +34,8 @@ public: //メンバ関数
 	void Draw();
 	void Delete();
 
+	void SerchFrame(int frameWidthNum, Vector2 freamPos[][3]);
+
 private: //メンバ変数
 	////ブロックの状態9x9
 	//BlockType blockTypes[layerBlockHeight][layerBlockWidth] = {};
@@ -51,6 +53,9 @@ private: //メンバ変数
 	bool isSelect = false;
 	//移動量
 	Vector2 movePos;
+
+	//レイヤーの中心座標
+	Vector2 layerCenterPos;
 
 	int button;
 	int clickX;
@@ -74,6 +79,8 @@ public: //アクセッサ
 
 	int GetFrameNumX() { return freamNumX; }
 	int GetFrameNumY() { return freamNumY; }
+
+	Vector2 GetLayerCenterPos() { return layerCenterPos; }
 
 };
 
