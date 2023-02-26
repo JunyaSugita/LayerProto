@@ -60,12 +60,12 @@ void Layer::Initialize(int heightNum, int widthNum)
 			//ブロックの座標を設定
 			if (i >= 0)
 			{
-				pos.y = (i * Block::BLOCK_SIZE) + (widthNum * layerWidth);
+				pos.y = (i * Block::BLOCK_SIZE) + (heightNum * layerWidth);
 
 			}
 			if (j >= 0)
 			{
-				pos.x = (j * Block::BLOCK_SIZE) + (heightNum * layerWidth);
+				pos.x = (j * Block::BLOCK_SIZE) + (widthNum * layerWidth);
 			}
 
 			blocks_[i][j]->SetPos(pos);
@@ -163,15 +163,13 @@ void Layer::Draw()
 {
 	DrawBox(layerPos.x, layerPos.y, layerPos.x + layerWidth, layerPos.y + layerHeight, GetColor(255, 255, 255), false);
 
-	/*for (int i = 0; i < layerBlockWidth; i++)
+	for (int i = 0; i < layerBlockWidth; i++)
 	{
 		for (int j = 0; j < layerBlockHeight; j++)
 		{
 			blocks_[i][j]->Draw();
 		}
-	}*/
-
-
+	}
 }
 
 void Layer::SerchFrame(int frameWidthNum, Vector2 freamPos[][3])
@@ -185,12 +183,57 @@ void Layer::SerchFrame(int frameWidthNum, Vector2 freamPos[][3])
 			{
 				if(layerCenterPos.y > freamPos[i][j].y && layerCenterPos.y < freamPos[i][j].y + Layer::layerHeight)
 				{
+					//持っているレイヤーを枠にはめる
 					layerPos = freamPos[i][j];
+
+				
 				}
 			}
 		}
 	}
-	
+
+	for(int i = 0; i < layerBlockWidth; i++)
+	{
+		for(int j = 0; j < layerBlockHeight; j++)
+		{
+			Vector2 pos;
+
+			//ブロックの座標を設定
+			if(i >= 0)
+			{
+				pos.y = (i * Block::BLOCK_SIZE) + layerPos.y;
+
+			}
+			if(j >= 0)
+			{
+				pos.x = (j * Block::BLOCK_SIZE) + layerPos.x;
+			}
+
+			blocks_[i][j]->SetPos(pos);
+		}
+	}
+}
+
+Vector2 Layer::CheckHasFream(int frameWidthNum, Vector2 freamPos[][3])
+{
+	for(int i = 0; i < frameWidthNum; i++)
+	{
+		for(int j = 0; j < 3; j++)
+		{
+			//各フレームの範囲内にいるかどうかを判定する
+			if(layerCenterPos.x > freamPos[i][j].x && layerCenterPos.x < freamPos[i][j].x + Layer::layerWidth)
+			{
+				if(layerCenterPos.y > freamPos[i][j].y && layerCenterPos.y < freamPos[i][j].y + Layer::layerHeight)
+				{
+					Vector2 freamArray;
+					freamArray.x = i;
+					freamArray.y = j;
+
+					return freamArray;
+				}
+			}
+		}
+	}
 }
 
 //

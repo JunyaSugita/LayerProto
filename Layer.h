@@ -22,6 +22,8 @@ public: //クラス内グローバル定数
 	static const int layerBlockWidth = 9;
 	static const int layerBlockHeight = 9;
 
+	static const int depthLayerNum = 5;
+
 	static const float layerWidth;
 	static const float layerHeight;
 
@@ -35,6 +37,8 @@ public: //メンバ関数
 	void Delete();
 
 	void SerchFrame(int frameWidthNum, Vector2 freamPos[][3]);
+
+	Vector2 CheckHasFream(int frameWidthNum, Vector2 freamPos[][3]);
 
 private: //メンバ変数
 	////ブロックの状態9x9
@@ -56,6 +60,12 @@ private: //メンバ変数
 
 	//レイヤーの中心座標
 	Vector2 layerCenterPos;
+
+	//レイヤーの深さ
+	int depthLayer[depthLayerNum];
+
+	//最前面フラグ
+	bool isfront;
 
 	int button;
 	int clickX;
@@ -81,6 +91,8 @@ public: //アクセッサ
 	int GetFrameNumY() { return freamNumY; }
 
 	Vector2 GetLayerCenterPos() { return layerCenterPos; }
+
+	void SetIsFront() { isfront = true; }
 
 };
 

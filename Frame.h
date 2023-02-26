@@ -13,8 +13,6 @@ public:
 	void Update(char* keys, char* oldkeys,int mouseX,int mouseY,int oldMouseX,int oldMouseY);
 	void Draw();
 
-	void FrameSerch();
-
 	~Frame();
 
 	static int GetLayerFrameWidth() { return layerFrameWidth; }
@@ -25,6 +23,8 @@ public:
 	std::vector<std::vector<std::unique_ptr <Layer>>> layers_;
 
 	Vector2 freamPos[layerFrameHeight][layerFrameWidth] = {};
+	bool isLayer[layerFrameHeight][layerFrameWidth] = {};
+
 
 public:
 
@@ -32,8 +32,13 @@ public:
 
 	bool GetisSelect();
 
+	//ƒŒƒCƒ„[‚ª‰½–‡d‚È‚Á‚Ä‚¢‚é‚©”‚¦‚é
+	void CountFrame();
+
 private:
 
+	int FrameHasLayer[layerFrameWidth][layerFrameHeight];
+	
 	int button;
 	int clickX;
 	int clickY;

@@ -71,6 +71,8 @@ void Frame::Update(char* keys, char* oldkeys, int mouseX, int mouseY, int oldMou
 {
 	Player* player = Player::GetInctance();
 
+	
+
 	//レイヤーを選択する処理
 	if (GetMouseInputLog2(&button, &clickX, &clickY, &logType, TRUE) == 0)
 	{
@@ -104,46 +106,41 @@ void Frame::Update(char* keys, char* oldkeys, int mouseX, int mouseY, int oldMou
 				}
 				else
 				{
-					////各フレームの範囲内にいるかどうかを判定する
-					//if(layers_[i][j]->GetLayerCenterPos().x > freamPos[i][j].x && layers_[i][j]->GetLayerCenterPos().x < freamPos[i][j].x + Layer::layerWidth)
-					//{
-					//	if(layers_[i][j]->GetLayerCenterPos().y > freamPos[i][j].y && layers_[i][j]->GetLayerCenterPos().y < freamPos[i][j].y + Layer::layerHeight)
-					//	{
-					//		Vector2 pos;
-					//		pos = freamPos[i][j];
-
-					//		layers_[i][j]->SetPos(pos);
-					//	}
-					//}
-					
 					layers_[i][j]->SerchFrame(layerFrameWidth, freamPos);
-					
 				}
 			}
 		}
 	}
 
-	/*for(int i = 0; i < layerFrameWidth; i++)
+	//レイヤーの更新
+	for(int i = 0; i < layerFrameWidth; i++)
 	{
 		for(int j = 0; j < layerFrameHeight; j++)
-		{
-			
-		}
-	}*/
-
-	//レイヤーの更新
-	for (int i = 0; i < layerFrameWidth; i++)
-	{
-		for (int j = 0; j < layerFrameHeight; j++)
 		{
 			layers_[i][j]->Update(keys, oldkeys, mouseX, mouseY, oldMouseX, oldMouseY);
 		}
 	}
 }
 
-void Frame::FrameSerch()
+void Frame::CountFrame()
 {
+	//現在のレイヤーの座標を取得
+	for(int i = 0; i < layerFrameWidth; i++)
+	{
+		for(int j = 0; j < layerFrameHeight; j++)
+		{
+			Vector2 arriveLayer = layers_[i][j]->CheckHasFream(layerFrameWidth, freamPos);
 
+			if(FrameHasLayer[(int)arriveLayer.x][(int)arriveLayer.y] == 0)
+			{
+				layers_[i][j]->SetIsFront();
+			}
+
+			FrameHasLayer[(int)arriveLayer.x][(int)arriveLayer.y] += 1;
+
+		}
+	}
+	
 }
 
 void Frame::Draw()
@@ -159,9 +156,9 @@ void Frame::Draw()
 	/*DrawFormatString(0, 100, GetColor(255, 255, 255), "isSelect : %d", isSelect);
 	DrawFormatString(0, 200, GetColor(255, 255, 255), "MouseX : %d", MouseX);
 	DrawFormatString(0, 300, GetColor(255, 255, 255), "MouseY : %d", MouseY);*/
-	/*DrawFormatString(0, 300, GetColor(255, 255, 255), "layers_[0][0] : %d", layers_[0][0]->GetIsSelect());
+	DrawFormatString(0, 300, GetColor(255, 255, 255), "layers_[0][0] : %d", layers_[0][0]->GetIsSelect());
 	DrawFormatString(0, 400, GetColor(255, 255, 255), "layers_[0][1] : %d", layers_[0][1]->GetIsSelect());
-	DrawFormatString(0, 500, GetColor(255, 255, 255), "layers_[1][1] : %d", layers_[1][1]->GetIsSelect());*/
+	DrawFormatString(0, 500, GetColor(255, 255, 255), "layers_[1][1] : %d", layers_[1][1]->GetIsSelect());
 
 }
 
