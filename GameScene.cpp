@@ -16,6 +16,9 @@ void GameScene::Initialize()
 	player_ = std::make_unique<Player>();
 	player_->Initialize();
 
+	//ステージ読み込み
+	StageCSVManager::GetInstance().LoadStageCSV(1);
+
 	//フィールドの生成と初期化
 	field_ = std::make_unique<Field>();
 	field_->Initialize();
@@ -23,9 +26,6 @@ void GameScene::Initialize()
 	//インスタンスの生成
 	//layer_ = std::make_unique<Layer>();
 	fream_ = std::make_unique<Frame>();
-
-	//
-	StageCSVManager::GetInstance().LoadStageCSV(1);
 	
 	//初期化
 	//layer_->Initialize();
@@ -44,6 +44,7 @@ void GameScene::Update(char* keys, char* oldkeys)
 		//
 		player_->Initialize();
 		StageCSVManager::GetInstance().LoadStageCSV(1);
+		field_->Initialize();
 	}
 
 	fream_->Update(keys, oldkeys);

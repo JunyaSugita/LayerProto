@@ -7,13 +7,13 @@
 class StageCSVManager final
 {//変数
 private:
-	Frame frameData;
 	int layersIntheFrameY;
 	int layersIntheFrameX;
 	
 
 public:
-
+	//ステージデータ
+	Frame frameData;
 
 private://関数
 

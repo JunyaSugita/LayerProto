@@ -42,4 +42,6 @@ public: //アクセッサ
 	void SetPos(Vector2 pos) { pos_ = pos; };
 
 	void SetMove(Vector2 move) { move_ = move; }
+
+	BlockType GetType() { return type_; }
 };
