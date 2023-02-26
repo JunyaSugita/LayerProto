@@ -102,29 +102,20 @@ void Layer::Initialize(int heightNum, int widthNum)
 
 void Layer::Update(char* keys, char* oldkeys,int mouseX, int mouseY, int oldMouseX, int oldMouseY)
 {
-	if (keys[KEY_INPUT_0] == 1 && oldkeys[KEY_INPUT_0] == 0)
-	{
-		if (freamNumX < 2)
-		{
-			freamNumX++;
-		}
-		else
-		{
-			freamNumX = 0;
-		}
-	}
-
 	//もし選択されたら
 	if (isSelect == true)
 	{
+		//左クリックが押され続けているとき
 		if ((GetMouseInput() & MOUSE_INPUT_LEFT) != 0)
 		{
-			//マウスが押されている
+			//移動量を計算
 			movePos.x = mouseX - oldMouseX;
 			movePos.y = mouseY - oldMouseY;
 
-			//ブロックの座標を設定
+			//レイヤーを移動
+			layerPos += movePos;
 
+			//ブロックの移動量を設定
 			for (int i = 0; i < layerBlockWidth; i++)
 			{
 				for (int j = 0; j < layerBlockHeight; j++)
@@ -133,8 +124,9 @@ void Layer::Update(char* keys, char* oldkeys,int mouseX, int mouseY, int oldMous
 				}
 			}
 		}
-		else // 押されていない
+		else // 押されていない時
 		{
+			//移動量を0に
 			movePos.x = 0;
 			movePos.y = 0;
 			
@@ -145,10 +137,12 @@ void Layer::Update(char* keys, char* oldkeys,int mouseX, int mouseY, int oldMous
 					blocks_[i][j]->SetMove(movePos);
 				}
 			}
+			//選択を解除
 			isSelect = false;
 		}
 	}
 
+	//ブロックの更新
 	for (int i = 0; i < layerBlockWidth; i++)
 	{
 		for (int j = 0; j < layerBlockHeight; j++)

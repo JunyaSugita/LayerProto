@@ -47,6 +47,23 @@ void Frame::Initialize()
 
 		}
 	}
+
+	//枠の長さを設定
+	for(int i = 0; i < layerFrameWidth; i++)
+	{
+		for(int j = 0; j < layerFrameHeight; j++)
+		{
+			if(i >= 0)
+			{
+				freamPos[i][j].y = (i * Layer::layerWidth);
+
+			}
+			if(j >= 0)
+			{
+				freamPos[i][j].x = (j * Layer::layerWidth);
+			}
+		}
+	}
 }
 
 void Frame::Update(char* keys, char* oldkeys, int mouseX, int mouseY, int oldMouseX, int oldMouseY)
@@ -72,6 +89,47 @@ void Frame::Update(char* keys, char* oldkeys, int mouseX, int mouseY, int oldMou
 		}
 	}
 
+	for(int i = 0; i < layerFrameWidth; i++)
+	{
+		for(int j = 0; j < layerFrameHeight; j++)
+		{
+			if(layers_[i][j]->GetIsSelect() == true)
+			{
+				//左クリックが押され続けているとき
+				if((GetMouseInput() & MOUSE_INPUT_LEFT) != 0)
+				{
+				}
+				else
+				{
+					if(layers_[i][j]->GetLayerPos().x > freamPos[i][j].x && layers_[i][j]->GetLayerPos().x >  (freamPos[i][j].x + Layer::layerWidth))
+					{
+						if(layers_[i][j]->GetLayerPos().y > freamPos[i][j].y && layers_[i][j]->GetLayerPos().y > (freamPos[i][j].y + Layer::layerHeight))
+						{
+							Vector2 pos;
+							//ブロックの座標を設定
+							if(i >= 0)
+							{
+								pos.x = i * Layer::layerWidth;
+
+							}
+							if(j >= 0)
+							{
+								pos.y = j * Layer::layerHeight;
+							}
+
+							layers_[i][j]->SetPos(pos);
+						}
+					}
+				}
+			}
+		}
+	}
+
+	//もし選択されたら
+	
+		
+	
+	
 	//レイヤーの更新
 	for(int i = 0; i < layerFrameWidth; i++)
 	{
