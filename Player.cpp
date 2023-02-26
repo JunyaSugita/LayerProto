@@ -1,6 +1,8 @@
 #include "Player.h"
 #include <assert.h>
 
+Player* Player::player_ = nullptr;
+
 //無視
 Player::Player() {}
 
@@ -173,6 +175,11 @@ Vector2 Player::GetMapPos(int Num)
 	}
 }
 
+Vector2 Player::GetMapPos()
+{
+	return Vector2();
+}
+
 void Player::CalcMapPos()
 {
 	//マップチップ上の場所を計算
@@ -181,6 +188,14 @@ void Player::CalcMapPos()
 	LB_ = { (tempPos_.x - SIZE / 2) / SIZE,(tempPos_.y + SIZE / 2 - 1) / SIZE };
 	RB_ = { (tempPos_.x + SIZE / 2 - 1) / SIZE,(tempPos_.y + SIZE / 2 - 1) / SIZE };
 
+}
+
+Player* Player::GetInctance()
+{
+	if (!player_) {
+		player_ = new Player();
+	}
+	return player_;
 }
 
 
