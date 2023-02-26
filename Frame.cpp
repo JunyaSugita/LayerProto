@@ -70,7 +70,6 @@ void Frame::Initialize()
 void Frame::Update(char* keys, char* oldkeys, int mouseX, int mouseY, int oldMouseX, int oldMouseY)
 {
 	Player* player = Player::GetInctance();
-	player->SetPlayerMapPos({ 0, 0 });
 
 	//ƒŒƒCƒ„[‚ğ‘I‘ğ‚·‚éˆ—
 	if (GetMouseInputLog2(&button, &clickX, &clickY, &logType, TRUE) == 0)
