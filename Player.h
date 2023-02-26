@@ -1,6 +1,14 @@
 #pragma once
 #include "Vector2.h"
 #include "DxLib.h"
+#include "Field.h"
+
+enum MapPos {
+	LT,	//左上
+	RT,	//右上
+	LB,	//左下
+	RB,	//右下
+};
 
 class Player
 {
@@ -19,12 +27,30 @@ public:
 	/// </summary>
 	/// <param name="windowX"> ウィンドウサイズ(縦) </param>
 	/// <param name="windowY"> ウィンドウサイズ(横) </param>
-	void Updata(float windowX,float windowY);
+	void Updata(float windowX,float windowY,Field* field);
 
 	/// <summary>
 	/// draw
 	/// </summary>
 	void Draw();
+
+	/// <summary>
+	/// プレイヤーの位置の取得
+	/// </summary>
+	/// <returns> プレイヤーの位置 </returns>
+	Vector2 GetPos() {
+		return pos_;
+	}
+
+	/// <summary>
+	/// プレイヤーのマップチップ上の位置の取得
+	/// </summary>
+	/// <param name="Num"> どの角か選択 </param>
+	/// <returns> 選択した角の位置 </returns>
+	Vector2 GetMapPos(int Num);
+
+private:
+	void CalcMapPos();
 
 private:
 	//固定値	//ジャンプ関係は一応、縦2マスジャンプ、横3マスジャンプに調整済み
@@ -41,6 +67,9 @@ private:
 	//ジャンプ力
 	float jumpPow_;
 	
-	
+	//プレイヤーの4つ角のマップチップ上の場所
+	Vector2 LT_, RT_, LB_, RB_;
+	//プレイヤーの仮移動用
+	Vector2 tempPos_ = pos_;
 };
 

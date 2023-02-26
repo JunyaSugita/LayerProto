@@ -63,4 +63,9 @@ void Field::Draw()
 	}
 }
 
+int Field::GetMap(Vector2 pos)
+{
+	return map_[(int)pos.y][(int)pos.x];
+}
+
 
