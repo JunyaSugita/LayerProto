@@ -1,5 +1,6 @@
 #include "Field.h"
 #include "StageCSVManager.h"
+#include <assert.h>
 
 //無視
 Field::Field() {}
@@ -85,12 +86,18 @@ void Field::Draw()
 	for (int k = 0; k < MAX_OVERLAP; k++) {
 	for (int i = 0; i < MAP_Y; i++) {
 		for (int j = 0; j < MAP_X; j++) {
+			int Light = GetLayerNum(j / 9,i / 9);
 				//マップの数字によって描画する
 				switch (map_[k][i][j])
 				{
 				case BLOCK:
 					//ブロックなら白で描画
-					DrawBox(j * BLOCK_SIZE, i * BLOCK_SIZE, j * BLOCK_SIZE + BLOCK_SIZE, i * BLOCK_SIZE + BLOCK_SIZE, GetColor(100, 100, 100), true);
+					if (k == Light) {
+						DrawBox(j * BLOCK_SIZE, i * BLOCK_SIZE, j * BLOCK_SIZE + BLOCK_SIZE, i * BLOCK_SIZE + BLOCK_SIZE, GetColor(255, 255, 255), true);
+					}
+					else {
+						DrawBox(j * BLOCK_SIZE, i * BLOCK_SIZE, j * BLOCK_SIZE + BLOCK_SIZE, i * BLOCK_SIZE + BLOCK_SIZE, GetColor(100, 100, 100), true);
+					}
 					break;
 
 				case GOAL:
@@ -127,13 +134,16 @@ int Field::GetMap(Vector2 pos)
 
 int Field::GetLayerNum(int x, int y)
 {
+	assert("xに0~2以外の数字が入っています", x >= 0 && x <= 2);
+	assert("yに0~2以外の数字が入っています", y >= 0 && y <= 2);
+
 	//レイヤーの層(最前面から)
 	for (int i = MAX_OVERLAP - 1; i >= 0; i--) {
 		//レイヤーYから
 		for (int j = y * 9; j < 9 + (y + 1); j++) {
 			//レイヤーXから
 			for (int k = x * 9 ; k < 9 + (x + 1); k++) {
-				if (map_[i][j][k] != 0) {
+				if (map_[i][j][k] != -858993460) {
 					//1つでも0以外があればレイヤーがある層を返す
 					return i;
 				}
