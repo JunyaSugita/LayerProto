@@ -48,7 +48,9 @@ public:
 
 private:
 	//マップ[y][x](数値は仮)
-	int map_[MAP_Y][MAP_X];
+	int map_[5][MAP_Y][MAP_X];
+
+
 
 };
 

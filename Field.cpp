@@ -14,7 +14,7 @@ void Field::Initialize(int map)
 {
 	//マップの読み込み(未実装のためマジックナンバーを直入れ)
 
-	int mapTemp[MAP_Y][MAP_X] /*= {
+	int mapTemp[5][MAP_Y][MAP_X] /*= {
 		{0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
 		{0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
 		{0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
@@ -49,11 +49,11 @@ void Field::Initialize(int map)
 			{
 				Block::BlockType block = layer.begin()->get()->blocks_[y % Layer::layerBlockHeight][x % Layer::layerBlockWidth].get()->GetType();
 				//マップをセット
-				mapTemp[y][x] = block;
+				mapTemp[0][y][x] = block;
 			}
 			else
 			{
-				mapTemp[y][x] = Block::BlockType::NOLAYER_BLOCK;
+				mapTemp[0][y][x] = Block::BlockType::NOLAYER_BLOCK;
 			}
 		}
 	}
@@ -62,7 +62,7 @@ void Field::Initialize(int map)
 	//代入
 	for (int i = 0; i < MAP_Y; i++) {
 		for (int j = 0; j < MAP_X; j++) {
-			map_[i][j] = mapTemp[i][j];
+			map_[0][i][j] = mapTemp[0][i][j];
 		}
 	}
 }
@@ -77,7 +77,7 @@ void Field::Draw()
 	for (int i = 0; i < MAP_Y; i++) {
 		for (int j = 0; j < MAP_X; j++) {
 			//マップの数字によって描画する
-			switch (map_[i][j])
+			switch (map_[0][i][j])
 			{
 			case BLOCK:
 				//ブロックなら白で描画
@@ -100,7 +100,20 @@ void Field::Draw()
 
 int Field::GetMap(Vector2 pos)
 {
-	return map_[(int)pos.y][(int)pos.x];
+	for (int i = 0; i < 5; i++) {
+		switch (map_[i][(int)pos.y][(int)pos.x]) {
+		case NONE:
+			break;
+		case BLOCK:
+			return BLOCK;
+			break;
+		case GOAL:
+			return GOAL;
+			break;
+		}
+
+	}
+	return 0;
 }
 
 
