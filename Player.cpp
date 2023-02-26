@@ -48,28 +48,6 @@ void Player::Updata(float windowX, float windowY, Field* field)
 
 #pragma endregion
 
-#pragma region 画面外処理
-
-	//左
-	if (pos_.x - SIZE / 2 < 0) {
-		//押し戻し処理
-		pos_.x = 0 + SIZE / 2;
-	}
-	//右
-	else if (pos_.x + SIZE / 2 > windowX) {
-		//押し戻し処理
-		pos_.x = windowX - SIZE / 2;
-	}
-	//下(奈落判定にするならこの処理は消す)
-	//if (pos_.y + SIZE / 2 > 270) {
-	//	//押し戻し処理
-	//	pos_.y = 255;
-	//	//床判定なのでジャンプフラグを解く
-	//	isJump_ = false;
-	//}
-
-#pragma endregion
-
 #pragma region ブロックとの当たり判定と移動
 	//プレイヤーの仮移動用
 	tempPos_ = pos_;
@@ -145,6 +123,20 @@ void Player::Updata(float windowX, float windowY, Field* field)
 
 #pragma endregion
 
+#pragma region 画面外処理
+
+	//左
+	if (pos_.x - SIZE / 2 < 0) {
+		//押し戻し処理
+		pos_.x = 0 + SIZE / 2;
+	}
+	//右
+	else if (pos_.x + SIZE / 2 > windowX) {
+		//押し戻し処理
+		pos_.x = windowX - SIZE / 2;
+	}
+
+#pragma endregion
 }
 
 //draw
@@ -155,17 +147,22 @@ void Player::Draw()
 
 Vector2 Player::GetMapPos(int Num)
 {
+	//引数に0~3以外の値が入っていたらアサート
 	assert(("GetMapPos()の引数に0~3以外の値が入ってます", Num >= 0 && Num <= 3));
 
+	//0(左上)
 	if (Num == LT) {
 		return LT_;
 	}
+	//1(右上)
 	else if (Num == RT) {
 		return RT_;
 	}
+	//2(左下)
 	else if (Num == LB) {
 		return LB_;
 	}
+	//3(右下)
 	else if(Num == RB){
 		return RB_;
 	}

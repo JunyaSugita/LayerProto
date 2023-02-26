@@ -1,15 +1,15 @@
 #include "GameScene.h"
 
-//
+//無視
 GameScene::GameScene(){}
 
-//delete
+//delete処理
 GameScene::~GameScene()
 {
 
 }
 
-//
+//初期化
 void GameScene::Initialize()
 {
 	//プレイヤーの生成と初期化
@@ -37,7 +37,7 @@ void GameScene::Initialize()
 void GameScene::Update(char* keys, char* oldkeys)
 {
 	//プレイヤー
-	player_->Updata(1350, 1350,field_.get());
+	player_->Updata(810, 810,field_.get());
 
 	//リセット&ホットリロード
 	if (CheckHitKey(KEY_INPUT_R)) {
@@ -56,22 +56,22 @@ void GameScene::Draw()
 	
 	//グリッドの表示(横)
 	for (int i = 1; i < 9 * 3; i++) {
-		//
+		//境界線の描画(赤)
 		if (i % 9 == 0) {
 			DrawLine(0, i * BLOCK_SIZE, 810, i * BLOCK_SIZE, GetColor(150, 0, 0));
 		}
-		//
+		//それ以外(白)
 		else {
 			DrawLine(0, i * BLOCK_SIZE, 810, i * BLOCK_SIZE, GetColor(100, 100, 100));
 		}
 	}
 	//グリッドの表示(縦)
 	for (int i = 1; i < 9 * 3; i++) {
-		//
+		//境界線の描画(赤)
 		if (i % 9 == 0) {
 			DrawLine(i * BLOCK_SIZE, 0, i * BLOCK_SIZE, 810, GetColor(150, 0, 0));
 		}
-		//
+		//それ以外(白)
 		else{
 			DrawLine(i * BLOCK_SIZE, 0, i * BLOCK_SIZE, 810, GetColor(100, 100, 100));
 		}
