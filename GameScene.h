@@ -19,7 +19,7 @@ public:
 	void Draw();
 
 public:
-	//1�u���b�N�̒��a
+	//ブロックの大きさ
 	const float BLOCK_SIZE = 30.0f;
 
 	//プレイヤー

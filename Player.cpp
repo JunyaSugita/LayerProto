@@ -155,17 +155,22 @@ void Player::Draw()
 
 Vector2 Player::GetMapPos(int Num)
 {
+	//引数に0~3以外の値が入っていたらアサート
 	assert(("GetMapPos()の引数に0~3以外の値が入ってます", Num >= 0 && Num <= 3));
 
+	//0(左上)
 	if (Num == LT) {
 		return LT_;
 	}
+	//1(右上)
 	else if (Num == RT) {
 		return RT_;
 	}
+	//2(左下)
 	else if (Num == LB) {
 		return LB_;
 	}
+	//3(右下)
 	else if(Num == RB){
 		return RB_;
 	}
