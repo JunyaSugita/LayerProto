@@ -1,22 +1,23 @@
 #include "Frame.h"
 #include "DxLib.h"
+#include "Player.h"
 
 void Frame::Initialize()
 {
-	for(int i = 0; i < this->GetLayerFrameHeight(); i++)
+	for (int i = 0; i < this->GetLayerFrameHeight(); i++)
 	{
-		for(int j = 0; j < this->GetLayerFrameWidth(); j++)
+		for (int j = 0; j < this->GetLayerFrameWidth(); j++)
 		{
 			this->layersInTheFrame[i][j].clear();
 		}
 	}
 
-	for(int i = 0; i < layerFrameWidth; i++)
+	for (int i = 0; i < layerFrameWidth; i++)
 	{
 		//ブロック型を持てる空のベクタを追加(行列でいうi列)
 		layers_.push_back(std::vector<std::unique_ptr <Layer>>());
 
-		for(int j = 0; j < layerFrameHeight; j++)
+		for (int j = 0; j < layerFrameHeight; j++)
 		{
 			std::unique_ptr <Layer> layer_;
 			layer_ = std::make_unique<Layer>();
@@ -27,18 +28,18 @@ void Frame::Initialize()
 	}
 
 	//座標の初期化
-	for(int i = 0; i < layerFrameWidth; i++)
+	for (int i = 0; i < layerFrameWidth; i++)
 	{
-		for(int j = 0; j < layerFrameHeight; j++)
+		for (int j = 0; j < layerFrameHeight; j++)
 		{
 			Vector2 pos;
 			//ブロックの座標を設定
-			if(i >= 0)
+			if (i >= 0)
 			{
 				pos.y = i * Layer::layerWidth;
 
 			}
-			if(j >= 0)
+			if (j >= 0)
 			{
 				pos.x = j * Layer::layerHeight;
 			}
@@ -49,16 +50,16 @@ void Frame::Initialize()
 	}
 
 	//枠の長さを設定
-	for(int i = 0; i < layerFrameWidth; i++)
+	for (int i = 0; i < layerFrameWidth; i++)
 	{
-		for(int j = 0; j < layerFrameHeight; j++)
+		for (int j = 0; j < layerFrameHeight; j++)
 		{
-			if(i >= 0)
+			if (i >= 0)
 			{
 				freamPos[i][j].y = (i * Layer::layerWidth);
 
 			}
-			if(j >= 0)
+			if (j >= 0)
 			{
 				freamPos[i][j].x = (j * Layer::layerWidth);
 			}
@@ -68,18 +69,20 @@ void Frame::Initialize()
 
 void Frame::Update(char* keys, char* oldkeys, int mouseX, int mouseY, int oldMouseX, int oldMouseY)
 {
+	Player* player = Player::GetInctance();
+
 	//レイヤーを選択する処理
-	if(GetMouseInputLog2(&button, &clickX, &clickY, &logType, TRUE) == 0)
+	if (GetMouseInputLog2(&button, &clickX, &clickY, &logType, TRUE) == 0)
 	{
-		for(int i = 0; i < layerFrameWidth; i++)
+		for (int i = 0; i < layerFrameWidth; i++)
 		{
-			for(int j = 0; j < layerFrameHeight; j++)
+			for (int j = 0; j < layerFrameHeight; j++)
 			{
-				if(clickX > layers_[i][j]->GetLayerPos().x && clickX < layers_[i][j]->GetLayerPos().x + Layer::layerWidth)
+				if (clickX > layers_[i][j]->GetLayerPos().x && clickX < layers_[i][j]->GetLayerPos().x + Layer::layerWidth)
 				{
-					if(clickY > layers_[i][j]->GetLayerPos().y && clickY < layers_[i][j]->GetLayerPos().y + Layer::layerHeight)
+					if (clickY > layers_[i][j]->GetLayerPos().y && clickY < layers_[i][j]->GetLayerPos().y + Layer::layerHeight)
 					{
-						if(layers_[i][j]->GetIsSelect() == false)
+						if (layers_[i][j]->GetIsSelect() == false)
 						{
 							layers_[i][j]->SetIsSelect(true);
 						}
@@ -89,14 +92,14 @@ void Frame::Update(char* keys, char* oldkeys, int mouseX, int mouseY, int oldMou
 		}
 	}
 
-	for(int i = 0; i < layerFrameWidth; i++)
+	for (int i = 0; i < layerFrameWidth; i++)
 	{
-		for(int j = 0; j < layerFrameHeight; j++)
+		for (int j = 0; j < layerFrameHeight; j++)
 		{
-			if(layers_[i][j]->GetIsSelect() == true)
+			if (layers_[i][j]->GetIsSelect() == true)
 			{
 				//左クリックが押され続けているとき
-				if((GetMouseInput() & MOUSE_INPUT_LEFT) != 0)
+				if ((GetMouseInput() & MOUSE_INPUT_LEFT) != 0)
 				{
 				}
 				else
@@ -129,9 +132,9 @@ void Frame::Update(char* keys, char* oldkeys, int mouseX, int mouseY, int oldMou
 	}*/
 
 	//レイヤーの更新
-	for(int i = 0; i < layerFrameWidth; i++)
+	for (int i = 0; i < layerFrameWidth; i++)
 	{
-		for(int j = 0; j < layerFrameHeight; j++)
+		for (int j = 0; j < layerFrameHeight; j++)
 		{
 			layers_[i][j]->Update(keys, oldkeys, mouseX, mouseY, oldMouseX, oldMouseY);
 		}
@@ -145,9 +148,9 @@ void Frame::FrameSerch()
 
 void Frame::Draw()
 {
-	for(int i = 0; i < layerFrameWidth; i++)
+	for (int i = 0; i < layerFrameWidth; i++)
 	{
-		for(int j = 0; j < layerFrameHeight; j++)
+		for (int j = 0; j < layerFrameHeight; j++)
 		{
 			layers_[i][j]->Draw();
 		}
@@ -177,4 +180,16 @@ Frame::~Frame()
 	//		it++;
 	//	}
 	//}
+}
+
+bool Frame::GetisSelect()
+{
+	for (int i = 0; i < layerFrameWidth; i++) {
+		for (int j = 0; j < layerFrameHeight; j++) {
+			if (layers_[i][j]->GetIsSelect()) {
+				return true;
+			}
+		}
+	}
+	return false;
 }

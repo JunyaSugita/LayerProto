@@ -2,6 +2,7 @@
 #include "Vector2.h"
 #include "DxLib.h"
 #include "Field.h"
+#include "Frame.h"
 
 enum MapPos {
 	LT,	//左上
@@ -12,7 +13,7 @@ enum MapPos {
 
 class Player
 {
-public:
+private:
 	Player();
 	~Player();
 
@@ -27,7 +28,7 @@ public:
 	/// </summary>
 	/// <param name="windowX"> ウィンドウサイズ(縦) </param>
 	/// <param name="windowY"> ウィンドウサイズ(横) </param>
-	void Updata(float windowX,float windowY,Field* field);
+	void Updata(float windowX,float windowY,Field* field,Frame* frame);
 
 	/// <summary>
 	/// draw
@@ -43,11 +44,17 @@ public:
 	}
 
 	/// <summary>
-	/// プレイヤーのマップチップ上の位置の取得
+	/// プレイヤーのマップチップ上の位置の取得(角)
 	/// </summary>
 	/// <param name="Num"> どの角か選択 </param>
-	/// <returns> 選択した角の位置 </returns>
+	/// <returns> 選択した角のマップチップ上の位置 </returns>
 	Vector2 GetMapPos(int Num);
+
+	/// <summary>
+	/// プレイヤーのマップチップ上の位置の取得(中央)
+	/// </summary>
+	/// <returns> プレイヤー中央のマップチップ上の位置 </returns>
+	Vector2 GetMapPos();
 
 	/// <summary>
 	/// プレイヤー座標のセット(ワールド座標換算)
@@ -65,6 +72,8 @@ public:
 		pos_.x = gridPos.x * SIZE + SIZE / 2;
 		pos_.y = gridPos.y * SIZE + SIZE / 2;
 	}
+
+	static Player* GetInctance();
 
 private:
 	void CalcMapPos();
@@ -88,5 +97,7 @@ private:
 	Vector2 LT_, RT_, LB_, RB_;
 	//プレイヤーの仮移動用
 	Vector2 tempPos_ = pos_;
+
+	static Player* player_;
 };
 

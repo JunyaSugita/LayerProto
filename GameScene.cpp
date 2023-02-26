@@ -13,7 +13,7 @@ GameScene::~GameScene()
 void GameScene::Initialize()
 {
 	//プレイヤーの生成と初期化
-	player_ = std::make_unique<Player>();
+	player_ = Player::GetInctance();
 	player_->Initialize();
 
 	//ステージ読み込み
@@ -44,7 +44,7 @@ void GameScene::Update(char* keys, char* oldkeys)
 	GetMousePoint(&MouseX, &MouseY);
 
 	//プレイヤー
-	player_->Updata(810, 810,field_.get());
+	player_->Updata(810, 810,field_.get(), fream_.get());
 
 	//リセット&ホットリロード
 	if (CheckHitKey(KEY_INPUT_R)) {
