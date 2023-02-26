@@ -86,8 +86,11 @@ void Player::Updata(float windowX, float windowY, Field* field)
 			break;
 		}
 		else if (field->GetMap(LB_) == GOAL || field->GetMap(RB_) == GOAL) {
+			//ブロックでは無いので移動させる
+			pos_.y = tempPos_.y;
+
 			//当たっているならゴール(未実装)
-			break;
+			
 		}
 		else if(field->GetMap(LT_) == BLOCK || field->GetMap(RT_) == BLOCK){
 			//天井ごっつんこの処理
