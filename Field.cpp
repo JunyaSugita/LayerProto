@@ -130,9 +130,9 @@ int Field::GetLayerNum(int x, int y)
 	//レイヤーの層(最前面から)
 	for (int i = MAX_OVERLAP - 1; i >= 0; i--) {
 		//レイヤーYから
-		for (int j = y * 9; j < 9; j++) {
+		for (int j = y * 9; j < 9 + (y + 1); j++) {
 			//レイヤーXから
-			for (int k = x * 9 ; k < 9; k++) {
+			for (int k = x * 9 ; k < 9 + (x + 1); k++) {
 				if (map_[i][j][k] != 0) {
 					//1つでも0以外があればレイヤーがある層を返す
 					return i;
