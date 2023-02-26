@@ -39,12 +39,21 @@ public:
 	/// <returns> 指定座標のブロックの種類番号 </returns>
 	int GetMap(Vector2 pos);
 
+	/// <summary>
+	/// 指定のレイヤーの場所が何層目あるか
+	/// </summary>
+	/// <param name="x"> レイヤー座標 </param>
+	/// <param name="y"> レイヤー座標 </param>
+	/// <returns> 指定の場所にレイヤーが何層あるか </returns>
+	int GetLayerNum(int x,int y);
+
 public:
 
 	//固定値
 	static const int MAP_X = 27;	//マップの横ブロック数
-	static const int MAP_Y = 27;		//マップの縦ブロック数
+	static const int MAP_Y = 27;	//マップの縦ブロック数
 	const int BLOCK_SIZE = 30;		//ブロックサイズ
+	static const int MAX_OVERLAP = 5;		//レイヤーを何層まで重ねられるか
 
 private:
 	//マップ[y][x](数値は仮)
