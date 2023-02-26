@@ -1,6 +1,7 @@
 #pragma once
 #include "Vector2.h"
 #include "DxLib.h"
+#include "Field.h"
 
 class Player
 {
@@ -19,12 +20,15 @@ public:
 	/// </summary>
 	/// <param name="windowX"> ウィンドウサイズ(縦) </param>
 	/// <param name="windowY"> ウィンドウサイズ(横) </param>
-	void Updata(float windowX,float windowY);
+	void Updata(float windowX,float windowY,Field* field);
 
 	/// <summary>
 	/// draw
 	/// </summary>
 	void Draw();
+
+private:
+	void CalcMapPos();
 
 private:
 	//固定値	//ジャンプ関係は一応、縦2マスジャンプ、横3マスジャンプに調整済み
@@ -41,6 +45,9 @@ private:
 	//ジャンプ力
 	float jumpPow_;
 	
-	
+	//プレイヤーの4つ角のマップチップ上の場所
+	Vector2 LT_, RT_, LB_, RB_;
+	//プレイヤーの仮移動用
+	Vector2 tempPos_ = pos_;
 };
 
