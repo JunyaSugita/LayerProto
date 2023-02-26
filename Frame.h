@@ -32,8 +32,6 @@ public:
 
 	bool GetisSelect();
 
-	//ƒŒƒCƒ„[‚ª‰½–‡d‚È‚Á‚Ä‚¢‚é‚©”‚¦‚é
-	void CountFrame();
 
 private:
 

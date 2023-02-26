@@ -149,26 +149,6 @@ void Frame::Update(char* keys, char* oldkeys, int mouseX, int mouseY, int oldMou
 	}
 }
 
-void Frame::CountFrame()
-{
-	////Œ»İ‚ÌƒŒƒCƒ„[‚ÌÀ•W‚ğæ“¾
-	//for(int i = 0; i < layerFrameWidth; i++)
-	//{
-	//	for(int j = 0; j < layerFrameHeight; j++)
-	//	{
-	//		Vector2 arriveLayer = layers_[i][j]->CheckHasFream(layerFrameWidth, freamPos);
-
-	//		if(FrameHasLayer[(int)arriveLayer.x][(int)arriveLayer.y] == 0)
-	//		{
-	//			layers_[i][j]->SetIsFront();
-	//		}
-
-	//		FrameHasLayer[(int)arriveLayer.x][(int)arriveLayer.y] += 1;
-
-	//	}
-	//}
-	
-}
 
 void Frame::Draw()
 {
