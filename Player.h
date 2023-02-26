@@ -49,6 +49,23 @@ public:
 	/// <returns> 選択した角の位置 </returns>
 	Vector2 GetMapPos(int Num);
 
+	/// <summary>
+	/// プレイヤー座標のセット(ワールド座標換算)
+	/// </summary>
+	/// <param name="pos"> セットしたい座標 </param>
+	void SetPlayerPos(Vector2 pos) {
+		pos_ = pos;
+	}
+
+	/// <summary>
+	/// プレイヤー座標のセット(マップチップ換算)
+	/// </summary>
+	/// <param name="gridPos"> マップチップ上の座標 </param>
+	void SetPlayerMapPos(Vector2 gridPos) {
+		pos_.x = gridPos.x * SIZE + SIZE / 2;
+		pos_.y = gridPos.y * SIZE + SIZE / 2;
+	}
+
 private:
 	void CalcMapPos();
 
