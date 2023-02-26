@@ -31,7 +31,7 @@ public:
 	int oldMouseY;
 
 	//プレイヤー
-	std::unique_ptr<Player> player_;
+	Player* player_;
 	//フィールド
 	std::unique_ptr<Field> field_;
 private:
