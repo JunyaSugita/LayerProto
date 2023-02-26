@@ -37,7 +37,7 @@ void GameScene::Initialize()
 void GameScene::Update(char* keys, char* oldkeys)
 {
 	//プレイヤー
-	player_->Updata(1350, 1350);
+	player_->Updata(1350, 1350,field_.get());
 
 	//リセット&ホットリロード
 	if (CheckHitKey(KEY_INPUT_R)) {
