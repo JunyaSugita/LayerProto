@@ -13,7 +13,7 @@ Player::~Player()
 //‰Šú‰»
 void Player::Initialize()
 {
-	pos_ = { 15,135 };
+	pos_ = { 15,15 };
 	isJump_ = false;
 	jumpPow_ = 0;
 }
