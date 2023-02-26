@@ -3,6 +3,13 @@
 #include "DxLib.h"
 #include "Field.h"
 
+enum MapPos {
+	LT,	//左上
+	RT,	//右上
+	LB,	//左下
+	RB,	//右下
+};
+
 class Player
 {
 public:
@@ -26,6 +33,21 @@ public:
 	/// draw
 	/// </summary>
 	void Draw();
+
+	/// <summary>
+	/// プレイヤーの位置の取得
+	/// </summary>
+	/// <returns> プレイヤーの位置 </returns>
+	Vector2 GetPos() {
+		return pos_;
+	}
+
+	/// <summary>
+	/// プレイヤーのマップチップ上の位置の取得
+	/// </summary>
+	/// <param name="Num"> どの角か選択 </param>
+	/// <returns> 選択した角の位置 </returns>
+	Vector2 GetMapPos(int Num);
 
 private:
 	void CalcMapPos();
