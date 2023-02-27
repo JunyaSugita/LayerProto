@@ -50,6 +50,10 @@ public:
 
 	void MoveLayer(Vector2 start,Vector2 end);
 
+	bool GetIsSelect() {
+		return isSelect_;
+	};
+
 public:
 
 	//ŒÅ’è’l
@@ -63,6 +67,7 @@ private:
 	int map_[MAX_OVERLAP][MAP_Y][MAP_X];
 
 	Vector2 mouseStart;
+	bool isSelect_;
 
 };
 

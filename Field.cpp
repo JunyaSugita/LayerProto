@@ -57,6 +57,7 @@ void Field::Initialize(int map)
 	}
 
 	mouseStart = { -1,-1 };
+	isSelect_ = false;
 }
 
 void Field::Update(int mouseX, int mouseY, int windowWidth, int windowHeight)
@@ -65,12 +66,14 @@ void Field::Update(int mouseX, int mouseY, int windowWidth, int windowHeight)
 		if (mouseStart.x == -1) {
 			mouseStart = { (float)(mouseX / (windowWidth / Frame::GetLayerFrameWidth())),(float)(mouseY / (windowHeight / Frame::GetLayerFrameHeight())) };
 		}
+		isSelect_ = true;
 	}
 	else if (mouseStart.x != -1) {
 		if (mouseStart.x >= 0 && mouseStart.x <= 2 && mouseStart.y >= 0 && mouseStart.y <= 2) {
 			MoveLayer(mouseStart, { (float)(mouseX / (windowWidth / Frame::GetLayerFrameWidth())),(float)(mouseY / (windowHeight / Frame::GetLayerFrameHeight())) });
 		}
 		mouseStart = { -1,-1 };
+		isSelect_ = false;
 	}
 
 

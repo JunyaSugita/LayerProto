@@ -27,6 +27,9 @@ void Player::Updata(float windowX, float windowY, Field* field, Frame* frame)
 	if (frame->GetisSelect()) {
 		return;
 	}
+	if (field->GetIsSelect()) {
+		return;
+	}
 
 #pragma region ‘€ì
 	
