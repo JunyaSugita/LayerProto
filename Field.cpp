@@ -48,7 +48,7 @@ void Field::Initialize(int map)
 			auto itr = layer.begin();
 			int count = 0;
 
-
+			//d‚È‚è‚ª‚ ‚ê‚Î‚»‚Ì•ª‚à“Ç‚İ‚İ
 			for (auto itr = layer.begin(); itr != layer.end(); itr++) {
 				if (layer.size())
 				{
