@@ -1,6 +1,7 @@
 #include "Field.h"
 #include "StageCSVManager.h"
 #include <assert.h>
+#include "Player.h"
 
 //無視
 Field::Field() {}
@@ -15,26 +16,7 @@ void Field::Initialize(int map)
 {
 	//マップの読み込み(未実装のためマジックナンバーを直入れ)
 
-	int mapTemp[MAX_OVERLAP][MAP_Y][MAP_X] /*= {
-		{0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
-		{0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
-		{0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
-		{0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
-		{0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
-		{0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
-		{0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
-		{0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
-		{0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
-		{0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
-		{0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
-		{0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0},
-		{0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0},
-		{0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,1,0,0},
-		{0,0,0,0,0,0,1,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,1,0,0},
-		{0,0,0,1,0,0,1,0,0,0,0,0,0,1,0,1,0,0,0,0,1,1,1,0,1,0,0},
-		{0,0,0,1,0,0,1,1,1,0,0,0,1,0,0,0,1,0,0,0,0,0,0,0,0,0,2},
-		{1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1},
-	}*/;
+	int mapTemp[MAX_OVERLAP][MAP_Y][MAP_X];
 
 
 	for (int y = 0; y < Frame::GetLayerFrameHeight() * Layer::layerBlockHeight; y++)
@@ -85,7 +67,7 @@ void Field::Update(int mouseX, int mouseY, int windowWidth, int windowHeight)
 			mouseStart = { (float)(mouseX / (windowWidth / Frame::GetLayerFrameWidth())),(float)(mouseY / (windowHeight / Frame::GetLayerFrameHeight())) };
 		}
 	}
-	else if(mouseStart.x != -1){
+	else if (mouseStart.x != -1) {
 		if (mouseStart.x >= 0 && mouseStart.x <= 2 && mouseStart.y >= 0 && mouseStart.y <= 2) {
 			MoveLayer(mouseStart, { (float)(mouseX / (windowWidth / Frame::GetLayerFrameWidth())),(float)(mouseY / (windowHeight / Frame::GetLayerFrameHeight())) });
 		}
@@ -171,6 +153,8 @@ int Field::GetLayerNum(int x, int y)
 
 void Field::MoveLayer(Vector2 start, Vector2 end)
 {
+	Player* player = Player::GetInctance();
+
 	//アサート
 	assert("start.xに0~2以外の数字が入っています", start.x >= 0 && start.x <= 2);
 	assert("start.yに0~2以外の数字が入っています", start.y >= 0 && start.y <= 2);
@@ -181,6 +165,10 @@ void Field::MoveLayer(Vector2 start, Vector2 end)
 	int tempMap[9][9];
 	int temp = GetLayerNum(start.x, start.y);
 
+	//プレイヤーの情報をとる
+	if (start.x * 270 <= player->GetPos().x && (start.x + 1) * 270 >= player->GetPos().x && start.y * 270 <= player->GetPos().y && (start.y + 1) * 270 >= player->GetPos().y) {
+		map_[temp][(int)player->GetMapPos().y][(int)player->GetMapPos().x] = 9;
+	}
 	//消しながらtempMapに情報を移す
 	for (int i = 0; i < 9; i++) {
 		for (int j = 0; j < 9; j++) {
@@ -191,13 +179,18 @@ void Field::MoveLayer(Vector2 start, Vector2 end)
 
 	//最前面を探す
 	temp = GetLayerNum(end.x, end.y);
-	assert("レイヤーの重なり最大値5を超えています", temp < 5);
+	assert("レイヤーの重なり最大値5を超えています", temp < MAX_OVERLAP);
 	//tempMapから情報を移す
 	for (int i = 0; i < 9; i++) {
 		for (int j = 0; j < 9; j++) {
 			map_[temp + 1][i + (int)end.y * 9][j + (int)end.x * 9] = tempMap[i][j];
+			if (map_[temp + 1][i + (int)end.y * 9][j + (int)end.x * 9] == 9) {
+				player->SetPlayerMapPos({ (float)(i + (int)end.y * 9), (float)(j + (int)end.x * 9) });
+				map_[temp + 1][i + (int)end.y * 9][j + (int)end.x * 9] = 0;
+			}
 		}
 	}
+
 }
 
 
