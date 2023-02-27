@@ -39,7 +39,7 @@ void Field::Initialize(int map)
 
 	for (int y = 0; y < Frame::GetLayerFrameHeight() * Layer::layerBlockHeight; y++)
 	{
-		for (int x = 0; x < Frame::GetLayerFrameHeight() * Layer::layerBlockWidth; x++)
+		for (int x = 0; x < Frame::GetLayerFrameWidth() * Layer::layerBlockWidth; x++)
 		{
 			int Y = y / Layer::layerBlockHeight;
 			int X = x / Layer::layerBlockWidth;
@@ -66,26 +66,40 @@ void Field::Initialize(int map)
 
 
 	//代入
-	for (int k = 0; k < MAX_OVERLAP;k++) {
+	for (int k = 0; k < MAX_OVERLAP; k++) {
 		for (int i = 0; i < MAP_Y; i++) {
 			for (int j = 0; j < MAP_X; j++) {
 				map_[k][i][j] = mapTemp[k][i][j];
 			}
 		}
 	}
+
+	mouseStart = { -1,-1 };
 }
 
-void Field::Update()
+void Field::Update(int mouseX, int mouseY, int windowWidth, int windowHeight)
 {
+	if ((GetMouseInput() & MOUSE_INPUT_LEFT) != 0) {
+		if (mouseStart.x == -1) {
+			mouseStart = { (float)(mouseX / (windowWidth / Frame::GetLayerFrameWidth())),(float)(mouseY / (windowHeight / Frame::GetLayerFrameHeight())) };
+		}
+	}
+	else if(mouseStart.x != -1){
+		if (mouseStart.x >= 0 && mouseStart.x <= 2 && mouseStart.y >= 0 && mouseStart.y <= 2) {
+			MoveLayer(mouseStart, { (float)(mouseX / (windowWidth / Frame::GetLayerFrameWidth())),(float)(mouseY / (windowHeight / Frame::GetLayerFrameHeight())) });
+		}
+		mouseStart = { -1,-1 };
+	}
+
 
 }
 
 void Field::Draw()
 {
 	for (int k = 0; k < MAX_OVERLAP; k++) {
-	for (int i = 0; i < MAP_Y; i++) {
-		for (int j = 0; j < MAP_X; j++) {
-			int Light = GetLayerNum(j / 9,i / 9);
+		for (int i = 0; i < MAP_Y; i++) {
+			for (int j = 0; j < MAP_X; j++) {
+				int Light = GetLayerNum(j / 9, i / 9);
 				//マップの数字によって描画する
 				switch (map_[k][i][j])
 				{
@@ -139,9 +153,9 @@ int Field::GetLayerNum(int x, int y)
 	//レイヤーの層(最前面から)
 	for (int i = MAX_OVERLAP - 1; i >= 0; i--) {
 		//レイヤーYから
-		for (int j = y * 9; j < 9 + (y + 1); j++) {
+		for (int j = y * 9; j < 9 * (y + 1); j++) {
 			//レイヤーXから
-			for (int k = x * 9 ; k < 9 + (x + 1); k++) {
+			for (int k = x * 9; k < 9 * (x + 1); k++) {
 				if (map_[i][j][k] != -858993460) {
 					//1つでも0以外があればレイヤーがある層を返す
 					return i;
@@ -152,6 +166,37 @@ int Field::GetLayerNum(int x, int y)
 	}
 	//無ければ0層を返す
 	return 0;
+}
+
+void Field::MoveLayer(Vector2 start, Vector2 end)
+{
+	//アサート
+	assert("start.xに0~2以外の数字が入っています", start.x >= 0 && start.x <= 2);
+	assert("start.yに0~2以外の数字が入っています", start.y >= 0 && start.y <= 2);
+	assert("end.xに0~2以外の数字が入っています", end.x >= 0 && end.x <= 2);
+	assert("end.yに0~2以外の数字が入っています", end.y >= 0 && end.y <= 2);
+
+	//取るフレームの層を出す
+	int tempMap[9][9];
+	int temp = GetLayerNum(start.x, start.y);
+
+	//消しながらtempMapに情報を移す
+	for (int i = 0; i < 9; i++) {
+		for (int j = 0; j < 9; j++) {
+			tempMap[i][j] = map_[temp][i + (int)start.y * 9][j + (int)start.x * 9];
+			map_[temp][i + (int)start.y * 9][j + (int)start.x * 9] = -858993460;
+		}
+	}
+
+	//最前面を探す
+	temp = GetLayerNum(end.x, end.y);
+	assert("レイヤーの重なり最大値5を超えています", temp < 5);
+	//tempMapから情報を移す
+	for (int i = 0; i < 9; i++) {
+		for (int j = 0; j < 9; j++) {
+			map_[temp + 1][i + (int)end.y * 9][j + (int)end.x * 9] = tempMap[i][j];
+		}
+	}
 }
 
 
