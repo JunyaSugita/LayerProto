@@ -11,11 +11,6 @@ void Frame::Initialize()
 		{
 			this->layersInTheFrame[i][j].clear();
 
-			//std::list<std::unique_ptr<Layer>>& layer = layersInTheFrame[i][j];
-			////d‚È‚è‚ª‚ ‚ê‚Î‚»‚Ì•ª‚à‰ð•ú
-			//for (auto itr = layer.begin(); itr != layer.end(); itr++) {
-			//	itr->reset();
-			//}
 			if (layers_.size())
 			{
 				layers_[i].clear();
@@ -209,11 +204,11 @@ Frame::~Frame()
 		{
 			this->layersInTheFrame[i][j].clear();
 
-			std::list<std::unique_ptr<Layer>>& layer = layersInTheFrame[i][j];
-			//d‚È‚è‚ª‚ ‚ê‚Î‚»‚Ì•ª‚à‰ð•ú
-			for (auto itr = layer.begin(); itr != layer.end(); itr++) {
-				itr->reset();
-			}
+			//std::list<std::unique_ptr<Layer>>& layer = layersInTheFrame[i][j];
+			////d‚È‚è‚ª‚ ‚ê‚Î‚»‚Ì•ª‚à‰ð•ú
+			//for (auto itr = layer.begin(); itr != layer.end(); itr++) {
+			//	itr->reset();
+			//}
 			if (layers_.size())
 			{
 				layers_[i].clear();
