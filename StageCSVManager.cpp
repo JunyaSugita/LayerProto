@@ -122,6 +122,9 @@ void StageCSVManager::LoadStageCSV(int stageNum)
 			}
 		}
 	}
+
+	//ƒtƒ@ƒCƒ‹•Â‚¶‚é
+	file.close();
 }
 
 

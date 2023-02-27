@@ -45,8 +45,5 @@ private:
 	int logType;
 
 	Vector2 frontVec;
-
-
-
 };
 

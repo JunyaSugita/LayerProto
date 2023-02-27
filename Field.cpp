@@ -45,7 +45,6 @@ void Field::Initialize(int map)
 			int X = x / Layer::layerBlockWidth;
 
 			std::list<std::unique_ptr<Layer>>& layer = StageCSVManager::GetInstance().frameData.layersInTheFrame[Y][X];
-			auto itr = layer.begin();
 			int count = 0;
 
 			//d‚È‚è‚ª‚ ‚ê‚Î‚»‚Ì•ª‚à“Ç‚İ‚İ
