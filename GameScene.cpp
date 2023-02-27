@@ -42,6 +42,8 @@ void GameScene::Update(char* keys, char* oldkeys)
 
 	// マウスの位置を取得
 	GetMousePoint(&MouseX, &MouseY);
+	//
+	field_->Update(MouseX, MouseY,810,810);
 
 	//プレイヤー
 	player_->Updata(810, 810,field_.get(), fream_.get());
@@ -56,6 +58,8 @@ void GameScene::Update(char* keys, char* oldkeys)
 
 	fream_->Update(keys, oldkeys,MouseX,MouseY,oldMouseX,oldMouseY);
 	//layer_->Update(keys, oldkeys);
+
+
 }
 
 void GameScene::Draw()
@@ -86,13 +90,15 @@ void GameScene::Draw()
 
 	//layer_->Draw();
 
-	//プレイヤーの表示
-	player_->Draw();
+
 
 	//フィールドの表示
 	field_->Draw();
 
-	fream_->Draw();
+	//プレイヤーの表示
+	player_->Draw();
+
+	//fream_->Draw();
 
 	//コメント表示
 	DrawFormatString(10, 0, GetColor(200, 200, 200), "R : reset & hotReload(coming soon)");
