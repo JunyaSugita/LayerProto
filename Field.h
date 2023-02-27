@@ -7,6 +7,7 @@ enum map
 	NONE,	//空間
 	BLOCK,	//ブロック
 	GOAL,	//ゴール
+	NOLAYER//レイヤーが何もない枠
 };
 
 class Field

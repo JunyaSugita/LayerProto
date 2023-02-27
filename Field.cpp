@@ -37,10 +37,6 @@ void Field::Initialize(int map)
 					//マップをセット
 					mapTemp[count][y][x] = block;
 				}
-				else
-				{
-					mapTemp[count][y][x] = Block::BlockType::NOLAYER_BLOCK;
-				}
 				count++;
 			}
 		}
@@ -103,6 +99,13 @@ void Field::Draw()
 					DrawBox(j * BLOCK_SIZE, i * BLOCK_SIZE, j * BLOCK_SIZE + BLOCK_SIZE, i * BLOCK_SIZE + BLOCK_SIZE, GetColor(200, 100, 100), true);
 					break;
 
+				case NOLAYER:
+					//レイヤーはないが、枠はある場所
+					SetDrawBlendMode(DX_BLENDMODE_ALPHA, 100);
+					DrawBox(j * BLOCK_SIZE, i * BLOCK_SIZE, j * BLOCK_SIZE + BLOCK_SIZE, i * BLOCK_SIZE + BLOCK_SIZE, GetColor(100, 100, 10), true);
+					SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 100);
+					break;
+
 				case NONE:
 				default:
 					break;
@@ -136,7 +139,8 @@ int Field::GetLayerNum(int x, int y)
 	assert("yに0~2以外の数字が入っています", y >= 0 && y <= 2);
 
 	//レイヤーの層(最前面から)
-	for (int i = MAX_OVERLAP - 1; i >= 0; i--) {
+	int i;
+	for (i = MAX_OVERLAP - 1; i >= 0; i--) {
 		//レイヤーYから
 		for (int j = y * 9; j < 9 * (y + 1); j++) {
 			//レイヤーXから
@@ -150,7 +154,7 @@ int Field::GetLayerNum(int x, int y)
 
 	}
 	//無ければ0層を返す
-	return 0;
+	return i;
 }
 
 void Field::MoveLayer(Vector2 start, Vector2 end)
@@ -162,6 +166,12 @@ void Field::MoveLayer(Vector2 start, Vector2 end)
 	assert("start.yに0~2以外の数字が入っています", start.y >= 0 && start.y <= 2);
 	assert("end.xに0~2以外の数字が入っています", end.x >= 0 && end.x <= 2);
 	assert("end.yに0~2以外の数字が入っています", end.y >= 0 && end.y <= 2);
+
+	//枠がなかったら移動させない
+	if (GetLayerNum(end.x, end.y) < 0)
+	{
+		return;
+	}
 
 	//取るフレームの層を出す
 	int tempMap[9][9];
@@ -175,7 +185,16 @@ void Field::MoveLayer(Vector2 start, Vector2 end)
 	for (int i = 0; i < 9; i++) {
 		for (int j = 0; j < 9; j++) {
 			tempMap[i][j] = map_[temp][i + (int)start.y * 9][j + (int)start.x * 9];
-			map_[temp][i + (int)start.y * 9][j + (int)start.x * 9] = -858993460;
+			//レイヤーが一枚で、移動させたらレイヤーなし枠にする（レイヤーが移動できる場所）
+			if (temp == 0)
+			{
+				map_[temp][i + (int)start.y * 9][j + (int)start.x * 9] = NOLAYER;
+			}
+			//下にレイヤーがある場合は消す
+			else
+			{
+				map_[temp][i + (int)start.y * 9][j + (int)start.x * 9] = -858993460;
+			}
 		}
 	}
 
@@ -185,10 +204,23 @@ void Field::MoveLayer(Vector2 start, Vector2 end)
 	//tempMapから情報を移す
 	for (int i = 0; i < 9; i++) {
 		for (int j = 0; j < 9; j++) {
-			map_[temp + 1][i + (int)end.y * 9][j + (int)end.x * 9] = tempMap[i][j];
-			if (map_[temp + 1][i + (int)end.y * 9][j + (int)end.x * 9] == 9) {
-				player->SetPlayerMapPos({ (float)(i + (int)end.y * 9), (float)(j + (int)end.x * 9) });
-				map_[temp + 1][i + (int)end.y * 9][j + (int)end.x * 9] = 0;
+			//枠なしレイヤーに重ねたらそれを消して上書き
+			if (map_[temp][i + (int)end.y * 9][j + (int)end.x * 9] == NOLAYER)
+			{
+				map_[temp][i + (int)end.y * 9][j + (int)end.x * 9] = tempMap[i][j];
+				if (map_[temp][i + (int)end.y * 9][j + (int)end.x * 9] == 9) {
+					player->SetPlayerMapPos({ (float)(i + (int)end.y * 9), (float)(j + (int)end.x * 9) });
+					map_[temp][i + (int)end.y * 9][j + (int)end.x * 9] = 0;
+				}
+			}
+			//通常時は重ねていく
+			else
+			{
+				map_[temp + 1][i + (int)end.y * 9][j + (int)end.x * 9] = tempMap[i][j];
+				if (map_[temp + 1][i + (int)end.y * 9][j + (int)end.x * 9] == 9) {
+					player->SetPlayerMapPos({ (float)(i + (int)end.y * 9), (float)(j + (int)end.x * 9) });
+					map_[temp + 1][i + (int)end.y * 9][j + (int)end.x * 9] = 0;
+				}
 			}
 		}
 	}
