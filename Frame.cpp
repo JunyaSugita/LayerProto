@@ -91,7 +91,7 @@ void Frame::Initialize()
 
 void Frame::Update(char* keys, char* oldkeys, int mouseX, int mouseY, int oldMouseX, int oldMouseY)
 {
-	Player* player = Player::GetInctance();
+
 
 	
 

@@ -69,8 +69,8 @@ public:
 	/// </summary>
 	/// <param name="gridPos"> マップチップ上の座標 </param>
 	void SetPlayerMapPos(Vector2 gridPos) {
-		pos_.x = gridPos.x * SIZE + SIZE / 2;
-		pos_.y = gridPos.y * SIZE + SIZE / 2;
+		pos_.y = gridPos.x * SIZE + SIZE / 2;
+		pos_.x = gridPos.y * SIZE + SIZE / 2;
 	}
 
 	static Player* GetInctance();

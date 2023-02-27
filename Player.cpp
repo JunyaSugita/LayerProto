@@ -177,7 +177,7 @@ Vector2 Player::GetMapPos(int Num)
 
 Vector2 Player::GetMapPos()
 {
-	return Vector2();
+	return Vector2(pos_.x / 30,pos_.y / 30);
 }
 
 void Player::CalcMapPos()
