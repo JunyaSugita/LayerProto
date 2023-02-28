@@ -14,7 +14,7 @@ Field::~Field()
 
 void Field::Initialize(int map)
 {
-	//マップの読み込み(未実装のためマジックナンバーを直入れ)
+	//マップの読み込み
 
 	int mapTemp[MAX_OVERLAP][MAP_Y][MAP_X];
 
@@ -176,11 +176,28 @@ void Field::MoveLayer(Vector2 start, Vector2 end)
 	//取るフレームの層を出す
 	int tempMap[9][9];
 	int temp = GetLayerNum(start.x, start.y);
-
 	//プレイヤーの情報をとる
 	if (start.x * 270 <= player->GetPos().x && (start.x + 1) * 270 >= player->GetPos().x && start.y * 270 <= player->GetPos().y && (start.y + 1) * 270 >= player->GetPos().y) {
-		map_[temp][(int)player->GetMapPos().y][(int)player->GetMapPos().x] = 9;
+		map_[temp][(int)player->GetMapPos().y][(int)player->GetMapPos().x] = PLAYER;
 	}
+
+	//ブロック同士が重なってしまっていたら移動させない
+	for (int k = GetLayerNum(end.x, end.y); k >= 0; k--) {
+		for (int i = 0; i < 9; i++) {
+			for (int j = 0; j < 9; j++) {
+				//ブロック同士
+				if (map_[GetLayerNum(start.x, start.y)][i + (int)start.y * 9][j + (int)start.x * 9] == BLOCK && map_[k][i + (int)end.y * 9][j + (int)end.x * 9] == BLOCK) {
+					return;
+				}
+				//プレイヤーとブロック
+				if (map_[GetLayerNum(start.x, start.y)][i + (int)start.y * 9][j + (int)start.x * 9] == PLAYER && map_[k][i + (int)end.y * 9][j + (int)end.x * 9] == BLOCK) {
+					map_[GetLayerNum(start.x, start.y)][i + (int)start.y * 9][j + (int)start.x * 9] = NONE;
+					return;
+				}
+			}
+		}
+	}
+
 	//消しながらtempMapに情報を移す
 	for (int i = 0; i < 9; i++) {
 		for (int j = 0; j < 9; j++) {
@@ -200,7 +217,7 @@ void Field::MoveLayer(Vector2 start, Vector2 end)
 
 	//最前面を探す
 	temp = GetLayerNum(end.x, end.y);
-	assert("レイヤーの重なり最大値5を超えています", temp < MAX_OVERLAP);
+	assert("レイヤーの重なり最大値10を超えています", temp < MAX_OVERLAP);
 	//tempMapから情報を移す
 	for (int i = 0; i < 9; i++) {
 		for (int j = 0; j < 9; j++) {
@@ -208,18 +225,18 @@ void Field::MoveLayer(Vector2 start, Vector2 end)
 			if (map_[temp][i + (int)end.y * 9][j + (int)end.x * 9] == NOLAYER)
 			{
 				map_[temp][i + (int)end.y * 9][j + (int)end.x * 9] = tempMap[i][j];
-				if (map_[temp][i + (int)end.y * 9][j + (int)end.x * 9] == 9) {
+				if (map_[temp][i + (int)end.y * 9][j + (int)end.x * 9] == PLAYER) {
 					player->SetPlayerMapPos({ (float)(i + (int)end.y * 9), (float)(j + (int)end.x * 9) });
-					map_[temp][i + (int)end.y * 9][j + (int)end.x * 9] = 0;
+					map_[temp][i + (int)end.y * 9][j + (int)end.x * 9] = NONE;
 				}
 			}
 			//通常時は重ねていく
 			else
 			{
 				map_[temp + 1][i + (int)end.y * 9][j + (int)end.x * 9] = tempMap[i][j];
-				if (map_[temp + 1][i + (int)end.y * 9][j + (int)end.x * 9] == 9) {
+				if (map_[temp + 1][i + (int)end.y * 9][j + (int)end.x * 9] == PLAYER) {
 					player->SetPlayerMapPos({ (float)(i + (int)end.y * 9), (float)(j + (int)end.x * 9) });
-					map_[temp + 1][i + (int)end.y * 9][j + (int)end.x * 9] = 0;
+					map_[temp + 1][i + (int)end.y * 9][j + (int)end.x * 9] = NONE;
 				}
 			}
 		}
