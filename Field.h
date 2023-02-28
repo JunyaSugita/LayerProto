@@ -7,6 +7,8 @@ enum map
 	NONE,	//空間
 	BLOCK,	//ブロック
 	GOAL,	//ゴール
+	NOLAYER,//レイヤーが何もない枠
+	PLAYER,
 };
 
 class Field
@@ -25,7 +27,7 @@ public:
 	/// <summary>
 	/// updata
 	/// </summary>
-	void Update();
+	void Update(int mouseX, int mouseY,int windowWidth,int windowHeight);
 
 	/// <summary>
 	/// draw
@@ -47,19 +49,27 @@ public:
 	/// <returns> 指定の場所にレイヤーが何層あるか </returns>
 	int GetLayerNum(int x,int y);
 
+
+	void MoveLayer(Vector2 start,Vector2 end);
+
+	bool GetIsSelect() {
+		return isSelect_;
+	};
+
 public:
 
 	//固定値
 	static const int MAP_X = 27;	//マップの横ブロック数
 	static const int MAP_Y = 27;	//マップの縦ブロック数
 	const int BLOCK_SIZE = 30;		//ブロックサイズ
-	static const int MAX_OVERLAP = 5;		//レイヤーを何層まで重ねられるか
+	static const int MAX_OVERLAP = 10;		//レイヤーを何層まで重ねられるか
 
 private:
 	//マップ[y][x](数値は仮)
-	int map_[5][MAP_Y][MAP_X];
+	int map_[MAX_OVERLAP][MAP_Y][MAP_X];
 
-
+	Vector2 mouseStart;
+	bool isSelect_;
 
 };
 

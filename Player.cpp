@@ -27,6 +27,9 @@ void Player::Updata(float windowX, float windowY, Field* field, Frame* frame)
 	if (frame->GetisSelect()) {
 		return;
 	}
+	if (field->GetIsSelect()) {
+		return;
+	}
 
 #pragma region ëÄçÏ
 	
@@ -177,7 +180,7 @@ Vector2 Player::GetMapPos(int Num)
 
 Vector2 Player::GetMapPos()
 {
-	return Vector2();
+	return Vector2(pos_.x / 30,pos_.y / 30);
 }
 
 void Player::CalcMapPos()

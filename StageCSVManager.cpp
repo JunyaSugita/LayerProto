@@ -73,8 +73,14 @@ void StageCSVManager::LoadStageCSV(int stageNum)
 				layer->Initialize(Layer::layerBlockWidth, Layer::layerBlockHeight);
 
 				frameData.layersInTheFrame[layersIntheFrameY][layersIntheFrameX].push_back(std::move(layer));
-				//レイヤーの[0][0]に入れて、レイヤーなし枠とわかるように
-				frameData.layersInTheFrame[layersIntheFrameY][layersIntheFrameX].begin()->get()->blocks_[0][0]->SetType(BlockType::NOLAYER_BLOCK);
+				//レイヤーのブロックに枠なしと入れて、レイヤーなし枠とわかるように
+				for (int i = 0; i < Layer::layerBlockHeight; i++)
+				{
+					for (int j = 0; j < Layer::layerBlockWidth; j++)
+					{
+						frameData.layersInTheFrame[layersIntheFrameY][layersIntheFrameX].begin()->get()->blocks_[i][j]->SetType(BlockType::NOLAYER_BLOCK);
+					}
+				}
 			}
 		}
 
@@ -122,6 +128,9 @@ void StageCSVManager::LoadStageCSV(int stageNum)
 			}
 		}
 	}
+
+	//ファイル閉じる
+	file.close();
 }
 
 

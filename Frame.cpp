@@ -4,11 +4,17 @@
 
 void Frame::Initialize()
 {
-	for(int i = 0; i < this->GetLayerFrameHeight(); i++)
+	//解放する
+	for (int i = 0; i < this->GetLayerFrameHeight(); i++)
 	{
 		for(int j = 0; j < this->GetLayerFrameWidth(); j++)
 		{
 			this->layersInTheFrame[i][j].clear();
+
+			if (layers_.size())
+			{
+				layers_[i].clear();
+			}
 		}
 	}
 
@@ -84,7 +90,6 @@ void Frame::Initialize()
 
 void Frame::Update(char* keys, char* oldkeys, int mouseX, int mouseY, int oldMouseX, int oldMouseY)
 {
-	Player* player = Player::GetInctance();
 
 
 
@@ -237,7 +242,44 @@ void Frame::Draw()
 
 Frame::~Frame()
 {
+	//for(int i = 0; i < this->GetLayerFrameHeight(); i++)
+	//{
+	//	for(int j = 0; j < this->GetLayerFrameWidth(); j++)
+	//	{
+	//		////レイヤーのイテレータ
+	//		//std::list<Layer>::iterator it;
+	//		//it = layersInTheFrame[i][j].begin();
+	//		////デストラクタを呼び出す
+	//		//it->~Layer();
+	//		////次に進める
+	//		//it++;
 
+	//		std::list<std::unique_ptr<Layer>>& layer = layersInTheFrame[i][j];
+	//		//重なりがあればその分も解放
+	//		for (auto itr = layer.begin(); itr != layer.end(); itr++) {
+	//			itr->reset();
+	//		}
+	//	}
+	//}
+
+	//解放する
+	for (int i = 0; i < this->GetLayerFrameHeight(); i++)
+	{
+		for (int j = 0; j < this->GetLayerFrameWidth(); j++)
+		{
+			this->layersInTheFrame[i][j].clear();
+
+			//std::list<std::unique_ptr<Layer>>& layer = layersInTheFrame[i][j];
+			////重なりがあればその分も解放
+			//for (auto itr = layer.begin(); itr != layer.end(); itr++) {
+			//	itr->reset();
+			//}
+			if (layers_.size())
+			{
+				layers_[i].clear();
+			}
+		}
+	}
 }
 
 bool Frame::GetisSelect()

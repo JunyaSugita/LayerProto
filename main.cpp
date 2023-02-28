@@ -5,10 +5,10 @@
 const char TITLE[] = "LayerProto";
 
 // ウィンドウ横幅(仮)
-int WIN_WIDTH = 1000;
+int WIN_WIDTH = 810;
 
 // ウィンドウ縦幅(仮)
-int WIN_HEIGHT = 1000;
+int WIN_HEIGHT = 810;
 
 int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance, _In_ LPSTR lpCmdLine,
                    _In_ int nCmdShow) {
