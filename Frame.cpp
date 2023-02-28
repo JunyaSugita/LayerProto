@@ -4,20 +4,20 @@
 
 void Frame::Initialize()
 {
-	for (int i = 0; i < this->GetLayerFrameHeight(); i++)
+	for(int i = 0; i < this->GetLayerFrameHeight(); i++)
 	{
-		for (int j = 0; j < this->GetLayerFrameWidth(); j++)
+		for(int j = 0; j < this->GetLayerFrameWidth(); j++)
 		{
 			this->layersInTheFrame[i][j].clear();
 		}
 	}
 
-	for (int i = 0; i < layerFrameWidth; i++)
+	for(int i = 0; i < layerFrameWidth; i++)
 	{
 		//ブロック型を持てる空のベクタを追加(行列でいうi列)
 		layers_.push_back(std::vector<std::unique_ptr <Layer>>());
 
-		for (int j = 0; j < layerFrameHeight; j++)
+		for(int j = 0; j < layerFrameHeight; j++)
 		{
 			std::unique_ptr <Layer> layer_;
 			layer_ = std::make_unique<Layer>();
@@ -28,18 +28,18 @@ void Frame::Initialize()
 	}
 
 	//座標の初期化
-	for (int i = 0; i < layerFrameWidth; i++)
+	for(int i = 0; i < layerFrameWidth; i++)
 	{
-		for (int j = 0; j < layerFrameHeight; j++)
+		for(int j = 0; j < layerFrameHeight; j++)
 		{
 			Vector2 pos;
 			//ブロックの座標を設定
-			if (i >= 0)
+			if(i >= 0)
 			{
 				pos.y = i * Layer::layerWidth;
 
 			}
-			if (j >= 0)
+			if(j >= 0)
 			{
 				pos.x = j * Layer::layerHeight;
 			}
@@ -50,16 +50,16 @@ void Frame::Initialize()
 	}
 
 	//枠の長さを設定
-	for (int i = 0; i < layerFrameWidth; i++)
+	for(int i = 0; i < layerFrameWidth; i++)
 	{
-		for (int j = 0; j < layerFrameHeight; j++)
+		for(int j = 0; j < layerFrameHeight; j++)
 		{
-			if (i >= 0)
+			if(i >= 0)
 			{
 				freamPos[i][j].y = (i * Layer::layerWidth);
 
 			}
-			if (j >= 0)
+			if(j >= 0)
 			{
 				freamPos[i][j].x = (j * Layer::layerWidth);
 			}
@@ -80,40 +80,48 @@ void Frame::Initialize()
 		}
 	}
 
-	
 }
 
 void Frame::Update(char* keys, char* oldkeys, int mouseX, int mouseY, int oldMouseX, int oldMouseY)
 {
 	Player* player = Player::GetInctance();
 
-	
+
+
+	for(int i = 0; i < layerFrameWidth; i++)
+	{
+		for(int j = 0; j < layerFrameHeight; j++)
+		{
+			if(layers_[i][j]->GetIsFront() == true)
+			{
+				//選択したレイヤーの番号を取ってくる
+				frontVec.x = i;
+				frontVec.y = j;
+			}
+		}
+	}
 
 	//レイヤーを選択する処理
-	if (GetMouseInputLog2(&button, &clickX, &clickY, &logType, TRUE) == 0)
+	if(GetMouseInputLog2(&button, &clickX, &clickY, &logType, TRUE) == 0)
 	{
-		
-		for (int i = 0; i < layerFrameWidth; i++)
+		if((GetMouseInput() & MOUSE_INPUT_LEFT) != 0)
 		{
-			for (int j = 0; j < layerFrameHeight; j++)
+			for(int i = 0; i < layerFrameWidth; i++)
 			{
-				if(layers_[i][j]->GetIsFront() == true)
+				for(int j = 0; j < layerFrameHeight; j++)
 				{
-					frontVec.x = i;
-					frontVec.y = j;
-				}
-
-				if (clickX > layers_[i][j]->GetLayerPos().x && clickX < layers_[i][j]->GetLayerPos().x + Layer::layerWidth)
-				{
-					if (clickY > layers_[i][j]->GetLayerPos().y && clickY < layers_[i][j]->GetLayerPos().y + Layer::layerHeight)
+					if(clickX > layers_[i][j]->GetLayerPos().x && clickX < layers_[i][j]->GetLayerPos().x + Layer::layerWidth)
 					{
-						if (layers_[i][j]->GetIsSelect() == false)
+						if(clickY > layers_[i][j]->GetLayerPos().y && clickY < layers_[i][j]->GetLayerPos().y + Layer::layerHeight)
 						{
-							layers_[i][j]->SetIsSelect(true);
-							layers_[i][j]->SetIsFront(true);
-
-
-							layers_[(int)frontVec.x][int(frontVec.y)]->SetIsFront(false);
+							if(layers_[i][j]->GetIsSelect() == false && isSelect_ == false)
+							{
+								//最前面を選択した時の処理
+								if(layers_[i][j]->GetFrontCount() == 1)
+								{
+									layers_[i][j]->SetIsSelect(true);
+								}
+							}
 						}
 					}
 				}
@@ -121,19 +129,56 @@ void Frame::Update(char* keys, char* oldkeys, int mouseX, int mouseY, int oldMou
 		}
 	}
 
-	for (int i = 0; i < layerFrameWidth; i++)
+	for(int i = 0; i < layerFrameWidth; i++)
 	{
-		for (int j = 0; j < layerFrameHeight; j++)
+		for(int j = 0; j < layerFrameHeight; j++)
 		{
-			if (layers_[i][j]->GetIsSelect() == true)
+			if(layers_[i][j]->GetIsSelect() == true)
 			{
 				//左クリックが押され続けているとき
-				if ((GetMouseInput() & MOUSE_INPUT_LEFT) != 0)
+				if((GetMouseInput() & MOUSE_INPUT_LEFT) != 0)
 				{
 				}
 				else
 				{
-					layers_[i][j]->SerchFrame(layerFrameWidth, freamPos);
+					layers_[i][j]->SerchFrame();
+				}
+			}
+		}
+	}
+
+	for(int i = 0; i < layerFrameWidth; i++)
+	{
+		for(int j = 0; j < layerFrameHeight; j++)
+		{
+			//各フレーム時間を取得
+			isLayerTimer[i][j] = layers_[i][j]->GetLayerTimer();
+		}
+	}
+
+	for(int i = 0; i < layerFrameWidth; i++)
+	{
+		for(int j = 0; j < layerFrameHeight; j++)
+		{
+			//どこか枠をはめたのなら
+			if(layers_[i][j]->GetisSetPos() == true)
+			{
+				isSetLayer = true;
+			}
+		}
+	}
+
+	for(int i = 0; i < layerFrameWidth; i++)
+	{
+		for(int j = 0; j < layerFrameHeight; j++)
+		{
+			if(isSetLayer == true)
+			{
+				//レイヤーの深さを調整する
+				layers_[i][j]->CheckLayerDepth(isLayerTimer, layerPos_);
+				if(i == layerFrameWidth - 1 && j == layerFrameHeight - 1)
+				{
+					isSetLayer = false;
 				}
 			}
 		}
@@ -144,7 +189,8 @@ void Frame::Update(char* keys, char* oldkeys, int mouseX, int mouseY, int oldMou
 	{
 		for(int j = 0; j < layerFrameHeight; j++)
 		{
-			layers_[i][j]->Update(keys, oldkeys, mouseX, mouseY, oldMouseX, oldMouseY);
+			layers_[i][j]->Update(keys, oldkeys, mouseX, mouseY, oldMouseX, oldMouseY, freamPos);
+			layerPos_[i][j] = layers_[i][j]->GetLayerPos();
 		}
 	}
 }
@@ -152,45 +198,56 @@ void Frame::Update(char* keys, char* oldkeys, int mouseX, int mouseY, int oldMou
 
 void Frame::Draw()
 {
-	for (int i = 0; i < layerFrameWidth; i++)
+	for(int i = 0; i < layerFrameWidth; i++)
 	{
-		for (int j = 0; j < layerFrameHeight; j++)
+		for(int j = 0; j < layerFrameHeight; j++)
 		{
 			layers_[i][j]->Draw();
 		}
 	}
 
-	/*DrawFormatString(0, 100, GetColor(255, 255, 255), "isSelect : %d", isSelect);
-	DrawFormatString(0, 200, GetColor(255, 255, 255), "MouseX : %d", MouseX);
-	DrawFormatString(0, 300, GetColor(255, 255, 255), "MouseY : %d", MouseY);*/
-	DrawFormatString(0, 300, GetColor(255, 255, 255), "layers_[0][0] : %d", layers_[0][0]->GetIsSelect());
+
+	/*DrawFormatString(0, 380, GetColor(255, 255, 255), "layers_[0][0] : %d", layers_[0][0]->GetIsSelect());
 	DrawFormatString(0, 400, GetColor(255, 255, 255), "layers_[0][1] : %d", layers_[0][1]->GetIsSelect());
+	DrawFormatString(0, 420, GetColor(255, 255, 255), "layers_[0][2] : %d", layers_[0][2]->GetIsSelect());
+
 	DrawFormatString(0, 500, GetColor(255, 255, 255), "layers_[1][1] : %d", layers_[1][1]->GetIsSelect());
+
+	DrawFormatString(0, 650, GetColor(255, 255, 255), "frontCount_[0][0] : %d", layers_[0][0]->GetFrontCount());
+	DrawFormatString(0, 670, GetColor(255, 255, 255), "frontCount_[0][1] : %d", layers_[0][1]->GetFrontCount());
+	DrawFormatString(0, 690, GetColor(255, 255, 255), "frontCount_[0][2] : %d", layers_[0][2]->GetFrontCount());
+	DrawFormatString(0, 730, GetColor(255, 255, 255), "frontCount_[1][1] : %d", layers_[1][1]->GetFrontCount());
+	DrawFormatString(0, 770, GetColor(255, 255, 255), "frontCount_[2][2] : %d", layers_[2][2]->GetFrontCount());*/
+	/*DrawFormatString(0, 100, GetColor(255, 255, 255), "isLayerTimer[0][0] : %f", isLayerTimer[0][0]);
+	DrawFormatString(0, 120, GetColor(255, 255, 255), "isLayerTimer[0][1] : %f", isLayerTimer[0][1]);
+	DrawFormatString(0, 140, GetColor(255, 255, 255), "isLayerTimer[0][2] : %f", isLayerTimer[0][2]);
+	DrawFormatString(0, 160, GetColor(255, 255, 255), "isLayerTimer[1][0] : %f", isLayerTimer[1][0]);
+	DrawFormatString(0, 180, GetColor(255, 255, 255), "isLayerTimer[1][1] : %f", isLayerTimer[1][1]);
+	DrawFormatString(0, 200, GetColor(255, 255, 255), "isLayerTimer[1][2] : %f", isLayerTimer[1][2]);
+	DrawFormatString(0, 220, GetColor(255, 255, 255), "isLayerTimer[2][0] : %f", isLayerTimer[2][0]);
+	DrawFormatString(0, 240, GetColor(255, 255, 255), "isLayerTimer[2][1] : %f", isLayerTimer[2][1]);
+	DrawFormatString(0, 260, GetColor(255, 255, 255), "isLayerTimer[2][2] : %f", isLayerTimer[2][2]);
+
+	DrawFormatString(0, 300, GetColor(255, 255, 255), "isSelect[0][0] : %d", layers_[0][0]->GetIsSelect());
+	DrawFormatString(0, 320, GetColor(255, 255, 255), "isSelect[0][1] : %d", layers_[0][1]->GetIsSelect());
+	DrawFormatString(0, 340, GetColor(255, 255, 255), "isSelect[0][2] : %d", layers_[0][2]->GetIsSelect());*/
+
 
 }
 
 Frame::~Frame()
 {
-	//for(int i = 0; i < this->GetLayerFrameHeight(); i++)
-	//{
-	//	for(int j = 0; j < this->GetLayerFrameWidth(); j++)
-	//	{
-	//		//レイヤーのイテレータ
-	//		std::list<Layer>::iterator it;
-	//		it = layersInTheFrame[i][j].begin();
-	//		//デストラクタを呼び出す
-	//		it->~Layer();
-	//		//次に進める
-	//		it++;
-	//	}
-	//}
+
 }
 
 bool Frame::GetisSelect()
 {
-	for (int i = 0; i < layerFrameWidth; i++) {
-		for (int j = 0; j < layerFrameHeight; j++) {
-			if (layers_[i][j]->GetIsSelect()) {
+	for(int i = 0; i < layerFrameWidth; i++)
+	{
+		for(int j = 0; j < layerFrameHeight; j++)
+		{
+			if(layers_[i][j]->GetIsSelect())
+			{
 				return true;
 			}
 		}

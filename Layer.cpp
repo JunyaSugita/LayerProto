@@ -10,7 +10,7 @@ Layer::Layer()
 {
 	freamNumX = 0;
 	freamNumY = 0;
-	layerPos = { 0,0 };
+	layerPos_ = { 0,0 };
 }
 
 Layer::~Layer()
@@ -36,12 +36,12 @@ void Layer::Initialize(int heightNum, int widthNum)
 	freamNumX = widthNum;
 	freamNumY = heightNum;
 
-	for (int i = 0; i < layerBlockWidth; i++)
+	for(int i = 0; i < layerBlockWidth; i++)
 	{
 		//ブロック型を持てる空のベクタを追加(行列でいうi列)
 		blocks_.push_back(std::vector<std::unique_ptr <Block>>());
 
-		for (int j = 0; j < layerBlockWidth; j++)
+		for(int j = 0; j < layerBlockWidth; j++)
 		{
 			std::unique_ptr <Block> block_;
 			block_ = std::make_unique<Block>();
@@ -52,18 +52,18 @@ void Layer::Initialize(int heightNum, int widthNum)
 	}
 
 	//座標の初期化
-	for (int i = 0; i < layerBlockWidth; i++)
+	for(int i = 0; i < layerBlockWidth; i++)
 	{
-		for (int j = 0; j < layerBlockHeight; j++)
+		for(int j = 0; j < layerBlockHeight; j++)
 		{
 			Vector2 pos;
 			//ブロックの座標を設定
-			if (i >= 0)
+			if(i >= 0)
 			{
 				pos.y = (i * Block::BLOCK_SIZE) + (heightNum * layerWidth);
 
 			}
-			if (j >= 0)
+			if(j >= 0)
 			{
 				pos.x = (j * Block::BLOCK_SIZE) + (widthNum * layerWidth);
 			}
@@ -72,7 +72,7 @@ void Layer::Initialize(int heightNum, int widthNum)
 
 			//形状の初期化(CSVファイルの読み込んだ形状をブロッククラスに渡す)
 			BlockType blockType;
-			if (i == 0 || j == 0)
+			if(i == 0 || j == 0)
 			{
 				blockType = BlockType::NOLAYER_BLOCK;
 				blocks_[i][j]->SetType(blockType);
@@ -99,40 +99,59 @@ void Layer::Initialize(int heightNum, int widthNum)
 	movePos.x = 0;
 	movePos.y = 0;
 
-	layerCenterPos.x = layerPos.x + (layerWidth / 2);
-	layerCenterPos.y= layerPos.y + (layerHeight / 2);
+	layerCenterPos.x = layerPos_.x + (layerWidth / 2);
+	layerCenterPos.y = layerPos_.y + (layerHeight / 2);
+
+	frontCount_ = 1;
 
 }
 
-void Layer::Update(char* keys, char* oldkeys,int mouseX, int mouseY, int oldMouseX, int oldMouseY)
+void Layer::Update(char* keys, char* oldkeys, int mouseX, int mouseY, int oldMouseX, int oldMouseY, Vector2 freamPos[][layerFrameWidth])
 {
-	layerCenterPos.x = layerPos.x + (layerWidth / 2);
-	layerCenterPos.y = layerPos.y + (layerHeight / 2);
+
+	for(int i = 0; i < layerFrameWidth; i++)
+	{
+		for(int j = 0; j < layerFrameHeight; j++)
+		{
+			freamPos_[i][j] = freamPos[i][j];
+		}
+	}
+
+	layerCenterPos.x = layerPos_.x + (layerWidth / 2);
+	layerCenterPos.y = layerPos_.y + (layerHeight / 2);
 
 	//もし選択されたら
 
-	if (isSelect == true)
+	if(isSelect == false)
+	{
+		layerTimer_ += 0.1f;
+	}
+	else
+	{
+		layerTimer_ = 0.0f;
+	}
+
+	if(isSelect == true && frontCount_ == 1)
 	{
 
 		//左クリックが押され続けているとき
-		if ((GetMouseInput() & MOUSE_INPUT_LEFT) != 0)
+		if((GetMouseInput() & MOUSE_INPUT_LEFT) != 0)
 		{
-			if(isFront_ == true)
+			//移動量を計算
+			movePos.x = mouseX - oldMouseX;
+			movePos.y = mouseY - oldMouseY;
+
+			//レイヤーを移動
+			layerPos_ += movePos;
+
+			isSetPos_ = false;
+
+			//ブロックの移動量を設定
+			for(int i = 0; i < layerBlockWidth; i++)
 			{
-				//移動量を計算
-				movePos.x = mouseX - oldMouseX;
-				movePos.y = mouseY - oldMouseY;
-
-				//レイヤーを移動
-				layerPos += movePos;
-
-				//ブロックの移動量を設定
-				for(int i = 0; i < layerBlockWidth; i++)
+				for(int j = 0; j < layerBlockHeight; j++)
 				{
-					for(int j = 0; j < layerBlockHeight; j++)
-					{
-						blocks_[i][j]->SetMove(movePos);
-					}
+					blocks_[i][j]->SetMove(movePos);
 				}
 			}
 		}
@@ -141,23 +160,26 @@ void Layer::Update(char* keys, char* oldkeys,int mouseX, int mouseY, int oldMous
 			//移動量を0に
 			movePos.x = 0;
 			movePos.y = 0;
-			
-			for (int i = 0; i < layerBlockWidth; i++)
+
+			for(int i = 0; i < layerBlockWidth; i++)
 			{
-				for (int j = 0; j < layerBlockHeight; j++)
+				for(int j = 0; j < layerBlockHeight; j++)
 				{
 					blocks_[i][j]->SetMove(movePos);
 				}
 			}
 			//選択を解除
+			layerTimer_ = 0.0f;
 			isSelect = false;
 		}
 	}
 
+
+
 	//ブロックの更新
-	for (int i = 0; i < layerBlockWidth; i++)
+	for(int i = 0; i < layerBlockWidth; i++)
 	{
-		for (int j = 0; j < layerBlockHeight; j++)
+		for(int j = 0; j < layerBlockHeight; j++)
 		{
 			blocks_[i][j]->Update();
 		}
@@ -166,95 +188,89 @@ void Layer::Update(char* keys, char* oldkeys,int mouseX, int mouseY, int oldMous
 
 void Layer::Draw()
 {
-	DrawBox(layerPos.x, layerPos.y, layerPos.x + layerWidth, layerPos.y + layerHeight, GetColor(255, 255, 255), false);
+	DrawBox(layerPos_.x, layerPos_.y, layerPos_.x + layerWidth, layerPos_.y + layerHeight, GetColor(255, 255, 255), false);
 
-	for (int i = 0; i < layerBlockWidth; i++)
+	for(int i = 0; i < layerBlockWidth; i++)
 	{
-		for (int j = 0; j < layerBlockHeight; j++)
+		for(int j = 0; j < layerBlockHeight; j++)
 		{
 			blocks_[i][j]->Draw();
 		}
 	}
+
+
 }
 
-void Layer::SerchFrame(int frameWidthNum, Vector2 freamPos[][3])
+void Layer::SerchFrame()
 {
-	if(isFront_ == true)
-	{
-		for(int i = 0; i < frameWidthNum; i++)
-		{
-			for(int j = 0; j < 3; j++)
-			{
-				//各フレームの範囲内にいるかどうかを判定する
-				if(layerCenterPos.x > freamPos[i][j].x && layerCenterPos.x < freamPos[i][j].x + Layer::layerWidth)
-				{
-					if(layerCenterPos.y > freamPos[i][j].y && layerCenterPos.y < freamPos[i][j].y + Layer::layerHeight)
-					{
-						//持っているレイヤーを枠にはめる
-						layerPos = freamPos[i][j];
-
-					}
-				}
-			}
-		}
-
-		for(int i = 0; i < layerBlockWidth; i++)
-		{
-			for(int j = 0; j < layerBlockHeight; j++)
-			{
-				Vector2 pos;
-
-				//ブロックの座標を設定
-				if(i >= 0)
-				{
-					pos.y = (i * Block::BLOCK_SIZE) + layerPos.y;
-
-				}
-				if(j >= 0)
-				{
-					pos.x = (j * Block::BLOCK_SIZE) + layerPos.x;
-				}
-
-				blocks_[i][j]->SetPos(pos);
-			}
-		}
-	}
-
-	
-}
-
-Vector2 Layer::CheckHasFream(int frameWidthNum, Vector2 freamPos[][3])
-{
-	for(int i = 0; i < frameWidthNum; i++)
+	for(int i = 0; i < layerFrameWidth; i++)
 	{
 		for(int j = 0; j < 3; j++)
 		{
 			//各フレームの範囲内にいるかどうかを判定する
-			if(layerCenterPos.x > freamPos[i][j].x && layerCenterPos.x < freamPos[i][j].x + Layer::layerWidth)
+			if(layerCenterPos.x > freamPos_[i][j].x && layerCenterPos.x < freamPos_[i][j].x + Layer::layerWidth)
 			{
-				if(layerCenterPos.y > freamPos[i][j].y && layerCenterPos.y < freamPos[i][j].y + Layer::layerHeight)
+				if(layerCenterPos.y > freamPos_[i][j].y && layerCenterPos.y < freamPos_[i][j].y + Layer::layerHeight)
 				{
-					Vector2 freamArray;
-					freamArray.x = i;
-					freamArray.y = j;
+					//持っているレイヤーを枠にはめる
+					layerPos_ = freamPos_[i][j];
+					//枠にはめたフラグをONにする
+					isSetPos_ = true;
+				}
+			}
+		}
+	}
 
-					return freamArray;
+	for(int i = 0; i < layerBlockWidth; i++)
+	{
+		for(int j = 0; j < layerBlockHeight; j++)
+		{
+			Vector2 pos;
+
+			//ブロックの座標を設定
+			if(i >= 0)
+			{
+				pos.y = (i * Block::BLOCK_SIZE) + layerPos_.y;
+
+			}
+			if(j >= 0)
+			{
+				pos.x = (j * Block::BLOCK_SIZE) + layerPos_.x;
+			}
+
+			blocks_[i][j]->SetPos(pos);
+		}
+	}
+}
+
+void Layer::CheckLayerDepth(float layerTime[][layerFrameHeight], Vector2 layerPos[][layerFrameHeight])
+{
+
+	frontCount_ = 1;
+
+	for(int i = 0; i < layerFrameWidth; i++)
+	{
+		for(int j = 0; j < layerFrameHeight; j++)
+		{
+			//同じ番号を避ける
+			if(i != freamNumY || j != freamNumX)
+			{
+				//各レイヤーと同じ位置にいるかどうか
+				if(layerPos[i][j].x == layerPos_.x)
+				{
+					if(layerPos[i][j].y == layerPos_.y)
+					{
+						//他のレイヤーより時間は短いか
+						if(layerTime[i][j] < layerTimer_)
+						{
+							frontCount_++;
+						}
+					}
 				}
 			}
 		}
 	}
 }
-
-//
-//void Layer::SetBlock(int y, int x, BlockType block)
-//{
-//	this->blockTypes[y][x] = block;
-//}
-//
-//BlockType Layer::GetBlock(int y, int x)
-//{
-//	return this->blockTypes[y][x];
-//}
 
 
 

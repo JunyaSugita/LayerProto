@@ -19,6 +19,10 @@ void Block::Draw()
 	{
 
 	}
+	else if(type_ == NOLAYER_BLOCK)
+	{
+		DrawBox(pos_.x, pos_.y, pos_.x + BLOCK_SIZE, pos_.y + BLOCK_SIZE, GetColor(255, 255, 255), false);
+	}
 	else if(type_ == LAYER_BLOCK)
 	{
 		DrawBox(pos_.x, pos_.y, pos_.x + BLOCK_SIZE, pos_.y + BLOCK_SIZE, GetColor(255, 255, 255), true);
@@ -26,9 +30,5 @@ void Block::Draw()
 	else if(type_ == FIXED_BLOCK)
 	{
 		DrawBox(pos_.x, pos_.y, pos_.x + BLOCK_SIZE, pos_.y + BLOCK_SIZE, GetColor(120, 0, 0), true);
-	}
-	else if(type_ == NOLAYER_BLOCK)
-	{
-		DrawBox(pos_.x, pos_.y, pos_.x + BLOCK_SIZE, pos_.y + BLOCK_SIZE, GetColor(255, 255, 255), false);
 	}
 }

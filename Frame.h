@@ -7,6 +7,7 @@ private:
 	//ëÂògÇÃècÇ∆â°ÇÃêîÅiâºÅj
 	static const int layerFrameWidth = 3;
 	static const int layerFrameHeight = 3;
+	static const int layerFrameNum = layerFrameWidth * layerFrameHeight;
 
 public:
 	void Initialize();
@@ -23,9 +24,16 @@ public:
 	std::vector<std::vector<std::unique_ptr <Layer>>> layers_;
 
 	Vector2 freamPos[layerFrameHeight][layerFrameWidth] = {};
-	bool isLayer[layerFrameHeight][layerFrameWidth] = {};
+	//int isLayer[layerFrameHeight][layerFrameWidth] = {};
+	Vector2 layerPos_[layerFrameHeight][layerFrameWidth] = {};
+	float isLayerTimer[layerFrameHeight][layerFrameWidth] = {};
+	float safeLayerTime[layerFrameHeight] = {0,0,0};
 
+	//Vector2 safeSelectNum;
+	bool isSelect_ = false;
 
+	bool isSetLayer = false;
+	
 public:
 
 	void SetFreamLayerNum();
@@ -37,16 +45,26 @@ private:
 
 	int FrameHasLayer[layerFrameWidth][layerFrameHeight];
 
-	bool isFrontSet = false;
+	//bool isFrontSet[layerFrameWidth][layerFrameHeight];
 	
 	int button;
 	int clickX;
 	int clickY;
 	int logType;
 
+	bool isFrontLayer = false;
+
 	Vector2 frontVec;
+	Vector2 checkNum;
 
+	Vector2 compareNum = { -1,-1 };
+	Vector2 compareNum2 = { -1,-1 };
+	Vector2 compareNum3 = { -1,-1 };
 
+	//Vector2 compareNum[layerFrameNum] = {};
+
+	bool isFreamDepth[layerFrameNum] = { false,false,false };
+	bool isFrameMax = false;
 
 };
 

@@ -22,6 +22,9 @@ public: //クラス内グローバル定数
 	static const int layerBlockWidth = 9;
 	static const int layerBlockHeight = 9;
 
+	static const int layerFrameWidth = 3;
+	static const int layerFrameHeight = 3;
+
 	static const int depthLayerNum = 5;
 
 	static const float layerWidth;
@@ -32,13 +35,14 @@ public: //メンバ関数
 	Layer();
 	~Layer();
 	void Initialize(int widthNum, int heightNum);
-	void Update(char* keys, char* oldkeys, int mouseX, int mouseY, int oldMouseX, int oldMouseY);
+	void Update(char* keys, char* oldkeys, int mouseX, int mouseY, int oldMouseX, int oldMouseY, Vector2 freamPos[][layerFrameWidth]);
 	void Draw();
 	void Delete();
 
-	void SerchFrame(int frameWidthNum, Vector2 freamPos[][3]);
+	void SerchFrame();
 
-	Vector2 CheckHasFream(int frameWidthNum, Vector2 freamPos[][3]);
+	//重なっている他のレイヤーがあるときに、自分の時間が他のレイヤーより小さいかどうか
+	void CheckLayerDepth(float layerTime[][layerFrameHeight], Vector2 layerPos[][layerFrameHeight]);
 
 private: //メンバ変数
 	////ブロックの状態9x9
@@ -51,7 +55,7 @@ private: //メンバ変数
 	int freamNumY;
 
 	//レイヤーの座標
-	Vector2 layerPos;
+	Vector2 layerPos_;
 
 	//選択されているかどうか
 	bool isSelect = false;
@@ -62,10 +66,20 @@ private: //メンバ変数
 	Vector2 layerCenterPos;
 
 	//レイヤーの深さ
-	int depthLayer[depthLayerNum];
+	int depthLayer;
 
 	//最前面フラグ
 	bool isFront_;
+	//最前面のカウント
+	int frontCount_;
+
+	//枠にはめたフラグ
+	bool isSetPos_;
+
+	Vector2 freamPos_[layerFrameHeight][layerFrameWidth] = {};
+
+	//レイヤーが置かれた時間
+	float layerTimer_ = 0.99f;
 
 	int button;
 	int clickX;
@@ -81,8 +95,8 @@ public: //アクセッサ
 
 	std::vector<std::vector<std::unique_ptr <Block>>> blocks_;
 
-	void SetPos(Vector2 pos) { layerPos = pos; };
-	Vector2 GetLayerPos() { return  layerPos; }
+	void SetPos(Vector2 pos) { layerPos_ = pos; };
+	Vector2 GetLayerPos() { return  layerPos_; }
 
 	bool GetIsSelect() { return isSelect; }
 	void SetIsSelect(int isSelected) { isSelect = isSelected; }
@@ -95,6 +109,16 @@ public: //アクセッサ
 	bool GetIsFront() { return isFront_; }
 	void SetIsFront(bool isFront) { isFront_ = isFront; }
 
+	//セットされた時
+	bool GetisSetPos() { return isSetPos_; }
+	void SetisSetPos(bool isSetPos) {  isSetPos_ = isSetPos; }
+
+	//深度
+	int GetFrontCount() { return frontCount_; }
+	void SetFrontCount(int frontCount) { frontCount_ = frontCount; }
+
+	float GetLayerTimer() { return layerTimer_; }
+	void SetLayerTimer(float layerTimer) { layerTimer_ = layerTimer; }
 };
 
 
