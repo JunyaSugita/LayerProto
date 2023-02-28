@@ -81,7 +81,6 @@ void Frame::Initialize()
 				layers_[0][1]->blocks_[i][j]->SetType(Block::FIXED_BLOCK);
 				layers_[0][2]->blocks_[i][j]->SetType(Block::NOLAYER_BLOCK);
 				layers_[2][2]->blocks_[i][j]->SetType(Block::LAYER_BLOCK);
-
 			}
 		}
 	}
@@ -90,22 +89,6 @@ void Frame::Initialize()
 
 void Frame::Update(char* keys, char* oldkeys, int mouseX, int mouseY, int oldMouseX, int oldMouseY)
 {
-
-
-
-	for(int i = 0; i < layerFrameWidth; i++)
-	{
-		for(int j = 0; j < layerFrameHeight; j++)
-		{
-			if(layers_[i][j]->GetIsFront() == true)
-			{
-				//選択したレイヤーの番号を取ってくる
-				frontVec.x = i;
-				frontVec.y = j;
-			}
-		}
-	}
-
 	//レイヤーを選択する処理
 	if(GetMouseInputLog2(&button, &clickX, &clickY, &logType, TRUE) == 0)
 	{
@@ -115,15 +98,18 @@ void Frame::Update(char* keys, char* oldkeys, int mouseX, int mouseY, int oldMou
 			{
 				for(int j = 0; j < layerFrameHeight; j++)
 				{
+					//マウスとレイヤーの選択処理
 					if(clickX > layers_[i][j]->GetLayerPos().x && clickX < layers_[i][j]->GetLayerPos().x + Layer::layerWidth)
 					{
 						if(clickY > layers_[i][j]->GetLayerPos().y && clickY < layers_[i][j]->GetLayerPos().y + Layer::layerHeight)
 						{
+							//もし選択されていないとき
 							if(layers_[i][j]->GetIsSelect() == false && isSelect_ == false)
 							{
 								//最前面を選択した時の処理
 								if(layers_[i][j]->GetFrontCount() == 1)
 								{
+									//レイヤーの選択フラグをONに
 									layers_[i][j]->SetIsSelect(true);
 								}
 							}
@@ -138,6 +124,7 @@ void Frame::Update(char* keys, char* oldkeys, int mouseX, int mouseY, int oldMou
 	{
 		for(int j = 0; j < layerFrameHeight; j++)
 		{
+			//もしクリックされているとき
 			if(layers_[i][j]->GetIsSelect() == true)
 			{
 				//左クリックが押され続けているとき
@@ -146,6 +133,8 @@ void Frame::Update(char* keys, char* oldkeys, int mouseX, int mouseY, int oldMou
 				}
 				else
 				{
+					//押されていなければ
+					//枠にフレームをはめる
 					layers_[i][j]->SerchFrame();
 				}
 			}
@@ -166,6 +155,7 @@ void Frame::Update(char* keys, char* oldkeys, int mouseX, int mouseY, int oldMou
 		for(int j = 0; j < layerFrameHeight; j++)
 		{
 			//どこか枠をはめたのなら
+			//はめたフラグをONにする。
 			if(layers_[i][j]->GetisSetPos() == true)
 			{
 				isSetLayer = true;
@@ -177,19 +167,22 @@ void Frame::Update(char* keys, char* oldkeys, int mouseX, int mouseY, int oldMou
 	{
 		for(int j = 0; j < layerFrameHeight; j++)
 		{
+			//もしどこかのレイヤーを枠にはめたのなら
 			if(isSetLayer == true)
 			{
-				//レイヤーの深さを調整する
+				//各レイヤーの深さを調整する
 				layers_[i][j]->CheckLayerDepth(isLayerTimer, layerPos_);
+				//最後のレイヤー処理が終わったなら
 				if(i == layerFrameWidth - 1 && j == layerFrameHeight - 1)
 				{
+					//はめたフラグをOFFにする。
 					isSetLayer = false;
 				}
 			}
 		}
 	}
 
-	//レイヤーの更新
+	//レイヤーの更新(下に置いておかないとバグる)
 	for(int i = 0; i < layerFrameWidth; i++)
 	{
 		for(int j = 0; j < layerFrameHeight; j++)
@@ -242,26 +235,6 @@ void Frame::Draw()
 
 Frame::~Frame()
 {
-	//for(int i = 0; i < this->GetLayerFrameHeight(); i++)
-	//{
-	//	for(int j = 0; j < this->GetLayerFrameWidth(); j++)
-	//	{
-	//		////レイヤーのイテレータ
-	//		//std::list<Layer>::iterator it;
-	//		//it = layersInTheFrame[i][j].begin();
-	//		////デストラクタを呼び出す
-	//		//it->~Layer();
-	//		////次に進める
-	//		//it++;
-
-	//		std::list<std::unique_ptr<Layer>>& layer = layersInTheFrame[i][j];
-	//		//重なりがあればその分も解放
-	//		for (auto itr = layer.begin(); itr != layer.end(); itr++) {
-	//			itr->reset();
-	//		}
-	//	}
-	//}
-
 	//解放する
 	for (int i = 0; i < this->GetLayerFrameHeight(); i++)
 	{

@@ -23,15 +23,17 @@ public:
 	std::list<std::unique_ptr <Layer>> layersInTheFrame[layerFrameHeight][layerFrameWidth] = {};
 	std::vector<std::vector<std::unique_ptr <Layer>>> layers_;
 
+	//各枠の座標
 	Vector2 freamPos[layerFrameHeight][layerFrameWidth] = {};
-	//int isLayer[layerFrameHeight][layerFrameWidth] = {};
+	
+	//各レイヤーの座標
 	Vector2 layerPos_[layerFrameHeight][layerFrameWidth] = {};
+	//各レイヤーの時間
 	float isLayerTimer[layerFrameHeight][layerFrameWidth] = {};
-	float safeLayerTime[layerFrameHeight] = {0,0,0};
 
-	//Vector2 safeSelectNum;
+	//レイヤーを選んでいるかどうか
 	bool isSelect_ = false;
-
+	//レイヤーをはめたフラグ
 	bool isSetLayer = false;
 	
 public:
@@ -43,28 +45,10 @@ public:
 
 private:
 
-	int FrameHasLayer[layerFrameWidth][layerFrameHeight];
-
-	//bool isFrontSet[layerFrameWidth][layerFrameHeight];
-	
+	//マウス類の変数
 	int button;
 	int clickX;
 	int clickY;
 	int logType;
-
-	bool isFrontLayer = false;
-
-	Vector2 frontVec;
-	Vector2 checkNum;
-
-	Vector2 compareNum = { -1,-1 };
-	Vector2 compareNum2 = { -1,-1 };
-	Vector2 compareNum3 = { -1,-1 };
-
-	//Vector2 compareNum[layerFrameNum] = {};
-
-	bool isFreamDepth[layerFrameNum] = { false,false,false };
-	bool isFrameMax = false;
-
 };
 

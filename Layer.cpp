@@ -263,6 +263,7 @@ void Layer::CheckLayerDepth(float layerTime[][layerFrameHeight], Vector2 layerPo
 						//‘¼‚ÌƒŒƒCƒ„[‚æ‚èŠÔ‚Í’Z‚¢‚©
 						if(layerTime[i][j] < layerTimer_)
 						{
+							//’Z‚¯‚ê‚Î‘w‚ğ[‚­‚·‚é
 							frontCount_++;
 						}
 					}

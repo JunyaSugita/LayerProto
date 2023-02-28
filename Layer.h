@@ -65,22 +65,19 @@ private: //メンバ変数
 	//レイヤーの中心座標
 	Vector2 layerCenterPos;
 
-	//レイヤーの深さ
-	int depthLayer;
-
-	//最前面フラグ
-	bool isFront_;
-	//最前面のカウント
+	//レイヤーの層のカウント(深さ)
 	int frontCount_;
 
 	//枠にはめたフラグ
 	bool isSetPos_;
 
+	//枠の長さ
 	Vector2 freamPos_[layerFrameHeight][layerFrameWidth] = {};
 
 	//レイヤーが置かれた時間
 	float layerTimer_ = 0.99f;
 
+	//マウス類の変数
 	int button;
 	int clickX;
 	int clickY;
@@ -95,19 +92,19 @@ public: //アクセッサ
 
 	std::vector<std::vector<std::unique_ptr <Block>>> blocks_;
 
+	//レイヤーの座標
 	void SetPos(Vector2 pos) { layerPos_ = pos; };
 	Vector2 GetLayerPos() { return  layerPos_; }
 
+	//レイヤーが選択されているかどうか
 	bool GetIsSelect() { return isSelect; }
 	void SetIsSelect(int isSelected) { isSelect = isSelected; }
 
 	int GetFrameNumX() { return freamNumX; }
 	int GetFrameNumY() { return freamNumY; }
 
+	//レイヤーの中心の座標
 	Vector2 GetLayerCenterPos() { return layerCenterPos; }
-
-	bool GetIsFront() { return isFront_; }
-	void SetIsFront(bool isFront) { isFront_ = isFront; }
 
 	//セットされた時
 	bool GetisSetPos() { return isSetPos_; }
@@ -117,6 +114,7 @@ public: //アクセッサ
 	int GetFrontCount() { return frontCount_; }
 	void SetFrontCount(int frontCount) { frontCount_ = frontCount; }
 
+	//レイヤーの置かれた時間「
 	float GetLayerTimer() { return layerTimer_; }
 	void SetLayerTimer(float layerTimer) { layerTimer_ = layerTimer; }
 };
