@@ -1,6 +1,7 @@
 #pragma once
 
 #include"Frame.h"
+#include<functional>
 
 
 //読み込み用のクラス
@@ -9,11 +10,12 @@ class StageCSVManager final
 private:
 	int layersIntheFrameY;
 	int layersIntheFrameX;
-	
+
 
 public:
 	//ステージデータ
 	Frame frameData;
+	int selectNum = 1;
 
 private://関数
 
@@ -30,5 +32,8 @@ public:
 
 	//ステージ読み込み
 	void LoadStageCSV(int stageNum);
+
+	//押した番号によってステージ読み込む
+	void UpdateLoadStage(std::function<void()>f);
 };
 

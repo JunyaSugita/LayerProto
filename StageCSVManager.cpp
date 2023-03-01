@@ -4,6 +4,7 @@
 #include<string>
 #include <sstream>
 #include <iostream>
+#include <DxLib.h>
 
 using BlockType = Block::BlockType;
 
@@ -32,7 +33,12 @@ void StageCSVManager::LoadStageCSV(int stageNum)
 	//ファイル開く
 	std::string fileFullPath = filePath + fileName + numString + fileCSV;
 	file.open(fileFullPath.c_str());
-	assert(file.is_open());
+
+	//開けなかったらそのままにする
+	if (!file.is_open()) { return; }
+
+	//選んだ番号を入れておく
+	selectNum = stageNum;
 
 	// 1行ずつ読み込む
 	std::string line;
@@ -105,7 +111,7 @@ void StageCSVManager::LoadStageCSV(int stageNum)
 				//空白ごとにレイヤーのブロックを取得
 				getline(line_stream, word, ' ');
 				//ブロックをセット
-				
+
 				if (word == "p")
 				{
 					//プレイヤーなら
@@ -140,6 +146,37 @@ void StageCSVManager::LoadStageCSV(int stageNum)
 
 	//ファイル閉じる
 	file.close();
+}
+
+void StageCSVManager::UpdateLoadStage(std::function<void()>f)
+{
+	if (CheckHitKey(KEY_INPUT_1)) {
+		this->LoadStageCSV(1); f();
+	}
+	if (CheckHitKey(KEY_INPUT_2)) {
+		this->LoadStageCSV(2); f();
+	}
+	if (CheckHitKey(KEY_INPUT_3)) {
+		this->LoadStageCSV(3); f();
+	}
+	if (CheckHitKey(KEY_INPUT_4)) {
+		this->LoadStageCSV(4); f();
+	}
+	if (CheckHitKey(KEY_INPUT_5)) {
+		this->LoadStageCSV(5); f();
+	}
+	if (CheckHitKey(KEY_INPUT_6)) {
+		this->LoadStageCSV(6); f();
+	}
+	if (CheckHitKey(KEY_INPUT_7)) {
+		this->LoadStageCSV(7); f();
+	}
+	if (CheckHitKey(KEY_INPUT_8)) {
+		this->LoadStageCSV(8); f();
+	}
+	if (CheckHitKey(KEY_INPUT_9)) {
+		this->LoadStageCSV(9); f();
+	}
 }
 
 

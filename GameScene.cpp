@@ -1,7 +1,7 @@
 #include "GameScene.h"
 
 //無視
-GameScene::GameScene(){}
+GameScene::GameScene() {}
 
 //delete処理
 GameScene::~GameScene()
@@ -22,20 +22,24 @@ void GameScene::Initialize()
 	//フィールドの生成と初期化
 	field_ = std::make_unique<Field>();
 	field_->Initialize();
-  
+
 	//インスタンスの生成
 	//layer_ = std::make_unique<Layer>();
 	fream_ = std::make_unique<Frame>();
-	
+
 	//初期化
 	//layer_->Initialize();
 	fream_->Initialize();
-	
+
 }
 
 
 void GameScene::Update(char* keys, char* oldkeys)
 {
+	//読み込みキー
+	std::function<void()>f = [=]() {player_->Initialize(); field_->Initialize(); };
+	StageCSVManager::GetInstance().UpdateLoadStage(f);
+
 	//1フレーム前の座標を取得
 	oldMouseX = MouseX;
 	oldMouseY = MouseY;
@@ -43,20 +47,20 @@ void GameScene::Update(char* keys, char* oldkeys)
 	// マウスの位置を取得
 	GetMousePoint(&MouseX, &MouseY);
 	//
-	field_->Update(MouseX, MouseY,810,810);
+	field_->Update(MouseX, MouseY, 810, 810);
 
 	//プレイヤー
-	player_->Updata(810, 810,field_.get(), fream_.get());
+	player_->Updata(810, 810, field_.get(), fream_.get());
 
 	//リセット&ホットリロード
 	if (CheckHitKey(KEY_INPUT_R)) {
 		//
-		StageCSVManager::GetInstance().LoadStageCSV(1);
+		StageCSVManager::GetInstance().LoadStageCSV(StageCSVManager::GetInstance().selectNum);
 		player_->Initialize();
 		field_->Initialize();
 	}
 
-	fream_->Update(keys, oldkeys,MouseX,MouseY,oldMouseX,oldMouseY);
+	fream_->Update(keys, oldkeys, MouseX, MouseY, oldMouseX, oldMouseY);
 	//layer_->Update(keys, oldkeys);
 
 
@@ -64,7 +68,7 @@ void GameScene::Update(char* keys, char* oldkeys)
 
 void GameScene::Draw()
 {
-	
+
 	//グリッドの表示(横)
 	for (int i = 1; i < 9 * 3; i++) {
 		//境界線の描画(赤)
@@ -83,7 +87,7 @@ void GameScene::Draw()
 			DrawLine(i * BLOCK_SIZE, 0, i * BLOCK_SIZE, 810, GetColor(150, 0, 0));
 		}
 		//それ以外(白)
-		else{
+		else {
 			DrawLine(i * BLOCK_SIZE, 0, i * BLOCK_SIZE, 810, GetColor(100, 100, 100));
 		}
 	}
