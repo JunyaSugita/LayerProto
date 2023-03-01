@@ -35,7 +35,7 @@ void Player::Initialize()
 					//プレイヤーの位置が読み込まれていたら
 					if (block == Block::PLAYER)
 					{
-						SetPlayerMapPos({ (float)x,(float)y });
+						SetPlayerMapPos({ (float)y,(float)x });
 						playerPos = true;
 						break;
 					}

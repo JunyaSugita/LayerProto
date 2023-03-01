@@ -51,8 +51,8 @@ void GameScene::Update(char* keys, char* oldkeys)
 	//リセット&ホットリロード
 	if (CheckHitKey(KEY_INPUT_R)) {
 		//
-		player_->Initialize();
 		StageCSVManager::GetInstance().LoadStageCSV(1);
+		player_->Initialize();
 		field_->Initialize();
 	}
 
