@@ -37,6 +37,8 @@ void Player::Initialize()
 					{
 						SetPlayerMapPos({ (float)y,(float)x });
 						playerPos = true;
+						//Á‚µ‚Æ‚­
+						itr->get()->blocks_[y % Layer::layerBlockHeight][x % Layer::layerBlockWidth].get()->SetType(Block::NONE);
 						break;
 					}
 				}
