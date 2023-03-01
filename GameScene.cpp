@@ -68,12 +68,19 @@ void GameScene::Update(char* keys, char* oldkeys)
 
 void GameScene::Draw()
 {
+	//フィールドの表示
+	field_->Draw();
+
+	//プレイヤーの表示
+	player_->Draw();
+
+	//fream_->Draw();
 
 	//グリッドの表示(横)
 	for (int i = 1; i < 9 * 3; i++) {
 		//境界線の描画(赤)
 		if (i % 9 == 0) {
-			DrawLine(0, i * BLOCK_SIZE, 810, i * BLOCK_SIZE, GetColor(150, 0, 0));
+			DrawLine(0, i * BLOCK_SIZE, 810, i * BLOCK_SIZE, GetColor(250, 0, 0),5);
 		}
 		//それ以外(白)
 		else {
@@ -84,7 +91,7 @@ void GameScene::Draw()
 	for (int i = 1; i < 9 * 3; i++) {
 		//境界線の描画(赤)
 		if (i % 9 == 0) {
-			DrawLine(i * BLOCK_SIZE, 0, i * BLOCK_SIZE, 810, GetColor(150, 0, 0));
+			DrawLine(i * BLOCK_SIZE, 0, i * BLOCK_SIZE, 810, GetColor(250, 0, 0),5);
 		}
 		//それ以外(白)
 		else {
@@ -92,20 +99,9 @@ void GameScene::Draw()
 		}
 	}
 
-	//layer_->Draw();
-
-
-
-	//フィールドの表示
-	field_->Draw();
-
-	//プレイヤーの表示
-	player_->Draw();
-
-	//fream_->Draw();
-
 	//コメント表示
-	DrawFormatString(10, 0, GetColor(200, 200, 200), "R : reset & hotReload(coming soon)");
+	DrawFormatString(10, 0, GetColor(200, 200, 200), "R : reset & hotReload");
+	DrawFormatString(10, 20, GetColor(200, 200, 200), "1 ~ 9 ChangeStage");
 	/*DrawFormatString(0, 20, GetColor(200, 200, 200), "MouseX : %d", MouseX);
 	DrawFormatString(0, 40, GetColor(200, 200, 200), "MouseY : %d", MouseY);*/
 
