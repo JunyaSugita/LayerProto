@@ -1,5 +1,6 @@
 #include "Player.h"
 #include <assert.h>
+#include "StageCSVManager.h"
 
 Player* Player::player_ = nullptr;
 
@@ -15,7 +16,44 @@ Player::~Player()
 //初期化
 void Player::Initialize()
 {
-	pos_ = { 15,15 };
+	bool playerPos = false;
+
+	for (int y = 0; y < Frame::GetLayerFrameHeight() * Layer::layerBlockHeight; y++)
+	{
+		for (int x = 0; x < Frame::GetLayerFrameWidth() * Layer::layerBlockWidth; x++)
+		{
+			int Y = y / Layer::layerBlockHeight;
+			int X = x / Layer::layerBlockWidth;
+
+			std::list<std::unique_ptr<Layer>>& layer = StageCSVManager::GetInstance().frameData.layersInTheFrame[Y][X];
+
+			//重なりがあればその分も読み込み
+			for (auto itr = layer.begin(); itr != layer.end(); itr++) {
+				if (layer.size())
+				{
+					Block::BlockType block = itr->get()->blocks_[y % Layer::layerBlockHeight][x % Layer::layerBlockWidth].get()->GetType();
+					//プレイヤーの位置が読み込まれていたら
+					if (block == Block::PLAYER)
+					{
+						SetPlayerMapPos({ (float)x,(float)y });
+						playerPos = true;
+						break;
+					}
+				}
+			}
+			//もう読み込まれたら終わる
+			if (playerPos)
+			{
+				break;
+			}
+		}
+	}
+	//座標が読み込まれなかったら
+	if (!playerPos)
+	{
+		SetPlayerMapPos({ 0,0 });
+	}
+
 	isJump_ = false;
 	jumpPow_ = 0;
 }
@@ -32,7 +70,7 @@ void Player::Updata(float windowX, float windowY, Field* field, Frame* frame)
 	}
 
 #pragma region 操作
-	
+
 	//ジャンプ
 	if (CheckHitKey(KEY_INPUT_SPACE) || CheckHitKey(KEY_INPUT_W) || CheckHitKey(KEY_INPUT_UP)) {
 		//すでにジャンプしていないかチェック
@@ -79,9 +117,9 @@ void Player::Updata(float windowX, float windowY, Field* field, Frame* frame)
 			pos_.y = tempPos_.y;
 
 			//当たっているならゴール(未実装)
-			
+
 		}
-		else if(field->GetMap(LT_) == BLOCK || field->GetMap(RT_) == BLOCK){
+		else if (field->GetMap(LT_) == BLOCK || field->GetMap(RT_) == BLOCK) {
 			//天井ごっつんこの処理
 			jumpPow_ = 0;
 			break;
@@ -120,7 +158,7 @@ void Player::Updata(float windowX, float windowY, Field* field, Frame* frame)
 
 		//ブロックなどと当たっているか
 		if (field->GetMap(LT_) == BLOCK || field->GetMap(LB_) == BLOCK) {
-			
+
 		}
 		else if (field->GetMap(RT_) == BLOCK || field->GetMap(RB_) == BLOCK) {
 
@@ -173,14 +211,14 @@ Vector2 Player::GetMapPos(int Num)
 		return LB_;
 	}
 	//3(右下)
-	else if(Num == RB){
+	else if (Num == RB) {
 		return RB_;
 	}
 }
 
 Vector2 Player::GetMapPos()
 {
-	return Vector2(pos_.x / 30,pos_.y / 30);
+	return Vector2(pos_.x / 30, pos_.y / 30);
 }
 
 void Player::CalcMapPos()

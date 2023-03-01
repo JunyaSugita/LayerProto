@@ -12,12 +12,12 @@ GameScene::~GameScene()
 //初期化
 void GameScene::Initialize()
 {
+	//ステージ読み込み
+	StageCSVManager::GetInstance().LoadStageCSV(1);
+
 	//プレイヤーの生成と初期化
 	player_ = Player::GetInctance();
 	player_->Initialize();
-
-	//ステージ読み込み
-	StageCSVManager::GetInstance().LoadStageCSV(1);
 
 	//フィールドの生成と初期化
 	field_ = std::make_unique<Field>();

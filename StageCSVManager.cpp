@@ -105,7 +105,16 @@ void StageCSVManager::LoadStageCSV(int stageNum)
 				//空白ごとにレイヤーのブロックを取得
 				getline(line_stream, word, ' ');
 				//ブロックをセット
-				layer->blocks_[y][x]->SetType(BlockType((int)std::atoi(word.c_str())));
+				
+				if (word == "p")
+				{
+					//プレイヤーなら
+					layer->blocks_[y][x]->SetType(BlockType::PLAYER);
+				}
+				else
+				{
+					layer->blocks_[y][x]->SetType(BlockType((int)std::atoi(word.c_str())));
+				}
 
 				//カウントを進める
 				x++;
