@@ -35,7 +35,15 @@ void Field::Initialize(int map)
 				{
 					Block::BlockType block = itr->get()->blocks_[y % Layer::layerBlockHeight][x % Layer::layerBlockWidth].get()->GetType();
 					//マップをセット
-					mapTemp[count][y][x] = block;
+					if (block == Block::PLAYER)
+					{
+						//playerの情報は入れない
+						mapTemp[count][y][x] = Block::NONE;
+					}
+					else
+					{
+						mapTemp[count][y][x] = block;
+					}
 				}
 				count++;
 			}
