@@ -82,8 +82,8 @@ private:
 	//固定値	//ジャンプ関係は一応、縦2マスジャンプ、横3マスジャンプに調整済み
 	const float SIZE = 30;			//プレイヤーの直径
 	const float SPEED = 4.0f;		//横移動速度
-	const float GRAVITY = 10.0f;	//プレイヤーの重力
-	const float MAX_JUMP = 24.0f;	//最大ジャンプ力
+	const float GRAVITY = 22.5f;    //プレイヤーの重力
+	const float MAX_JUMP = 30.0f;    //最大ジャンプ力 
 	float subJump_ = 0.8f;			//ジャンプ力減少値		
 
 	//変数

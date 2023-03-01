@@ -24,7 +24,7 @@ void StageCSVManager::LoadStageCSV(int stageNum)
 
 	std::string filePath = "Resources/StageCSV/";
 	std::string fileName = "stage";
-	char stageNumC[7] = { 0 };
+	char stageNumC[11] = { 0 };
 	//int‚ð•¶Žš—ñ‚É•ÏŠ·
 	_itoa_s(stageNum, stageNumC, _countof(stageNumC) - 1);
 	std::string numString = stageNumC;
