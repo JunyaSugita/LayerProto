@@ -169,6 +169,9 @@ void Field::MoveLayer(Vector2 start, Vector2 end)
 {
 	Player* player = Player::GetInctance();
 
+	//プレイヤーを枠内に入れる
+	player->SetPlayerMapPos({ player->GetMapPos(0).y, player->GetMapPos(0).x});
+
 	//アサート
 	assert("start.xに0~2以外の数字が入っています", start.x >= 0 && start.x <= 2);
 	assert("start.yに0~2以外の数字が入っています", start.y >= 0 && start.y <= 2);
