@@ -237,7 +237,7 @@ void Field::MoveLayer(Vector2 start, Vector2 end)
 			{
 				map_[temp][i + (int)end.y * 9][j + (int)end.x * 9] = tempMap[i][j];
 				if (map_[temp][i + (int)end.y * 9][j + (int)end.x * 9] == PLAYER) {
-					player->SetPlayerMapPos({ (float)(i + (int)end.y * 9), (float)(j + (int)end.x * 9) });
+					//player->SetPlayerMapPos({ (float)(i + (int)end.y * 9), (float)(j + (int)end.x * 9) });
 					map_[temp][i + (int)end.y * 9][j + (int)end.x * 9] = NONE;
 				}
 			}
@@ -246,7 +246,7 @@ void Field::MoveLayer(Vector2 start, Vector2 end)
 			{
 				map_[temp + 1][i + (int)end.y * 9][j + (int)end.x * 9] = tempMap[i][j];
 				if (map_[temp + 1][i + (int)end.y * 9][j + (int)end.x * 9] == PLAYER) {
-					player->SetPlayerMapPos({ (float)(i + (int)end.y * 9), (float)(j + (int)end.x * 9) });
+					//player->SetPlayerMapPos({ (float)(i + (int)end.y * 9), (float)(j + (int)end.x * 9) });
 					map_[temp + 1][i + (int)end.y * 9][j + (int)end.x * 9] = NONE;
 				}
 			}
