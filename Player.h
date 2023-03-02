@@ -98,6 +98,9 @@ private:
 	//プレイヤーの仮移動用
 	Vector2 tempPos_ = pos_;
 
+	//無敵
+	bool isInvincible_ = false;
+
 	static Player* player_;
 };
 

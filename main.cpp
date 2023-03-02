@@ -46,6 +46,9 @@ int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance, _
 	SetGraphMode(WIN_WIDTH, WIN_HEIGHT, 32);
 	SetWindowSizeChangeEnableFlag(FALSE, TRUE);
 
+	//フォント調整
+	SetFontSize(32);
+
 	// 最新のキーボード情報用
 	char keys[256] = {0};
 

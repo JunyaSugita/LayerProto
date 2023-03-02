@@ -107,6 +107,10 @@ void Field::Draw()
 					DrawBox(j * BLOCK_SIZE, i * BLOCK_SIZE, j * BLOCK_SIZE + BLOCK_SIZE, i * BLOCK_SIZE + BLOCK_SIZE, GetColor(200, 100, 100), true);
 					break;
 
+				case TRAP:
+					//トゲを黄色で描画
+					DrawBox(j * BLOCK_SIZE, i * BLOCK_SIZE, j * BLOCK_SIZE + BLOCK_SIZE, i * BLOCK_SIZE + BLOCK_SIZE, GetColor(200, 200, 0), true);
+
 				case NOLAYER:
 					//レイヤーはないが、枠はある場所
 					SetDrawBlendMode(DX_BLENDMODE_ALPHA, 100);
@@ -125,7 +129,11 @@ void Field::Draw()
 
 int Field::GetMap(Vector2 pos)
 {
-	for (int i = 0; i < MAX_OVERLAP; i++) {
+	if (map_[0][(int)pos.y][(int)pos.x] == NULL_BLOCK) {
+		return NULL_BLOCK;
+	}
+
+	for (int i = MAX_OVERLAP - 1; i >= 0; i--) {
 		switch (map_[i][(int)pos.y][(int)pos.x]) {
 		case NONE:
 			break;
@@ -135,9 +143,12 @@ int Field::GetMap(Vector2 pos)
 		case GOAL:
 			return GOAL;
 			break;
+		case TRAP:
+			return TRAP;
+			break;
 		}
-
 	}
+
 	return 0;
 }
 
@@ -231,7 +242,7 @@ void Field::MoveLayer(Vector2 start, Vector2 end)
 			//下にレイヤーがある場合は消す
 			else
 			{
-				map_[tempS][i + (int)start.y * 9][j + (int)start.x * 9] = -858993460;
+				map_[tempS][i + (int)start.y * 9][j + (int)start.x * 9] = NULL_BLOCK;
 			}
 		}
 	}
