@@ -122,6 +122,13 @@ void Field::Draw()
 				default:
 					break;
 				}
+
+				if (k == 0) {
+					if (map_[k][i][j] == NULL_BLOCK) {
+						DrawBox(j * BLOCK_SIZE, i * BLOCK_SIZE, j * BLOCK_SIZE + BLOCK_SIZE, i * BLOCK_SIZE + BLOCK_SIZE, GetColor(0, 0, 0), true);
+
+					}
+				}
 			}
 		}
 	}
