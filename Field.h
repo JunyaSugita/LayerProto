@@ -7,6 +7,7 @@ enum map
 	NONE,	//空間
 	BLOCK,	//ブロック
 	GOAL,	//ゴール
+	TRAP,	//トゲ
 	NOLAYER,//レイヤーが何もない枠
 	PLAYER,	//プレイヤーの場所
 	NULL_BLOCK = -858993460, //未入力の空間

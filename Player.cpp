@@ -172,10 +172,22 @@ void Player::Updata(float windowX, float windowY, Field* field, Frame* frame)
 		}
 	}
 
+	//トゲに当たったら死ぬ！！
+	if (field->GetMap(LT_) == TRAP || field->GetMap(RT_) == TRAP || field->GetMap(LB_) == TRAP || field->GetMap(RB_) == TRAP) {
+		isAlive_ = false;
+		StageCSVManager::GetInstance().LoadStageCSV(StageCSVManager::GetInstance().selectNum);
+		player_->Initialize();
+		field->Initialize();
+	}
+
 	//レイヤー外ブロックに当たったら死ぬ！！
 	if (field->GetMap(LT_) == NULL_BLOCK || field->GetMap(RT_) == NULL_BLOCK || field->GetMap(LB_) == NULL_BLOCK || field->GetMap(RB_) == NULL_BLOCK) {
 		isAlive_ = false;
+		StageCSVManager::GetInstance().LoadStageCSV(StageCSVManager::GetInstance().selectNum);
+		player_->Initialize();
+		field->Initialize();
 	}
+
 
 #pragma endregion
 
