@@ -98,6 +98,9 @@ private:
 	//プレイヤーの仮移動用
 	Vector2 tempPos_ = pos_;
 
+	//死亡判定
+	bool isAlive_;
+
 	static Player* player_;
 };
 

@@ -58,6 +58,7 @@ void Player::Initialize()
 
 	isJump_ = false;
 	jumpPow_ = 0;
+	isAlive_ = true;
 }
 
 //update
@@ -171,6 +172,11 @@ void Player::Updata(float windowX, float windowY, Field* field, Frame* frame)
 		}
 	}
 
+	//レイヤー外ブロックに当たったら死ぬ！！
+	if (field->GetMap(LT_) == NULL_BLOCK || field->GetMap(RT_) == NULL_BLOCK || field->GetMap(LB_) == NULL_BLOCK || field->GetMap(RB_) == NULL_BLOCK) {
+		isAlive_ = false;
+	}
+
 #pragma endregion
 
 #pragma region 画面外処理
@@ -192,7 +198,12 @@ void Player::Updata(float windowX, float windowY, Field* field, Frame* frame)
 //draw
 void Player::Draw()
 {
-	DrawBox(pos_.x - SIZE / 2, pos_.y - SIZE / 2, pos_.x + SIZE / 2, pos_.y + SIZE / 2, GetColor(100, 100, 200), true);
+	if (isAlive_) {
+		DrawBox(pos_.x - SIZE / 2, pos_.y - SIZE / 2, pos_.x + SIZE / 2, pos_.y + SIZE / 2, GetColor(100, 100, 200), true);
+	}
+	else {
+		DrawFormatString(380, 400, GetColor(255, 255, 255), "GameOver!!");
+	}
 }
 
 Vector2 Player::GetMapPos(int Num)

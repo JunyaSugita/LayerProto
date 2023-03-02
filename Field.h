@@ -8,7 +8,8 @@ enum map
 	BLOCK,	//ブロック
 	GOAL,	//ゴール
 	NOLAYER,//レイヤーが何もない枠
-	PLAYER,
+	PLAYER,	//プレイヤーの場所
+	NULL_BLOCK = -858993460, //未入力の空間
 };
 
 class Field

@@ -125,6 +125,10 @@ void Field::Draw()
 
 int Field::GetMap(Vector2 pos)
 {
+	if (map_[0][(int)pos.y][(int)pos.x] == NULL_BLOCK) {
+		return NULL_BLOCK;
+	}
+
 	for (int i = 0; i < MAX_OVERLAP; i++) {
 		switch (map_[i][(int)pos.y][(int)pos.x]) {
 		case NONE:
@@ -136,8 +140,8 @@ int Field::GetMap(Vector2 pos)
 			return GOAL;
 			break;
 		}
-
 	}
+
 	return 0;
 }
 
@@ -231,7 +235,7 @@ void Field::MoveLayer(Vector2 start, Vector2 end)
 			//‰º‚ÉƒŒƒCƒ„[‚ª‚ ‚éê‡‚ÍÁ‚·
 			else
 			{
-				map_[tempS][i + (int)start.y * 9][j + (int)start.x * 9] = -858993460;
+				map_[tempS][i + (int)start.y * 9][j + (int)start.x * 9] = NULL_BLOCK;
 			}
 		}
 	}

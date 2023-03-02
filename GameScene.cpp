@@ -101,7 +101,7 @@ void GameScene::Draw()
 
 	//コメント表示
 	DrawFormatString(10, 0, GetColor(200, 200, 200), "R : reset & hotReload");
-	DrawFormatString(10, 20, GetColor(200, 200, 200), "1 ~ 9 ChangeStage");
+	DrawFormatString(10, 40, GetColor(200, 200, 200), "1 ~ 9 ChangeStage");
 	/*DrawFormatString(0, 20, GetColor(200, 200, 200), "MouseX : %d", MouseX);
 	DrawFormatString(0, 40, GetColor(200, 200, 200), "MouseY : %d", MouseY);*/
 
