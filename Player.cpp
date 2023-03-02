@@ -58,7 +58,6 @@ void Player::Initialize()
 
 	isJump_ = false;
 	jumpPow_ = 0;
-	isAlive_ = true;
 }
 
 //update
@@ -174,18 +173,20 @@ void Player::Updata(float windowX, float windowY, Field* field, Frame* frame)
 
 	//トゲに当たったら死ぬ！！
 	if (field->GetMap(LT_) == TRAP || field->GetMap(RT_) == TRAP || field->GetMap(LB_) == TRAP || field->GetMap(RB_) == TRAP) {
-		isAlive_ = false;
-		StageCSVManager::GetInstance().LoadStageCSV(StageCSVManager::GetInstance().selectNum);
-		player_->Initialize();
-		field->Initialize();
+		if (isInvincible_ == false) {
+			StageCSVManager::GetInstance().LoadStageCSV(StageCSVManager::GetInstance().selectNum);
+			player_->Initialize();
+			field->Initialize();
+		}
 	}
 
 	//レイヤー外ブロックに当たったら死ぬ！！
 	if (field->GetMap(LT_) == NULL_BLOCK || field->GetMap(RT_) == NULL_BLOCK || field->GetMap(LB_) == NULL_BLOCK || field->GetMap(RB_) == NULL_BLOCK) {
-		isAlive_ = false;
-		StageCSVManager::GetInstance().LoadStageCSV(StageCSVManager::GetInstance().selectNum);
-		player_->Initialize();
-		field->Initialize();
+		if (isInvincible_ == false) {
+			StageCSVManager::GetInstance().LoadStageCSV(StageCSVManager::GetInstance().selectNum);
+			player_->Initialize();
+			field->Initialize();
+		}
 	}
 
 
@@ -205,16 +206,23 @@ void Player::Updata(float windowX, float windowY, Field* field, Frame* frame)
 	}
 
 #pragma endregion
+
+	//無敵化
+	if (CheckHitKey(KEY_INPUT_0)) {
+		isInvincible_ = true;
+	}
 }
 
 //draw
 void Player::Draw()
 {
-	if (isAlive_) {
-		DrawBox(pos_.x - SIZE / 2, pos_.y - SIZE / 2, pos_.x + SIZE / 2, pos_.y + SIZE / 2, GetColor(100, 100, 200), true);
+	DrawBox(pos_.x - SIZE / 2, pos_.y - SIZE / 2, pos_.x + SIZE / 2, pos_.y + SIZE / 2, GetColor(100, 100, 200), true);
+
+	if (isInvincible_ == false) {
+		DrawFormatString(0, 80, GetColor(200, 200, 200), " 0 : 無敵化");
 	}
 	else {
-		DrawFormatString(380, 400, GetColor(255, 255, 255), "GameOver!!");
+		DrawFormatString(0, 80, GetColor(200, 200, 200), " 無敵化中！");
 	}
 }
 
