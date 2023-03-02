@@ -170,7 +170,7 @@ void Field::MoveLayer(Vector2 start, Vector2 end)
 	Player* player = Player::GetInctance();
 
 	//プレイヤーを枠内に入れる
-	player->SetPlayerMapPos({ player->GetMapPos(0).y, player->GetMapPos(0).x});
+	player->SetPlayerMapPos({ (float)(int)player->GetMapPos().y, (float)(int)player->GetMapPos().x});
 
 	//アサート
 	assert("start.xに0~2以外の数字が入っています", start.x >= 0 && start.x <= 2);
@@ -186,10 +186,15 @@ void Field::MoveLayer(Vector2 start, Vector2 end)
 
 	//取るフレームの層を出す
 	int tempMap[9][9];
-	int temp = GetLayerNum(start.x, start.y);
+	int tempS = GetLayerNum(start.x, start.y);
+	int tempE = GetLayerNum(end.x, end.y);
+
 	//プレイヤーの情報をとる
 	if (start.x * 270 <= player->GetPos().x && (start.x + 1) * 270 >= player->GetPos().x && start.y * 270 <= player->GetPos().y && (start.y + 1) * 270 >= player->GetPos().y) {
-		map_[temp][(int)player->GetMapPos().y][(int)player->GetMapPos().x] = PLAYER;
+		map_[tempS][(int)player->GetMapPos().y][(int)player->GetMapPos().x] = PLAYER;
+	}
+	else if(end.x * 270 <= player->GetPos().x && (end.x + 1) * 270 >= player->GetPos().x && end.y * 270 <= player->GetPos().y && (end.y + 1) * 270 >= player->GetPos().y) {
+		map_[tempE][(int)player->GetMapPos().y][(int)player->GetMapPos().x] = PLAYER;
 	}
 
 	//ブロック同士が重なってしまっていたら移動させない
@@ -205,6 +210,11 @@ void Field::MoveLayer(Vector2 start, Vector2 end)
 					map_[GetLayerNum(start.x, start.y)][i + (int)start.y * 9][j + (int)start.x * 9] = NONE;
 					return;
 				}
+				//ブロックとプレイヤー
+				if (map_[GetLayerNum(start.x, start.y)][i + (int)start.y * 9][j + (int)start.x * 9] == BLOCK && map_[k][i + (int)end.y * 9][j + (int)end.x * 9] == PLAYER) {
+					map_[k][i + (int)end.y * 9][j + (int)end.x * 9] = PLAYER;
+					return;
+				}
 			}
 		}
 	}
@@ -212,47 +222,46 @@ void Field::MoveLayer(Vector2 start, Vector2 end)
 	//消しながらtempMapに情報を移す
 	for (int i = 0; i < 9; i++) {
 		for (int j = 0; j < 9; j++) {
-			tempMap[i][j] = map_[temp][i + (int)start.y * 9][j + (int)start.x * 9];
+			tempMap[i][j] = map_[tempS][i + (int)start.y * 9][j + (int)start.x * 9];
 			//レイヤーが一枚で、移動させたらレイヤーなし枠にする（レイヤーが移動できる場所）
-			if (temp == 0)
+			if (tempS == 0)
 			{
-				map_[temp][i + (int)start.y * 9][j + (int)start.x * 9] = NOLAYER;
+				map_[tempS][i + (int)start.y * 9][j + (int)start.x * 9] = NOLAYER;
 			}
 			//下にレイヤーがある場合は消す
 			else
 			{
-				map_[temp][i + (int)start.y * 9][j + (int)start.x * 9] = -858993460;
+				map_[tempS][i + (int)start.y * 9][j + (int)start.x * 9] = -858993460;
 			}
 		}
 	}
 
 	//最前面を探す
-	temp = GetLayerNum(end.x, end.y);
-	assert("レイヤーの重なり最大値10を超えています", temp < MAX_OVERLAP);
+	tempS = GetLayerNum(end.x, end.y);
+	assert("レイヤーの重なり最大値10を超えています", tempS < MAX_OVERLAP);
 	//tempMapから情報を移す
 	for (int i = 0; i < 9; i++) {
 		for (int j = 0; j < 9; j++) {
 			//枠なしレイヤーに重ねたらそれを消して上書き
-			if (map_[temp][i + (int)end.y * 9][j + (int)end.x * 9] == NOLAYER)
+			if (map_[tempS][i + (int)end.y * 9][j + (int)end.x * 9] == NOLAYER)
 			{
-				map_[temp][i + (int)end.y * 9][j + (int)end.x * 9] = tempMap[i][j];
-				if (map_[temp][i + (int)end.y * 9][j + (int)end.x * 9] == PLAYER) {
+				map_[tempS][i + (int)end.y * 9][j + (int)end.x * 9] = tempMap[i][j];
+				if (map_[tempS][i + (int)end.y * 9][j + (int)end.x * 9] == PLAYER) {
 					//player->SetPlayerMapPos({ (float)(i + (int)end.y * 9), (float)(j + (int)end.x * 9) });
-					map_[temp][i + (int)end.y * 9][j + (int)end.x * 9] = NONE;
+					map_[tempS][i + (int)end.y * 9][j + (int)end.x * 9] = NONE;
 				}
 			}
 			//通常時は重ねていく
 			else
 			{
-				map_[temp + 1][i + (int)end.y * 9][j + (int)end.x * 9] = tempMap[i][j];
-				if (map_[temp + 1][i + (int)end.y * 9][j + (int)end.x * 9] == PLAYER) {
+				map_[tempS + 1][i + (int)end.y * 9][j + (int)end.x * 9] = tempMap[i][j];
+				if (map_[tempS + 1][i + (int)end.y * 9][j + (int)end.x * 9] == PLAYER) {
 					//player->SetPlayerMapPos({ (float)(i + (int)end.y * 9), (float)(j + (int)end.x * 9) });
-					map_[temp + 1][i + (int)end.y * 9][j + (int)end.x * 9] = NONE;
+					map_[tempS + 1][i + (int)end.y * 9][j + (int)end.x * 9] = NONE;
 				}
 			}
 		}
 	}
-
 }
 
 
