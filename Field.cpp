@@ -204,15 +204,18 @@ void Field::MoveLayer(Vector2 start, Vector2 end)
 
 	//取るフレームの層を出す
 	int tempMap[9][9];
-	int tempS = GetLayerNum(start.x, start.y);
-	int tempE = GetLayerNum(end.x, end.y);
+	int tempS = GetLayerNum(start.x, start.y);	//始点のフレームの最前面
+	int tempE = GetLayerNum(end.x, end.y);		//終点のフレームの最前面
 
 	//プレイヤーの情報をとる
+	//始点にプレイヤーが居る時
 	if (start.x * 270 <= player->GetPos().x && (start.x + 1) * 270 >= player->GetPos().x && start.y * 270 <= player->GetPos().y && (start.y + 1) * 270 >= player->GetPos().y) {
 		map_[tempS][(int)player->GetMapPos().y][(int)player->GetMapPos().x] = PLAYER;
 	}
+	//終点にプレイヤーが居る時
 	else if(end.x * 270 <= player->GetPos().x && (end.x + 1) * 270 >= player->GetPos().x && end.y * 270 <= player->GetPos().y && (end.y + 1) * 270 >= player->GetPos().y) {
 		if (map_[tempE][(int)player->GetMapPos().y][(int)player->GetMapPos().x] == NOLAYER) {
+			//レイヤーが無い所にプレイヤーが居る時、戻す時のためにNOLAYER_PLAYERにする
 			map_[tempE][(int)player->GetMapPos().y][(int)player->GetMapPos().x] = NOLAYER_PLAYER;
 		}
 		else {
