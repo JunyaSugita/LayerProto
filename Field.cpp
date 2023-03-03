@@ -188,7 +188,7 @@ void Field::MoveLayer(Vector2 start, Vector2 end)
 	Player* player = Player::GetInctance();
 
 	//プレイヤーを枠内に入れる
-	player->SetPlayerMapPos({ (float)(int)player->GetMapPos().y, (float)(int)player->GetMapPos().x});
+	player->SetPlayerMapPos({ (float)(int)player->GetMapPos().y, (float)(int)player->GetMapPos().x });
 
 	//アサート
 	assert("start.xに0~2以外の数字が入っています", start.x >= 0 && start.x <= 2);
@@ -207,11 +207,17 @@ void Field::MoveLayer(Vector2 start, Vector2 end)
 	int tempS = GetLayerNum(start.x, start.y);
 	int tempE = GetLayerNum(end.x, end.y);
 
+	//クリックしたところがレイヤーなし枠だったら終わる
+	if (map_[tempS][(int)start.y * 9][(int)start.x * 9] == NOLAYER)
+	{
+		return;
+	}
+
 	//プレイヤーの情報をとる
 	if (start.x * 270 <= player->GetPos().x && (start.x + 1) * 270 >= player->GetPos().x && start.y * 270 <= player->GetPos().y && (start.y + 1) * 270 >= player->GetPos().y) {
 		map_[tempS][(int)player->GetMapPos().y][(int)player->GetMapPos().x] = PLAYER;
 	}
-	else if(end.x * 270 <= player->GetPos().x && (end.x + 1) * 270 >= player->GetPos().x && end.y * 270 <= player->GetPos().y && (end.y + 1) * 270 >= player->GetPos().y) {
+	else if (end.x * 270 <= player->GetPos().x && (end.x + 1) * 270 >= player->GetPos().x && end.y * 270 <= player->GetPos().y && (end.y + 1) * 270 >= player->GetPos().y) {
 		map_[tempE][(int)player->GetMapPos().y][(int)player->GetMapPos().x] = PLAYER;
 	}
 
