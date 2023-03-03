@@ -10,6 +10,7 @@ enum map
 	TRAP,	//トゲ
 	NOLAYER,//レイヤーが何もない枠
 	PLAYER,	//プレイヤーの場所
+	NOLAYER_PLAYER,	//レイヤーが無い場所でのプレイヤーの位置
 	NULL_BLOCK = -858993460, //未入力の空間
 };
 
