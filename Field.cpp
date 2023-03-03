@@ -213,6 +213,11 @@ void Field::MoveLayer(Vector2 start, Vector2 end)
 		return;
 	}
 
+	//終点にすでに2枚以上あったら終わる
+	if (tempE >= 1) {
+		return;
+	}
+
 	//プレイヤーの情報をとる
 	//始点にプレイヤーが居る時
 	if (start.x * 270 <= player->GetPos().x && (start.x + 1) * 270 >= player->GetPos().x && start.y * 270 <= player->GetPos().y && (start.y + 1) * 270 >= player->GetPos().y) {
@@ -233,10 +238,10 @@ void Field::MoveLayer(Vector2 start, Vector2 end)
 	for (int k = GetLayerNum(end.x, end.y); k >= 0; k--) {
 		for (int i = 0; i < 9; i++) {
 			for (int j = 0; j < 9; j++) {
-				//ブロック同士
-				if (map_[GetLayerNum(start.x, start.y)][i + (int)start.y * 9][j + (int)start.x * 9] == BLOCK && map_[k][i + (int)end.y * 9][j + (int)end.x * 9] == BLOCK) {
-					return;
-				}
+				//ブロック同士(削除)
+				//if (map_[GetLayerNum(start.x, start.y)][i + (int)start.y * 9][j + (int)start.x * 9] == BLOCK && map_[k][i + (int)end.y * 9][j + (int)end.x * 9] == BLOCK) {
+				//	return;
+				//}
 				//プレイヤーとブロック
 				if (map_[GetLayerNum(start.x, start.y)][i + (int)start.y * 9][j + (int)start.x * 9] == PLAYER && map_[k][i + (int)end.y * 9][j + (int)end.x * 9] == BLOCK) {
 					map_[GetLayerNum(start.x, start.y)][i + (int)start.y * 9][j + (int)start.x * 9] = NONE;
