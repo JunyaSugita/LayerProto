@@ -217,8 +217,13 @@ void Field::MoveLayer(Vector2 start, Vector2 end)
 	if (start.x * 270 <= player->GetPos().x && (start.x + 1) * 270 >= player->GetPos().x && start.y * 270 <= player->GetPos().y && (start.y + 1) * 270 >= player->GetPos().y) {
 		map_[tempS][(int)player->GetMapPos().y][(int)player->GetMapPos().x] = PLAYER;
 	}
-	else if (end.x * 270 <= player->GetPos().x && (end.x + 1) * 270 >= player->GetPos().x && end.y * 270 <= player->GetPos().y && (end.y + 1) * 270 >= player->GetPos().y) {
-		map_[tempE][(int)player->GetMapPos().y][(int)player->GetMapPos().x] = PLAYER;
+	else if(end.x * 270 <= player->GetPos().x && (end.x + 1) * 270 >= player->GetPos().x && end.y * 270 <= player->GetPos().y && (end.y + 1) * 270 >= player->GetPos().y) {
+		if (map_[tempE][(int)player->GetMapPos().y][(int)player->GetMapPos().x] == NOLAYER) {
+			map_[tempE][(int)player->GetMapPos().y][(int)player->GetMapPos().x] = NOLAYER_PLAYER;
+		}
+		else {
+			map_[tempE][(int)player->GetMapPos().y][(int)player->GetMapPos().x] = PLAYER;
+		}
 	}
 
 	//ブロック同士が重なってしまっていたら移動させない
@@ -237,6 +242,11 @@ void Field::MoveLayer(Vector2 start, Vector2 end)
 				//ブロックとプレイヤー
 				if (map_[GetLayerNum(start.x, start.y)][i + (int)start.y * 9][j + (int)start.x * 9] == BLOCK && map_[k][i + (int)end.y * 9][j + (int)end.x * 9] == PLAYER) {
 					map_[k][i + (int)end.y * 9][j + (int)end.x * 9] = NONE;
+					return;
+				}
+				//やっていることは上と同じだが変更するブロック先が変わる
+				if (map_[GetLayerNum(start.x, start.y)][i + (int)start.y * 9][j + (int)start.x * 9] == BLOCK && map_[k][i + (int)end.y * 9][j + (int)end.x * 9] == NOLAYER_PLAYER) {
+					map_[k][i + (int)end.y * 9][j + (int)end.x * 9] = NOLAYER;
 					return;
 				}
 			}
