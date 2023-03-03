@@ -230,11 +230,16 @@ void Field::MoveLayer(Vector2 start, Vector2 end)
 				}
 				//ブロックとプレイヤー
 				if (map_[GetLayerNum(start.x, start.y)][i + (int)start.y * 9][j + (int)start.x * 9] == BLOCK && map_[k][i + (int)end.y * 9][j + (int)end.x * 9] == PLAYER) {
-					map_[k][i + (int)end.y * 9][j + (int)end.x * 9] = PLAYER;
+					map_[k][i + (int)end.y * 9][j + (int)end.x * 9] = NONE;
 					return;
 				}
 			}
 		}
+	}
+
+	//取っていたプレイヤーの情報を消す
+	if (end.x * 270 <= player->GetPos().x && (end.x + 1) * 270 >= player->GetPos().x && end.y * 270 <= player->GetPos().y && (end.y + 1) * 270 >= player->GetPos().y) {
+		map_[tempE][(int)player->GetMapPos().y][(int)player->GetMapPos().x] = NONE;
 	}
 
 	//消しながらtempMapに情報を移す
