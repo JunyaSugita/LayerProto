@@ -188,7 +188,7 @@ void Field::MoveLayer(Vector2 start, Vector2 end)
 	Player* player = Player::GetInctance();
 
 	//プレイヤーを枠内に入れる
-	player->SetPlayerMapPos({ (float)(int)player->GetMapPos().y, (float)(int)player->GetMapPos().x});
+	player->SetPlayerMapPos({ (float)(int)player->GetMapPos().y, (float)(int)player->GetMapPos().x });
 
 	//アサート
 	assert("start.xに0~2以外の数字が入っています", start.x >= 0 && start.x <= 2);
@@ -206,6 +206,12 @@ void Field::MoveLayer(Vector2 start, Vector2 end)
 	int tempMap[9][9];
 	int tempS = GetLayerNum(start.x, start.y);	//始点のフレームの最前面
 	int tempE = GetLayerNum(end.x, end.y);		//終点のフレームの最前面
+
+	//クリックしたところがレイヤーなし枠だったら終わる
+	if (map_[tempS][(int)start.y * 9][(int)start.x * 9] == NOLAYER)
+	{
+		return;
+	}
 
 	//プレイヤーの情報をとる
 	//始点にプレイヤーが居る時
