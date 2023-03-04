@@ -1,5 +1,7 @@
 #include "Goal.h"
 #include "StageCSVManager.h"
+#include <math.h>
+#include "Field.h"
 
 Goal& Goal::GetInstance()
 {
@@ -48,6 +50,10 @@ void Goal::Initialize()
 	{
 		SetMapPos({ 0,0 });
 	}
+
+	isOverlap = false;
+
+	effectCount = 0;
 }
 
 Vector2 Goal::GetMapPos()
@@ -63,9 +69,35 @@ void Goal::SetMapPos(Vector2 mapPos)
 
 
 
+void Goal::CheckOverlapBlock(Field* field)
+{
+	if (field->GetMap(this->GetMapPos()))
+	{
+		this->isOverlap = true;
+	}
+	else
+	{
+		this->isOverlap = false;
+	}
+}
+
 void Goal::Draw()
 {
-	DrawBox(pos.x - Block::BLOCK_SIZE / 2, pos.y - Block::BLOCK_SIZE / 2, pos.x + Block::BLOCK_SIZE / 2, pos.y + Block::BLOCK_SIZE / 2, GetColor(255, 255, 0), true);
+	effectCount++;
+
+	int color = fabsf(sinf((float)effectCount * 0.05f)) * 155;
+
+	float length = Block::BLOCK_SIZE / 2;
+
+	if (this->isOverlap)
+	{
+		SetDrawBlendMode(DX_BLENDMODE_SUB, color);
+		length *= sinf((float)effectCount * 0.04f);
+	}
+
+	DrawBox(pos.x - length, pos.y - length, pos.x + length, pos.y + length, GetColor(255, 255, 0), true);
+
+	SetDrawBlendMode(DX_BLENDMODE_NOBLEND, color);
 }
 
 

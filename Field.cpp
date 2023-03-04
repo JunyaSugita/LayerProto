@@ -2,6 +2,7 @@
 #include "StageCSVManager.h"
 #include <assert.h>
 #include "Player.h"
+#include "Goal.h"
 
 //–³‹
 Field::Field() {}
@@ -304,6 +305,9 @@ void Field::MoveLayer(Vector2 start, Vector2 end)
 			}
 		}
 	}
+
+	//ˆÚ“®‚³‚¹‚½Œã‚ÉƒS[ƒ‹‚Éd‚È‚Á‚Ä‚é‚©’²‚×‚é
+	Goal::GetInstance().CheckOverlapBlock(this);
 }
 
 

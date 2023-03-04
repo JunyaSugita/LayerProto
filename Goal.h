@@ -12,6 +12,8 @@ private:
 	//上にブロックがあるとき
 	bool isOverlap = false;
 
+	int effectCount = 0;
+
 private:
 	Goal() { ; }
 	~Goal() { ; }
@@ -25,6 +27,9 @@ public:
 	static Goal& GetInstance();
 
 	void Initialize();
+
+	//ゴールに重なってないか調べる
+	void CheckOverlapBlock(Field* field);
 
 	void Draw();
 
