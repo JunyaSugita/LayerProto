@@ -66,6 +66,11 @@ void Field::Initialize(int map)
 
 void Field::Update(int mouseX, int mouseY, int windowWidth, int windowHeight)
 {
+	mouseX_ = mouseX;
+	mouseY_ = mouseY;
+
+	PreviewUpdate();
+
 	if ((GetMouseInput() & MOUSE_INPUT_LEFT) != 0) {
 		if (mouseStart.x == -1) {
 			mouseStart = { (float)(mouseX / (windowWidth / Frame::GetLayerFrameWidth())),(float)(mouseY / (windowHeight / Frame::GetLayerFrameHeight())) };
@@ -132,6 +137,8 @@ void Field::Draw()
 			}
 		}
 	}
+
+	PreviewDraw();
 }
 
 int Field::GetMap(Vector2 pos)
@@ -213,6 +220,11 @@ void Field::MoveLayer(Vector2 start, Vector2 end)
 		return;
 	}
 
+	//終点にすでに2枚以上あったら終わる
+	if (tempE >= 1) {
+		return;
+	}
+
 	//プレイヤーの情報をとる
 	//始点にプレイヤーが居る時
 	if (start.x * 270 <= player->GetPos().x && (start.x + 1) * 270 >= player->GetPos().x && start.y * 270 <= player->GetPos().y && (start.y + 1) * 270 >= player->GetPos().y) {
@@ -233,10 +245,10 @@ void Field::MoveLayer(Vector2 start, Vector2 end)
 	for (int k = GetLayerNum(end.x, end.y); k >= 0; k--) {
 		for (int i = 0; i < 9; i++) {
 			for (int j = 0; j < 9; j++) {
-				//ブロック同士
-				if (map_[GetLayerNum(start.x, start.y)][i + (int)start.y * 9][j + (int)start.x * 9] == BLOCK && map_[k][i + (int)end.y * 9][j + (int)end.x * 9] == BLOCK) {
-					return;
-				}
+				//ブロック同士(削除)
+				//if (map_[GetLayerNum(start.x, start.y)][i + (int)start.y * 9][j + (int)start.x * 9] == BLOCK && map_[k][i + (int)end.y * 9][j + (int)end.x * 9] == BLOCK) {
+				//	return;
+				//}
 				//プレイヤーとブロック
 				if (map_[GetLayerNum(start.x, start.y)][i + (int)start.y * 9][j + (int)start.x * 9] == PLAYER && map_[k][i + (int)end.y * 9][j + (int)end.x * 9] == BLOCK) {
 					map_[GetLayerNum(start.x, start.y)][i + (int)start.y * 9][j + (int)start.x * 9] = NONE;
@@ -301,6 +313,66 @@ void Field::MoveLayer(Vector2 start, Vector2 end)
 					player->SetPlayerMapPos({ (float)(i + (int)end.y * 9), (float)(j + (int)end.x * 9) });
 					map_[tempS + 1][i + (int)end.y * 9][j + (int)end.x * 9] = NONE;
 				}
+			}
+		}
+	}
+}
+
+void Field::PreviewUpdate()
+{
+	int layerPosX = mouseX_ / 270;
+	int layerPosY = mouseY_ / 270;
+	
+
+	if ((GetMouseInput() & MOUSE_INPUT_LEFT) == 0) {
+
+		//プレイヤーを枠内に入れる
+		Player* player = Player::GetInctance();
+		player->SetPlayerMapPos({ (float)(int)player->GetMapPos().y, (float)(int)player->GetMapPos().x });
+
+		layerNum_ = GetLayerNum(layerPosX, layerPosY);
+
+		for (int i = 0; i < 9; i++) {
+			for (int j = 0; j < 9; j++) {
+				preview_[i][j] = map_[layerNum_][i + layerPosY * 9][j + layerPosX * 9];
+			}
+		}
+
+		int a = player->GetMapPos().x / 9;
+		int b = player->GetMapPos().y / 9;
+
+		if (a == layerPosX && b == layerPosY) {
+			preview_[(int)player->GetMapPos().y % 9][(int)player->GetMapPos().x % 9] = PLAYER;
+		}
+	}
+}
+
+void Field::PreviewDraw()
+{
+	int layerPosX = mouseX_ / 270;
+	int layerPosY = mouseY_ / 270;
+
+	//マウスをクリックしている時だけ描画
+	if ((GetMouseInput() & MOUSE_INPUT_LEFT) != 0) {
+		for (int i = 0; i < 9; i++) {
+			for (int j = 0; j < 9; j++) {
+				SetDrawBlendMode(DX_BLENDMODE_ALPHA, 100);
+				switch (preview_[i][j])
+				{
+				case BLOCK:
+					DrawBox(layerPosX * 270 + j * BLOCK_SIZE, layerPosY * 270 + i * BLOCK_SIZE, layerPosX * 270 + j * BLOCK_SIZE + BLOCK_SIZE, layerPosY * 270 + i * BLOCK_SIZE + BLOCK_SIZE, GetColor(200, 200, 200), true);
+					break;
+				case PLAYER:
+					DrawBox(layerPosX * 270 + j * BLOCK_SIZE, layerPosY * 270 + i * BLOCK_SIZE, layerPosX * 270 + j * BLOCK_SIZE + BLOCK_SIZE, layerPosY * 270 + i * BLOCK_SIZE + BLOCK_SIZE, GetColor(150, 150, 250), true);
+					break;
+				case TRAP:
+					DrawBox(layerPosX * 270 + j * BLOCK_SIZE, layerPosY * 270 + i * BLOCK_SIZE, layerPosX * 270 + j * BLOCK_SIZE + BLOCK_SIZE, layerPosY * 270 + i * BLOCK_SIZE + BLOCK_SIZE, GetColor(250, 250, 150), true);
+					break;
+				default:
+					DrawBox(layerPosX * 270 + j * BLOCK_SIZE, layerPosY * 270 + i * BLOCK_SIZE, layerPosX * 270 + j * BLOCK_SIZE + BLOCK_SIZE, layerPosY * 270 + i * BLOCK_SIZE + BLOCK_SIZE, GetColor(100, 100, 100), true);
+					break;
+				}
+				SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 100);
 			}
 		}
 	}

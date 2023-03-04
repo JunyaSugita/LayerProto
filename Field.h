@@ -59,13 +59,23 @@ public:
 		return isSelect_;
 	};
 
+	/// <summary>
+	/// プレビューのアップデート
+	/// </summary>
+	void PreviewUpdate();
+
+	/// <summary>
+	/// プレビューのdraw
+	/// </summary>
+	void PreviewDraw();
+
 public:
 
 	//固定値
 	static const int MAP_X = 27;	//マップの横ブロック数
 	static const int MAP_Y = 27;	//マップの縦ブロック数
 	static const int BLOCK_SIZE = 30;		//ブロックサイズ
-	static const int MAX_OVERLAP = 10;		//レイヤーを何層まで重ねられるか
+	static const int MAX_OVERLAP = 2;		//レイヤーを何層まで重ねられるか
 
 private:
 	//マップ[y][x](数値は仮)
@@ -73,6 +83,11 @@ private:
 
 	Vector2 mouseStart;
 	bool isSelect_;
+
+	//プレビュー関連
+	int preview_[9][9] = {};
+	int mouseX_, mouseY_;
+	int layerNum_;
 
 };
 
