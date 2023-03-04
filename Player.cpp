@@ -1,6 +1,7 @@
 #include "Player.h"
 #include <assert.h>
 #include "StageCSVManager.h"
+#include "Goal.h"
 
 Player* Player::player_ = nullptr;
 
@@ -211,6 +212,13 @@ void Player::Updata(float windowX, float windowY, Field* field, Frame* frame)
 	if (CheckHitKey(KEY_INPUT_0)) {
 		isInvincible_ = true;
 	}
+
+
+#pragma region ÉSÅ[ÉãÇ∆ÇÃîªíË
+	
+	Goal::GetInstance().CheckEnterGoal(pos_, { SIZE,SIZE });
+
+#pragma endregion
 }
 
 //draw

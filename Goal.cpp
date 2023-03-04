@@ -54,11 +54,15 @@ void Goal::Initialize()
 	isOverlap = false;
 
 	effectCount = 0;
+
+	//ゴールに触れていると
+	goalCount = 0;
+	isGoal = false;
 }
 
 Vector2 Goal::GetMapPos()
 {
-	return { (int)pos.x / Block::BLOCK_SIZE ,(int)pos.y / Block::BLOCK_SIZE  };
+	return { (int)pos.x / Block::BLOCK_SIZE ,(int)pos.y / Block::BLOCK_SIZE };
 }
 
 void Goal::SetMapPos(Vector2 mapPos)
@@ -81,24 +85,55 @@ void Goal::CheckOverlapBlock(Field* field)
 	}
 }
 
+void Goal::CheckEnterGoal(const Vector2& pos, const Vector2& length)
+{
+	if (CheckHitBoxAndBox(pos, length, this->GetPos(), { Block::BLOCK_SIZE ,Block::BLOCK_SIZE })
+		&& !isGoal)
+	{
+		goalCount++;
+
+		if (goalCount >= goalCountMax )
+		{
+			isGoal = true;
+		}
+	}
+	else
+	{
+		goalCount = 0;
+	}
+}
+
 void Goal::Draw()
 {
 	effectCount++;
 
+	//blendmode用の値
 	int color = fabsf(sinf((float)effectCount * 0.05f)) * 155;
 
-	float length = Block::BLOCK_SIZE / 2;
+	float goalT = 1.0f + (float)this->goalCount / (float)goalCountMax;
 
+	//当たっているときサイズを変更したり
+	float length = (float)Block::BLOCK_SIZE / 2.0f * (goalT - sinf(goalCount * 0.3f));
+
+	//ゴールに重なっているとき
 	if (this->isOverlap)
 	{
 		SetDrawBlendMode(DX_BLENDMODE_SUB, color);
 		length *= sinf((float)effectCount * 0.04f);
 	}
+	//描画
+	DrawBox(pos.x - length, pos.y - length, pos.x + length, pos.y + length, GetColor(255* goalT, 255* goalT, 0), true);
 
-	DrawBox(pos.x - length, pos.y - length, pos.x + length, pos.y + length, GetColor(255, 255, 0), true);
-
+	//ほかに影響しないように戻す
 	if (this->isOverlap) {
 		SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 0);
+	}
+
+
+	//デバッグテキスト
+	if (isGoal)
+	{
+		DrawFormatString(0, 200, GetColor(255, 255, 255), "CLEAR", 3.0f);
 	}
 }
 

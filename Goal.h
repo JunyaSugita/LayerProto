@@ -3,6 +3,7 @@
 #include "DxLib.h"
 #include "Field.h"
 #include "Frame.h"
+#include "Util.h"
 
 
 class Goal final
@@ -13,6 +14,11 @@ private:
 	bool isOverlap = false;
 
 	int effectCount = 0;
+
+	//ƒS[ƒ‹‚ÉG‚ê‚Ä‚¢‚é‚Æ
+	int goalCount = 0;
+	const int goalCountMax = 120;
+	bool isGoal = false;
 
 private:
 	Goal() { ; }
@@ -30,6 +36,9 @@ public:
 
 	//ƒS[ƒ‹‚Éd‚È‚Á‚Ä‚È‚¢‚©’²‚×‚é
 	void CheckOverlapBlock(Field* field);
+
+	//ƒS[ƒ‹‚É“ü‚Á‚½‚©”»’è
+	void CheckEnterGoal(const Vector2& pos, const Vector2& length);
 
 	void Draw();
 

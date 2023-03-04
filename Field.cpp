@@ -330,8 +330,6 @@ void Field::PreviewUpdate()
 	//ƒvƒŒƒCƒ„[‚ð˜g“à‚É“ü‚ê‚é
 	Player* player = Player::GetInctance();
 	if ((GetMouseInput() & MOUSE_INPUT_LEFT) == true) {
-
-		
 		player->SetPlayerMapPos({ (float)(int)player->GetMapPos().y, (float)(int)player->GetMapPos().x });
 	}
 	else
