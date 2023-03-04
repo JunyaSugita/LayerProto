@@ -78,7 +78,7 @@ void Frame::Initialize()
 		{
 			if(i == j)
 			{
-				layers_[0][1]->blocks_[i][j]->SetType(Block::FIXED_BLOCK);
+				//layers_[0][1]->blocks_[i][j]->SetType(Block::FIXED_BLOCK);
 				layers_[0][2]->blocks_[i][j]->SetType(Block::NOLAYER_BLOCK);
 				layers_[2][2]->blocks_[i][j]->SetType(Block::LAYER_BLOCK);
 			}

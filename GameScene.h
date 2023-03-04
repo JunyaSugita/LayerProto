@@ -7,6 +7,7 @@
 #include "StageCSVManager.h"
 #include "Layer.h"
 #include "Frame.h"
+#include "Goal.h"
 
 class GameScene
 {

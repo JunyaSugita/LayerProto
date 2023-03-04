@@ -19,6 +19,9 @@ void GameScene::Initialize()
 	player_ = Player::GetInctance();
 	player_->Initialize();
 
+	//ゴール
+	Goal::GetInstance().Initialize();
+
 	//フィールドの生成と初期化
 	field_ = std::make_unique<Field>();
 	field_->Initialize();
@@ -37,7 +40,7 @@ void GameScene::Initialize()
 void GameScene::Update(char* keys, char* oldkeys)
 {
 	//読み込みキー
-	std::function<void()>f = [=]() {player_->Initialize(); field_->Initialize(); };
+	std::function<void()>f = [=]() {player_->Initialize(); Goal::GetInstance().Initialize(); field_->Initialize(); };
 	StageCSVManager::GetInstance().UpdateLoadStage(f);
 
 	//1フレーム前の座標を取得
@@ -57,10 +60,11 @@ void GameScene::Update(char* keys, char* oldkeys)
 		//
 		StageCSVManager::GetInstance().LoadStageCSV(StageCSVManager::GetInstance().selectNum);
 		player_->Initialize();
+		Goal::GetInstance().Initialize();
 		field_->Initialize();
 	}
 
-	fream_->Update(keys, oldkeys, MouseX, MouseY, oldMouseX, oldMouseY);
+	//fream_->Update(keys, oldkeys, MouseX, MouseY, oldMouseX, oldMouseY);
 	//layer_->Update(keys, oldkeys);
 
 
@@ -70,6 +74,9 @@ void GameScene::Draw()
 {
 	//フィールドの表示
 	field_->Draw();
+
+	//ゴール
+	Goal::GetInstance().Draw();
 
 	//プレイヤーの表示
 	player_->Draw();
