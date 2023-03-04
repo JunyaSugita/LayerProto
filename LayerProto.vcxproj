@@ -137,6 +137,7 @@
     <ClCompile Include="Field.cpp" />
     <ClCompile Include="Frame.cpp" />
     <ClCompile Include="GameScene.cpp" />
+    <ClCompile Include="Goal.cpp" />
     <ClCompile Include="Layer.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Player.cpp" />
@@ -149,6 +150,7 @@
     <ClInclude Include="Block.h" />
     <ClInclude Include="Frame.h" />
     <ClInclude Include="GameScene.h" />
+    <ClInclude Include="Goal.h" />
     <ClInclude Include="Layer.h" />
     <ClInclude Include="Player.h" />
     <ClInclude Include="Select.h" />

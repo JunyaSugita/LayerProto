@@ -51,50 +51,50 @@ void Layer::Initialize(int heightNum, int widthNum)
 		}
 	}
 
-	//座標の初期化
-	for(int i = 0; i < layerBlockWidth; i++)
-	{
-		for(int j = 0; j < layerBlockHeight; j++)
-		{
-			Vector2 pos;
-			//ブロックの座標を設定
-			if(i >= 0)
-			{
-				pos.y = (i * Block::BLOCK_SIZE) + (heightNum * layerWidth);
+	////座標の初期化
+	//for(int i = 0; i < layerBlockWidth; i++)
+	//{
+	//	for(int j = 0; j < layerBlockHeight; j++)
+	//	{
+	//		Vector2 pos;
+	//		//ブロックの座標を設定
+	//		if(i >= 0)
+	//		{
+	//			pos.y = (i * Block::BLOCK_SIZE) + (heightNum * layerWidth);
 
-			}
-			if(j >= 0)
-			{
-				pos.x = (j * Block::BLOCK_SIZE) + (widthNum * layerWidth);
-			}
+	//		}
+	//		if(j >= 0)
+	//		{
+	//			pos.x = (j * Block::BLOCK_SIZE) + (widthNum * layerWidth);
+	//		}
 
-			blocks_[i][j]->SetPos(pos);
+	//		blocks_[i][j]->SetPos(pos);
 
-			//形状の初期化(CSVファイルの読み込んだ形状をブロッククラスに渡す)
-			BlockType blockType;
-			if(i == 0 || j == 0)
-			{
-				blockType = BlockType::NOLAYER_BLOCK;
-				blocks_[i][j]->SetType(blockType);
-			}
-			/*else if(i == layerBlockWidth - 1 || j == layerBlockHeight - 1)
-			{
-				blockType = BlockType::NOLAYER_BLOCK;
-				blocks_[i][j]->SetType(blockType);
-			}*/
-			else if(i == j)
-			{
-				blockType = BlockType::FIXED_BLOCK;
-				blocks_[i][j]->SetType(blockType);
-			}
-			else
-			{
-				blockType = BlockType::NONE;
-				blocks_[i][j]->SetType(blockType);
-			}
+	//		//形状の初期化(CSVファイルの読み込んだ形状をブロッククラスに渡す)
+	//		BlockType blockType;
+	//		if(i == 0 || j == 0)
+	//		{
+	//			blockType = BlockType::NOLAYER_BLOCK;
+	//			blocks_[i][j]->SetType(blockType);
+	//		}
+	//		/*else if(i == layerBlockWidth - 1 || j == layerBlockHeight - 1)
+	//		{
+	//			blockType = BlockType::NOLAYER_BLOCK;
+	//			blocks_[i][j]->SetType(blockType);
+	//		}*/
+	//		else if(i == j)
+	//		{
+	//			blockType = BlockType::LAYER_BLOCK;
+	//			blocks_[i][j]->SetType(blockType);
+	//		}
+	//		else
+	//		{
+	//			blockType = BlockType::NONE;
+	//			blocks_[i][j]->SetType(blockType);
+	//		}
 
-		}
-	}
+	//	}
+	//}
 
 	movePos.x = 0;
 	movePos.y = 0;
