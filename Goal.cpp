@@ -58,7 +58,7 @@ void Goal::Initialize()
 
 Vector2 Goal::GetMapPos()
 {
-	return { (int)pos.x / Block::BLOCK_SIZE + Block::BLOCK_SIZE / 2,(int)pos.y / Block::BLOCK_SIZE + Block::BLOCK_SIZE / 2 };
+	return { (int)pos.x / Block::BLOCK_SIZE ,(int)pos.y / Block::BLOCK_SIZE  };
 }
 
 void Goal::SetMapPos(Vector2 mapPos)
@@ -71,7 +71,7 @@ void Goal::SetMapPos(Vector2 mapPos)
 
 void Goal::CheckOverlapBlock(Field* field)
 {
-	if (field->GetMap(this->GetMapPos()))
+	if (field->GetMap({ GetMapPos().x,GetMapPos().y }) == BLOCK)
 	{
 		this->isOverlap = true;
 	}
@@ -97,7 +97,9 @@ void Goal::Draw()
 
 	DrawBox(pos.x - length, pos.y - length, pos.x + length, pos.y + length, GetColor(255, 255, 0), true);
 
-	SetDrawBlendMode(DX_BLENDMODE_NOBLEND, color);
+	if (this->isOverlap) {
+		SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 0);
+	}
 }
 
 
