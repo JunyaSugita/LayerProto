@@ -59,6 +59,16 @@ public:
 		return isSelect_;
 	};
 
+	/// <summary>
+	/// プレビューのアップデート
+	/// </summary>
+	void PreviewUpdate();
+
+	/// <summary>
+	/// プレビューのdraw
+	/// </summary>
+	void PreviewDraw();
+
 public:
 
 	//固定値
@@ -73,6 +83,11 @@ private:
 
 	Vector2 mouseStart;
 	bool isSelect_;
+
+	//プレビュー関連
+	int preview_[9][9] = {};
+	int mouseX_, mouseY_;
+	int layerNum_;
 
 };
 
