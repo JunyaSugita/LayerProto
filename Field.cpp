@@ -328,7 +328,7 @@ void Field::PreviewUpdate()
 	int layerPosY = mouseY_ / 270;
 	
 
-	if ((GetMouseInput() & MOUSE_INPUT_LEFT) == 0) {
+	if ((GetMouseInput() & MOUSE_INPUT_LEFT) == true) {
 
 		//ƒvƒŒƒCƒ„[‚ğ˜g“à‚É“ü‚ê‚é
 		Player* player = Player::GetInctance();
