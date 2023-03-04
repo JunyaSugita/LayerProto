@@ -327,13 +327,15 @@ void Field::PreviewUpdate()
 	int layerPosX = mouseX_ / 270;
 	int layerPosY = mouseY_ / 270;
 	
-
+	//プレイヤーを枠内に入れる
+	Player* player = Player::GetInctance();
 	if ((GetMouseInput() & MOUSE_INPUT_LEFT) == true) {
 
-		//プレイヤーを枠内に入れる
-		Player* player = Player::GetInctance();
+		
 		player->SetPlayerMapPos({ (float)(int)player->GetMapPos().y, (float)(int)player->GetMapPos().x });
-
+	}
+	else
+	{
 		layerNum_ = GetLayerNum(layerPosX, layerPosY);
 
 		for (int i = 0; i < 9; i++) {
