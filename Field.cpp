@@ -108,21 +108,21 @@ void Field::Draw()
 					}
 					break;
 
-				case GOAL:
-					//ゴールなら赤で描画
-					DrawBox(j * BLOCK_SIZE, i * BLOCK_SIZE, j * BLOCK_SIZE + BLOCK_SIZE, i * BLOCK_SIZE + BLOCK_SIZE, GetColor(200, 100, 100), true);
-					break;
+				//case GOAL:
+				//	//ゴールなら赤で描画
+				//	DrawBox(j * BLOCK_SIZE, i * BLOCK_SIZE, j * BLOCK_SIZE + BLOCK_SIZE, i * BLOCK_SIZE + BLOCK_SIZE, GetColor(200, 100, 100), true);
+				//	break;
 
 				case TRAP:
 					//トゲを黄色で描画
-					DrawBox(j * BLOCK_SIZE, i * BLOCK_SIZE, j * BLOCK_SIZE + BLOCK_SIZE, i * BLOCK_SIZE + BLOCK_SIZE, GetColor(200, 200, 0), true);
+					DrawBox(j * BLOCK_SIZE, i * BLOCK_SIZE, j * BLOCK_SIZE + BLOCK_SIZE, i * BLOCK_SIZE + BLOCK_SIZE, GetColor(250, 0, 0), true);
 
-				case NOLAYER:
-					//レイヤーはないが、枠はある場所
-					SetDrawBlendMode(DX_BLENDMODE_ALPHA, 100);
-					DrawBox(j * BLOCK_SIZE, i * BLOCK_SIZE, j * BLOCK_SIZE + BLOCK_SIZE, i * BLOCK_SIZE + BLOCK_SIZE, GetColor(100, 100, 10), true);
-					SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 100);
-					break;
+				//case NOLAYER:
+				//	//レイヤーはないが、枠はある場所
+				//	SetDrawBlendMode(DX_BLENDMODE_ALPHA, 100);
+				//	DrawBox(j * BLOCK_SIZE, i * BLOCK_SIZE, j * BLOCK_SIZE + BLOCK_SIZE, i * BLOCK_SIZE + BLOCK_SIZE, GetColor(100, 100, 10), true);
+				//	SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 100);
+				//	break;
 
 				case NONE:
 				default:
@@ -139,11 +139,27 @@ void Field::Draw()
 		}
 	}
 
+	for (int i = 0; i < 27; i++) {
+		for (int j = 0; j < 27; j++) {
+			switch (GetMap({ (float)j,(float)i }))
+			{
+			case RAP_BLOCK:
+				DrawBox(j * BLOCK_SIZE, i * BLOCK_SIZE, j * BLOCK_SIZE + BLOCK_SIZE, i * BLOCK_SIZE + BLOCK_SIZE, GetColor(50, 50, 0), true);
+				break;
+			default:
+				break;
+			}
+		}
+	}
+
 	PreviewDraw();
 }
 
 int Field::GetMap(Vector2 pos)
 {
+	//ブロック同士の重なり確認用
+	int blockRap = 0;
+
 	if (map_[0][(int)pos.y][(int)pos.x] == NULL_BLOCK) {
 		return NULL_BLOCK;
 	}
@@ -153,7 +169,7 @@ int Field::GetMap(Vector2 pos)
 		case NONE:
 			break;
 		case BLOCK:
-			return BLOCK;
+			blockRap++;
 			break;
 		case GOAL:
 			return GOAL;
@@ -162,6 +178,13 @@ int Field::GetMap(Vector2 pos)
 			return TRAP;
 			break;
 		}
+	}
+
+	if (blockRap == 1) {
+		return BLOCK;
+	}
+	else if(blockRap == 2){
+		return RAP_BLOCK;
 	}
 
 	return 0;
@@ -335,6 +358,8 @@ void Field::PreviewUpdate()
 	else
 	{
 		layerNum_ = GetLayerNum(layerPosX, layerPosY);
+		clickX_ = layerPosX;
+		clickY_ = layerPosY;
 
 		for (int i = 0; i < 9; i++) {
 			for (int j = 0; j < 9; j++) {
@@ -356,27 +381,46 @@ void Field::PreviewDraw()
 	int layerPosX = mouseX_ / 270;
 	int layerPosY = mouseY_ / 270;
 
+
+
 	//マウスをクリックしている時だけ描画
 	if ((GetMouseInput() & MOUSE_INPUT_LEFT) != 0) {
+
+		if (GetLayerNum(layerPosX, layerPosY) == 1) {
+			for (int i = 0; i < 9; i++) {
+				for (int j = 0; j < 9; j++) {
+					if (map_[0][i + layerPosY * 9][j + layerPosX * 9] == BLOCK && (clickX_ != layerPosX || clickY_ != layerPosY)) {
+						DrawBox(layerPosX * 270, layerPosY * 270, (layerPosX + 1) * 270, (layerPosY + 1) * 270, GetColor(250, 0, 0), true);
+						return;
+					}
+				}
+			}
+		}
+
 		for (int i = 0; i < 9; i++) {
 			for (int j = 0; j < 9; j++) {
-				SetDrawBlendMode(DX_BLENDMODE_ALPHA, 100);
+				SetDrawBlendMode(DX_BLENDMODE_ALPHA, 200);
 				switch (preview_[i][j])
 				{
 				case BLOCK:
-					DrawBox(layerPosX * 270 + j * BLOCK_SIZE, layerPosY * 270 + i * BLOCK_SIZE, layerPosX * 270 + j * BLOCK_SIZE + BLOCK_SIZE, layerPosY * 270 + i * BLOCK_SIZE + BLOCK_SIZE, GetColor(200, 200, 200), true);
+					if (map_[0][i + layerPosY * 9][j + layerPosX * 9] == BLOCK && (clickX_ != layerPosX || clickY_ != layerPosY)) {
+						DrawBox(layerPosX * 270 + j * BLOCK_SIZE, layerPosY * 270 + i * BLOCK_SIZE, layerPosX * 270 + j * BLOCK_SIZE + BLOCK_SIZE, layerPosY * 270 + i * BLOCK_SIZE + BLOCK_SIZE, GetColor(50, 50, 0), true);
+					}
+					else {
+						DrawBox(layerPosX * 270 + j * BLOCK_SIZE, layerPosY * 270 + i * BLOCK_SIZE, layerPosX * 270 + j * BLOCK_SIZE + BLOCK_SIZE, layerPosY * 270 + i * BLOCK_SIZE + BLOCK_SIZE, GetColor(250, 250, 250), true);
+					}
 					break;
 				case PLAYER:
 					DrawBox(layerPosX * 270 + j * BLOCK_SIZE, layerPosY * 270 + i * BLOCK_SIZE, layerPosX * 270 + j * BLOCK_SIZE + BLOCK_SIZE, layerPosY * 270 + i * BLOCK_SIZE + BLOCK_SIZE, GetColor(150, 150, 250), true);
 					break;
 				case TRAP:
-					DrawBox(layerPosX * 270 + j * BLOCK_SIZE, layerPosY * 270 + i * BLOCK_SIZE, layerPosX * 270 + j * BLOCK_SIZE + BLOCK_SIZE, layerPosY * 270 + i * BLOCK_SIZE + BLOCK_SIZE, GetColor(250, 250, 150), true);
+					DrawBox(layerPosX * 270 + j * BLOCK_SIZE, layerPosY * 270 + i * BLOCK_SIZE, layerPosX * 270 + j * BLOCK_SIZE + BLOCK_SIZE, layerPosY * 270 + i * BLOCK_SIZE + BLOCK_SIZE, GetColor(250, 0, 0), true);
 					break;
 				default:
-					DrawBox(layerPosX * 270 + j * BLOCK_SIZE, layerPosY * 270 + i * BLOCK_SIZE, layerPosX * 270 + j * BLOCK_SIZE + BLOCK_SIZE, layerPosY * 270 + i * BLOCK_SIZE + BLOCK_SIZE, GetColor(100, 100, 100), true);
+					DrawBox(layerPosX * 270 + j * BLOCK_SIZE, layerPosY * 270 + i * BLOCK_SIZE, layerPosX * 270 + j * BLOCK_SIZE + BLOCK_SIZE, layerPosY * 270 + i * BLOCK_SIZE + BLOCK_SIZE, GetColor(50, 50, 50), true);
 					break;
 				}
-				SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 100);
+				SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 50);
 			}
 		}
 	}
