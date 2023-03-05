@@ -11,6 +11,7 @@ enum map
 	NOLAYER,//レイヤーが何もない枠
 	PLAYER,	//プレイヤーの場所
 	NOLAYER_PLAYER,	//レイヤーが無い場所でのプレイヤーの位置
+	RAP_BLOCK,		//重なったブロック
 	NULL_BLOCK = -858993460, //未入力の空間
 };
 
@@ -88,6 +89,6 @@ private:
 	int preview_[9][9] = {};
 	int mouseX_, mouseY_;
 	int layerNum_;
-
+	int clickX_, clickY_;
 };
 
