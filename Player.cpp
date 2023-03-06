@@ -59,6 +59,7 @@ void Player::Initialize()
 
 	isJump_ = false;
 	jumpPow_ = 0;
+	isInvincible_ = false;
 }
 
 //update
