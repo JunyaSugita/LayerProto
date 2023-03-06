@@ -212,7 +212,6 @@ int Field::GetLayerNum(int x, int y)
 				}
 			}
 		}
-
 	}
 	//–³‚¯‚ê‚Î0‘w‚ð•Ô‚·
 	return i;

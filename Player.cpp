@@ -105,8 +105,8 @@ void Player::Updata(float windowX, float windowY, Field* field, Frame* frame)
 
 	//ジャンプと重力の移動
 	float tempMove = jumpPow_ - GRAVITY;
-	for (int i = 0; i < 10; i++) {
-		tempPos_.y -= tempMove / 10;
+	for (int i = 0; i < 20; i++) {
+		tempPos_.y -= tempMove / 20;
 		CalcMapPos();
 
 		//ブロックなどと当たっているか
