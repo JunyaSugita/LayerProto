@@ -63,6 +63,7 @@ void Field::Initialize(int map)
 
 	mouseStart = { -1,-1 };
 	isSelect_ = false;
+	isDraw_ = false;
 }
 
 void Field::Update(int mouseX, int mouseY, int windowWidth, int windowHeight)
@@ -355,7 +356,7 @@ void Field::PreviewUpdate()
 	
 	//プレイヤーを枠内に入れる
 	Player* player = Player::GetInctance();
-	if ((GetMouseInput() & MOUSE_INPUT_LEFT) == true) {
+	if (isSelect_) {
 		player->SetPlayerMapPos({ (float)(int)player->GetMapPos().y, (float)(int)player->GetMapPos().x });
 	}
 	else
@@ -384,10 +385,8 @@ void Field::PreviewDraw()
 	int layerPosX = mouseX_ / 270;
 	int layerPosY = mouseY_ / 270;
 
-
-
 	//マウスをクリックしている時だけ描画
-	if ((GetMouseInput() & MOUSE_INPUT_LEFT) != 0) {
+	if (isSelect_) {
 
 		if (GetLayerNum(layerPosX, layerPosY) == 1) {
 			for (int i = 0; i < 9; i++) {

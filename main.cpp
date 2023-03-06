@@ -83,7 +83,7 @@ int WINAPI WinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance, _
 		ScreenFlip();
 
 		// 20ミリ秒待機(疑似60FPS)
-		//WaitTimer(20);
+		WaitTimer(20);
 
 		// Windowsシステムからくる情報を処理する
 		if (ProcessMessage() == -1) {
