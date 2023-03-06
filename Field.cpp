@@ -255,7 +255,13 @@ void Field::MoveLayer(Vector2 start, Vector2 end)
 	//プレイヤーの情報をとる
 	//始点にプレイヤーが居る時
 	if (start.x * 270 <= player->GetPos().x && (start.x + 1) * 270 >= player->GetPos().x && start.y * 270 <= player->GetPos().y && (start.y + 1) * 270 >= player->GetPos().y) {
-		map_[tempS][(int)player->GetMapPos().y][(int)player->GetMapPos().x] = PLAYER;
+		if (GetMap(player->GetMapPos()) == RAP_BLOCK) {
+			//プレイヤーがブロックと重なった位置にいた場合移動出来ない
+			return;
+		}
+		else {
+			map_[tempS][(int)player->GetMapPos().y][(int)player->GetMapPos().x] = PLAYER;
+		}
 	}
 	//終点にプレイヤーが居る時
 	else if(end.x * 270 <= player->GetPos().x && (end.x + 1) * 270 >= player->GetPos().x && end.y * 270 <= player->GetPos().y && (end.y + 1) * 270 >= player->GetPos().y) {
