@@ -394,7 +394,10 @@ void Field::PreviewDraw()
 
 	//マウスをクリックしている時だけ描画
 	if (isSelect_) {
-
+		//NULL_BLOCKは描画しない
+		if (GetMap({ (float)layerPosX * 9, (float)layerPosY * 9 }) == NULL_BLOCK) {
+			return;
+		}
 		if (GetLayerNum(layerPosX, layerPosY) == 1) {
 			for (int i = 0; i < 9; i++) {
 				for (int j = 0; j < 9; j++) {
