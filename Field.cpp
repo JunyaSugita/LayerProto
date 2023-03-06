@@ -172,10 +172,14 @@ int Field::GetMap(Vector2 pos)
 			blockRap++;
 			break;
 		case GOAL:
-			return GOAL;
+			if (blockRap == 0) {
+				return GOAL;
+			}
 			break;
 		case TRAP:
-			return TRAP;
+			if (blockRap == 0) {
+				return TRAP;
+			}
 			break;
 		}
 	}
