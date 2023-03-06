@@ -63,7 +63,6 @@ void Field::Initialize(int map)
 
 	mouseStart = { -1,-1 };
 	isSelect_ = false;
-	isDraw_ = false;
 }
 
 void Field::Update(int mouseX, int mouseY, int windowWidth, int windowHeight)
