@@ -364,7 +364,7 @@ void Field::PreviewUpdate()
 		clickX_ = layerPosX;
 		clickY_ = layerPosY;
 
-		if (layerNum_ > 0) {
+		if (layerNum_ >= 0) {
 			for (int i = 0; i < 9; i++) {
 				for (int j = 0; j < 9; j++) {
 					preview_[i][j] = map_[layerNum_][i + layerPosY * 9][j + layerPosX * 9];
